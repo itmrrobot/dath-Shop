@@ -1,0 +1,25 @@
+@use "../Login/Login.module.scss";
+
+.wrapper {
+    .title {
+        margin-bottom: 24px;
+    }
+}
+
+.form-group {
+    gap: 8px;
+}
+
+.form {
+    .btn-login {
+        margin: 18px 0;
+    }
+}
+
+.wrap-text-and-button {
+    gap: 12px;
+}
+
+.ask {
+    margin-top: 16px;
+}

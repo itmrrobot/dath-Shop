@@ -1,0 +1,55 @@
+.g-38 {
+  gap: 38px;
+}
+
+.wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 55px;
+  .filter {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 16px;
+    letter-spacing: 0.32px;
+    .text {
+      color: var(--grey-grey-500, #6b7280);
+      font-weight: 500;
+    }
+    .name {
+      color: var(--grey-grey-800, #1f2937);
+      font-weight: 800;
+    }
+  }
+  .filter:last-child {
+    gap: 15px;
+  }
+}
+
+.table-users {
+    width: calc(100% - 112px);
+}
+
+td, th {
+    text-align: left;
+    color: #000;
+font-size: 18px;
+font-weight: 400;
+line-height: 18px; /* 30px */
+  }
+
+  tbody:before {
+    /* This doesn't work because of border-collapse */
+    line-height:33px;
+    content:".";
+    color:white; /* bacground color */
+    display:block;
+}
+
+tbody tr:after {
+    line-height:66px;
+    content:".";
+    color:white; /* bacground color */
+    display:block;
+}
+

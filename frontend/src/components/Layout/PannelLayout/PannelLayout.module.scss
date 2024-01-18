@@ -1,0 +1,12 @@
+.wrap {
+    background: var(--secondary-50, #FAF5EB);
+}
+
+.body {
+    display: flex;
+    gap: 182px;
+    .content {
+        width: 75%;
+        padding-right: 130px;
+    }
+}

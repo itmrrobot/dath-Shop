@@ -1,0 +1,128 @@
+@use "../ManageProducts/ManageProducts.module.scss";
+
+.wrap {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 12px;
+    margin: 34px 0 27px;
+    .g-14 {
+        gap: 14px;
+    }
+}
+.success {
+    color: var(--Sucess, #0EAD69);
+}
+
+.pending {
+    color: #0978F2;
+}
+
+.reject {
+    color: #C10B0ECC;
+}
+
+.wrap-item {
+    display: flex;
+padding: 16px 0px 25px 16px;
+width: 100%;
+flex-direction: column;
+align-items: flex-start;
+gap: 5px;
+border-radius: 5px;
+
+.name {
+    color: var(--primary-950, #171212);
+font-variant-numeric: lining-nums proportional-nums;
+font-feature-settings: 'dlig' on;
+font-family: Outfit;
+font-size: 18px;
+font-weight: 400;
+letter-spacing: 0.16px;
+}
+.price {
+    
+font-family: Inter;
+font-size: 24px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+}
+.p-color {
+    background: var(--Linear, linear-gradient(180deg, #1DB7C2 0%, #413B89 100%));
+background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+.date {
+    color: var(--Inactive-State-Color, rgba(73, 69, 79, 0.80));
+font-variant-numeric: lining-nums proportional-nums;
+font-feature-settings: 'dlig' on;
+font-size: 16px;
+font-weight: 400;
+letter-spacing: 0.1px;
+}
+}
+
+.wrap-item:first-child {
+    border: 1px solid var(--Secondary-Background, #F3F4F6);
+    background: #DCFAED;
+}
+
+.wrap-item:nth-child(2) {
+    border: 1px solid var(--primary-50, #F5F2F1);
+    background: #F5F6F8;
+    }
+
+.wrap-item:last-child {
+border: 1px solid var(--Secondary-Background, #F3F4F6);
+background: rgba(255, 255, 255, 0.80);
+}
+
+.btn-account {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+
+
+.item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-right: 16px;
+    .bank-account {
+        display: flex;
+        align-items: center;
+    }
+    .group-btn {
+        display: flex;
+    }
+}
+
+.sub-title {
+    color: var(--primary-500, #8A7268);
+font-size: 22px;
+font-weight: 500;
+}
+
+.filter-wrap {
+    display: flex;
+    gap: 14px;
+    margin: 21px 0 17px;
+    .filter-item {
+        display: flex;
+        justify-content: center;
+        width: 120px;
+        text-align: center;
+        padding: 13px 30px;
+        border-radius: 30px;
+border: 1px solid #EBEBEE;
+background: var(--Secondary---White, #FFF);
+color: var(--text-color-80-opacity, rgba(34, 34, 34, 0.90));
+font-size: 16px;
+font-weight: 400;
+line-height: 150%; 
+    }
+}

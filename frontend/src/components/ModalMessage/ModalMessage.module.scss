@@ -1,0 +1,16 @@
+@use "../ModalPayment/ModalPayment.module.scss";
+
+.modal-content {
+    top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  gap: 24px;
+}
+
+.title {
+    font-size: 32px;
+}
+
+.desc {
+    font-size: 18px;
+}

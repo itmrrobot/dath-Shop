@@ -1,0 +1,120 @@
+.header {
+  .header-img {
+    max-width: 100%;
+  }
+}
+
+.container {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 99;
+  .profile {
+    position: absolute;
+    border-radius: 165.5px 165.5px 0px 0px;
+    border: 2px solid rgba(36, 39, 96, 0.31);
+    background: #fff;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    width: 560px;
+    top: -190px;
+    left: 16px;
+    z-index: -1;
+    .avatar {
+      margin: 92px 140px 0px 130px;
+      border-radius: 279.345px;
+      width: 278.65px;
+      height: 279.345px;
+    }
+    .name {
+      margin: 50px 0 84px;
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 120%; /* 43.2px */
+      background: var(
+        --Linear,
+        linear-gradient(180deg, #1db7c2 0%, #413b89 100%)
+      );
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-align: center;
+      display: block;
+    }
+    .wrap-btn {
+        padding: 0px 71px;
+    }
+    .btn-change-pasword {
+        text-decoration: none;
+        margin: 101px 0;    
+        padding: 13px 118px;
+    }
+  }
+}
+
+.wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 31px;
+  justify-content: center;
+  .item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    .number {
+      font-size: 36px;
+      font-weight: 600;
+      line-height: 87.523%; /* 31.508px */
+      background: var(
+        --Linear,
+        linear-gradient(180deg, #1db7c2 0%, #413b89 100%)
+      );
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .text {
+      color: #544c4c;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 87.523%; /* 14.004px */
+    }
+  }
+}
+
+.form {
+    display: inline-flex;
+flex-direction: column;
+align-items: flex-start;
+gap: 24px;
+margin-left: 246px;
+width: 60%;
+.w-50 {
+    width: 50%;
+}
+.form-group {
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
+    .form-label {
+        color: var(--secondary-700, #685723);
+    }
+    .form-input {
+        border-radius: 6px;
+border: 1px solid var(--primary-500, #8A7268);
+padding: 16px 360px 16px 28px;
+color: #544C4C;
+font-size: 14px;
+font-weight: 500;
+line-height: 87.523%; /* 12.253px */
+    }
+    .form-input-date {
+        padding: 16px;
+    }
+}
+.group-btn {
+    display: flex;
+    align-items: center;
+gap: 24px;
+}
+}

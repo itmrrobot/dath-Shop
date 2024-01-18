@@ -1,0 +1,11 @@
+.wrap {
+  padding: 0 124px 0;
+  background-color: #F5F2F1;
+  .banner {
+    .img {
+      object-fit: contain;
+      width: 100%;
+      margin: 60px 0;
+    }
+  }
+}

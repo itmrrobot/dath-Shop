@@ -1,0 +1,62 @@
+.sidebar {
+  border-radius: 6px;
+  background: #fff;
+  display: flex;
+  width: 300px;
+  padding: 0px 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 54px;
+  margin: 0px 57px 0 86px;
+  padding-bottom: 570px;
+}
+
+.prices {
+  display: flex;
+  width: 383px;
+  padding-top: 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  .range {
+    display: flex;
+    align-items: flex-start;
+    gap: 120px;
+  }
+  .title {
+    color: var(--primary-950, #171212);
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.32px;
+  }
+}
+
+.check-boxes {
+  display: flex;
+  width: 383px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}
+.item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  .input {
+    border: 1.5px solid var(--grey-grey-700, #374151);
+    height: 18px;
+    width: 18px;
+  }
+  .name {
+    color: var(--primary-950, #171212);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+  }
+}

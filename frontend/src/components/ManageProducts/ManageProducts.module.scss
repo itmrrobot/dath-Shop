@@ -1,0 +1,75 @@
+@use "../ManageUsers/ManageUsers.module.scss";
+
+.table-wrap {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--primary-300, #afa095);
+  background: var(--Secondary---White, #fff);
+}
+
+.table-users {
+  width: 100%;
+}
+
+.f-1 {
+  flex: 1;
+}
+
+.f-2 {
+  flex: 2;
+}
+
+.table-head {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  border-bottom: 1px solid var(--primary-200, #ccc3bc);
+}
+
+.table-body {
+  width: 100%;
+}
+
+.table-row {
+  display: flex;
+  justify-content: space-evenly;
+  position: relative;
+}
+
+.table-cell {
+  width: 100%;
+  text-align: center;
+  padding: 18px;
+}
+
+.right {
+  display: flex;
+  justify-content: right;
+  width: 100%;
+}
+
+.btn-add {
+  cursor: pointer;
+  padding: 13px 98px;
+  border-radius: 40px;
+  background: var(--secondary-500, #ab8a37);
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.dropdown-list {
+  position: absolute;
+  right: 0;
+  right: 52px;
+  top: 42px;
+  border-radius: 12px;
+border: 1px solid #000;
+z-index: 999;
+background: var(--secondary-50, #FAF5EB);
+.dropdown-item {
+  padding: 8px 32px;
+  z-index: 99;
+}
+}

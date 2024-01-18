@@ -1,0 +1,64 @@
+const hashPassword = require('../common/hashPassword');
+const {User,Role} = require('../models/index');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
+const register = async(data) => {
+    console.log(data);
+    let password =await hashPassword(data.password);
+    try {
+        const res = await User.findOrCreate({where:{email:data.email},defaults:{...data,password:password}});
+        console.log(res);
+        const access_token = res[1] ? jwt.sign({id:res[0].id,email:res[0].email,roleId:res[0].roleId},process.env.JWT_SECRET,{expiresIn:'5s'}):null;
+        const refresh_token = res[1] ? jwt.sign({id:res[0].id},process.env.JWT_SECRET_REFRESH_TOKEN,{expiresIn:'60s'}):null;
+        if(refresh_token) {
+            await User.update({refreshToken:refresh_token},{where:{id:res[0].id}});
+        }
+        return res[1]?{err:1,mess:"Register success",access_token,refresh_token,user:res[0]}:{err:0,mess:"Email is used"};
+    } catch(e) {
+        console.log(e);
+    }
+}
+
+const login = async(data) => {
+    console.log(data)
+    try {
+        const res = await User.findOne({where:{email:data.email},raw:true,include: { model: Role, as: 'Role',attributes: ["id","name"]},nest: true,attributes: {exclude: ['createdAt','updatedAt','RoleId','roleId']}});
+        console.log(res);
+        const isChecked = res && bcrypt.compareSync(data.password,res.password);
+        const access_token = isChecked && jwt.sign({id:res.id,email:res.email,roleId:res.roleId},process.env.JWT_SECRET,{expiresIn:'5s'});
+        //const token = res[1] ? jwt.sign({id:res[0].id,email:res[0].email,roleId:res[0].roleId},process.env.JWT_SECRET,{expiresIn:'120s'}):null;
+        const refresh_token = isChecked ? jwt.sign({id:res.id},process.env.JWT_SECRET_REFRESH_TOKEN,{expiresIn:'5d'}):null;
+        if(refresh_token) {
+            await User.update({refreshToken:refresh_token},{where:{id:res.id}});
+        }
+        delete res.password
+        return access_token?{err:1,mess:"Login success",res,"access_token":access_token?`${access_token}`:null,refresh_token}:res?{err:0,mess:"Password is wrong"}:{err:0,mess:"Email is not registered"};
+    } catch(e) {
+        console.log(e);
+    }
+}
+
+const refreshToken = async(data) => {
+
+    let refresh_token = data.refreshToken;
+    try {
+        const res = await User.findOne({where:{refreshToken:refresh_token}})
+        if(res) {
+            const result=jwt.verify(refresh_token,process.env.JWT_SECRET_REFRESH_TOKEN,(err) => {
+                if(err) {return {err:1,msg:"Refresh token has expired. Required login!"}}
+                else {
+                    const access_token = jwt.sign({id:res.id,email:res.email,roleId:res.roleId},process.env.JWT_SECRET,{expiresIn:'60s'});
+                    return {err:access_token?0:1,msg:access_token?"OK":"Cannot generate access token",access_token:access_token?`Bearer ${access_token}`:null,refresh_token}
+                }
+            })
+            return result;
+        }
+    } catch(e) {
+        console.log(e);
+    }
+}
+
+module.exports = {
+    register,login,refreshToken
+}

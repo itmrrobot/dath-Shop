@@ -1,0 +1,60 @@
+import styles from "./PopularProducts.module.scss";
+import classNames from "classnames/bind";
+import Rectangle1394 from "../../assets/img/Rectangle1394.png";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { url } from "../../constants";
+import { Link } from "react-router-dom";
+
+const cx = classNames.bind(styles);
+
+function PopularProducts() {
+    const [data, setData] = useState([]);
+  const [loading,setIsLoading] = useState(false);
+  let newProducts = data && data?.products?.filter(p=>p?.so_luong_ban>=100)?.slice(0,4)
+  useEffect(() => {
+    const control = new AbortController();
+    const fetchData = async () => {
+      try {
+        const respone = await axios.get(url + "/products", {
+          signal: control.signal,
+        });
+        setData(respone.data);
+        setIsLoading(true);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchData();
+    return () => {
+      control.abort();
+    };
+  }, []);
+    return (
+        <div className={cx("wrap")}>
+            <div className={cx("wrapper")}>
+            <h4 className={cx("title")}>SẢN PHẨM NỔI BẬT</h4>
+            <svg xmlns="http://www.w3.org/2000/svg" width="58" height="2" viewBox="0 0 58 2" fill="none">
+  <path d="M1 1H57" stroke="black" strokeWidth="2" strokeLinecap="round"/>
+</svg>
+            </div>
+            
+            <div className={cx("nav")}>
+                <div className={cx("nav-item")}>NỔI BẬT</div>
+                <div className={cx("nav-item")}>ĐẶC BIỆT</div>
+                <div className={cx("nav-item")}>BÁN CHẠY</div>
+            </div>
+            <div className={cx("products")}>
+                {newProducts?.map((product,index) => {
+                    let imgs = JSON.parse(product?.hinh_anh);
+                    return <Link to={`/product/${product.id}`} className={cx("item")} key={index}>
+
+                    <img src={`${url}/img/${imgs[0]}`} alt="Rectangle-1394" className={cx("img")}/>
+                    </Link>
+                })}
+            </div>
+        </div>
+    )
+}
+
+export default PopularProducts;

@@ -1,0 +1,17 @@
+.wrap {
+    display: flex;
+    align-items: center;
+    gap: 160px;
+    height: 100vh;
+  }
+
+  .picture-login {
+    border-radius: 40px 0px 0px 40px;
+    background: var(--secondary-100, #F3E8D4);
+    height: 100%;
+    .img {
+      object-fit: contain;
+      width: calc(100% - 73px);
+      height: 100%;
+    }
+  }
