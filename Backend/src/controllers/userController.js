@@ -11,6 +11,16 @@ const handleGetUser = async(req,res) => {
     }
 }
 
+const handleGetAllUser = async(req,res) => {
+    try {
+        const user = await userService.getAllUser();
+        return res.send(user);
+    } catch(e) {
+        console.log(e);
+        res.status(500).send();
+    }
+}
+
 const handleUpdateUser = async(req,res) => {
     try {
         const user = await userService.updateUser(req.params.id,req.body);
@@ -20,4 +30,4 @@ const handleUpdateUser = async(req,res) => {
     }
 }
 
-module.exports = {handleGetUser,handleUpdateUser};
+module.exports = {handleGetUser,handleUpdateUser,handleGetAllUser};
