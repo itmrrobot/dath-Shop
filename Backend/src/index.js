@@ -11,6 +11,7 @@ const orderRouter = require("./router/order");
 const customerRouter = require("./router/customer");
 const authRouter = require("./router/users");
 const cartRouter = require("./router/cart");
+const wishlistRouter = require("./router/wishlist");
 
 
 const app = express();
@@ -37,6 +38,7 @@ app.use(orderRouter);
 app.use(customerRouter);
 app.use(authRouter);
 app.use(cartRouter);
+app.use(wishlistRouter);
 app.use(cors());
 
 app.listen(port,() => {
