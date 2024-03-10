@@ -1,10 +1,11 @@
 const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize('shop', 'root', '', {
-    host: 'localhost',
-    dialect: 'mysql',
-    port: 3307
-  });
-
+// const sequelize = new Sequelize('shop', 'postgres', '123456', {
+//     host: 'localhost',
+//     dialect: 'postgres',
+//     port: 5432
+//   });
+//postgres://postgres.rdksessmjmikphzsryre:[YOUR-PASSWORD]@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres
+const sequelize = new Sequelize('postgres://postgres.rdksessmjmikphzsryre:1Legoonepiece@@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres');
 const connection =async() => {
     try {
         await sequelize.authenticate();

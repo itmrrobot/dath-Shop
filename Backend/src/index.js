@@ -12,6 +12,7 @@ const customerRouter = require("./router/customer");
 const authRouter = require("./router/users");
 const cartRouter = require("./router/cart");
 const wishlistRouter = require("./router/wishlist");
+const paypalRouter = require("./router/paypalPayment");
 
 
 const app = express();
@@ -39,8 +40,9 @@ app.use(customerRouter);
 app.use(authRouter);
 app.use(cartRouter);
 app.use(wishlistRouter);
+app.use(paypalRouter);
 app.use(cors());
-
+connection();
 app.listen(port,() => {
     console.log(`Server start on port ${port}`);
 });
