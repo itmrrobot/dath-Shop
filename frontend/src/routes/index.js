@@ -16,9 +16,9 @@ import Home from "../pages/Home";
 
 export const publicAccountRoutes = [
     {path:'/login',component:Login},
-    {path:'register',component:Register},
-    {path:'/forgot',component:ForgotPassword},
-    {path:'/change-password',component:ChangePassword}
+    {path:'/register',component:Register},
+    // {path:'/forgot',component:ForgotPassword},
+    // {path:'/change-password',component:ChangePassword}
 ];
 
 export const publicRoutes = [

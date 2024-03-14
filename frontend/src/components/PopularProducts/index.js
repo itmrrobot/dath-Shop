@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { url } from "../../constants";
 import { Link } from "react-router-dom";
-
+import ContentSection from "../ContentSection";
 const cx = classNames.bind(styles);
 
 function PopularProducts() {
@@ -32,18 +32,7 @@ function PopularProducts() {
   }, []);
     return (
         <div className={cx("wrap")}>
-            <div className={cx("wrapper")}>
-            <h4 className={cx("title")}>SẢN PHẨM NỔI BẬT</h4>
-            <svg xmlns="http://www.w3.org/2000/svg" width="58" height="2" viewBox="0 0 58 2" fill="none">
-  <path d="M1 1H57" stroke="black" strokeWidth="2" strokeLinecap="round"/>
-</svg>
-            </div>
-            
-            <div className={cx("nav")}>
-                <div className={cx("nav-item")}>NỔI BẬT</div>
-                <div className={cx("nav-item")}>ĐẶC BIỆT</div>
-                <div className={cx("nav-item")}>BÁN CHẠY</div>
-            </div>
+          <ContentSection name="Featured Products" navigation upper>
             <div className={cx("products")}>
                 {newProducts?.map((product,index) => {
                     let imgs = JSON.parse(product?.hinh_anh);
@@ -53,6 +42,8 @@ function PopularProducts() {
                     </Link>
                 })}
             </div>
+              </ContentSection>
+            
         </div>
     )
 }

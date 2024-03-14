@@ -3,22 +3,15 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import GlobalStyles from "./components/GlobalStyles";
-import FilterProvider from "./store/FilterProvider";
-import AuthProvider from "./store/AuthProvider";
-import CartProvider from "./store/CartProvider";
 
+import { UserProvider } from './hooks/useContextUser';
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <GlobalStyles>
-      <AuthProvider>
-        <CartProvider>
-
-        <FilterProvider>
-          <App />
-        </FilterProvider>
-        </CartProvider>
-      </AuthProvider>
+      <UserProvider>
+        <App />
+      </UserProvider>
     </GlobalStyles>
   </React.StrictMode>
 );

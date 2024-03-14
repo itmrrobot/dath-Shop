@@ -2,7 +2,6 @@ import styles from "./ChangePassword.module.scss";
 import classNames from "classnames/bind";
 import { url } from "../../constants";
 import { validate } from "../../utils";
-import { AuthState } from "../../store/AuthProvider"; 
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(styles);
 
 function ChangePassword() {
-  const {user,setUser,setIsLogin} = AuthState();
   const initialValue = {password:''};
     const [rePassword,setRePassword] = useState('');
     const [formValues,setFormValues] = useState(initialValue);
@@ -25,10 +23,10 @@ function ChangePassword() {
   const handleUpdate = async() => {
     try {
       if(formValues.password===rePassword&&formValues.password&&rePassword) {
-        await axios.put(url+`/auth/user/update/${user.id}`,formValues)
-        setUser(null);
+        // await axios.put(url+`/auth/user/update/${user.id}`,formValues)
+        // setUser(null);
         localStorage.setItem('user',null);
-        setIsLogin(false);
+        // setIsLogin(false);
         navigate('/login');
       }
     } catch(e) {

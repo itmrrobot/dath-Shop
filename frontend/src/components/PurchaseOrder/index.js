@@ -1,7 +1,6 @@
 import styles from "./PurchaseOrder.module.scss";
 import classNames from "classnames/bind";
 import ArrowNext from "../../assets/img/Frame.svg";
-import { AuthState } from "../../store/AuthProvider";
 
 const cx = classNames.bind(styles);
 

@@ -9,9 +9,13 @@ function DefaultLayout({children}) {
     return (
         <div className={cx("wrap")}>
             <Header/>
-            <>
+            <div className={cx('container')}>
+                {/* + Content: Chứa thông tin sản phẩm */}
+                <div className={cx('content')}>{children}</div>
+            </div>
+            {/* <>
                 {children}
-            </>
+            </> */}
             <Footer/>
         </div>
     )

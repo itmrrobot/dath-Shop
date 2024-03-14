@@ -2,21 +2,24 @@ import styles from "./Login.module.scss";
 import classNames from "classnames/bind";
 import BrownWhiteAesthetic from "../../assets/img/Brown White Aesthetic Fashion Musllimah Logo 2.png";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import Cookies from 'universal-cookie';
 import { url } from "../../constants";
 import { validate } from "../../utils";
-import { AuthState } from "../../store/AuthProvider";
-
+// import {UserContext} from "../../hooks/useContextUser"
+import { UserProvider, UseContextUser } from "../../hooks/useContextUser";
+import { toast } from "react-toastify";
 const cx = classNames.bind(styles);
 
 function Login() {
   const navigate = useNavigate();
+  const state = useContext(UseContextUser)
+  // console.log(state);
   const initialValues = { email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
-  const {setUser,setIsLogin,user} = AuthState();
+  // const {setUser,setIsLogin,user} = AuthState();
   const cookies = new Cookies(null,{ path: '/' });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,22 +32,32 @@ function Login() {
     try {
       const response = await axios.post(url + "/auth/login", formValues);
       const { access_token, refresh_token } = response.data;
-
-      // Store the tokens in localStorage or secure cookie for later use
-      
+      toast.success(`Chào mừng ${response.data.res.fullname}`, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+    });
+      // St ore the tokens in localStorage or secure cookie for later use
       cookies.set('accessToken', access_token);
       cookies.set('refreshToken', refresh_token);
-      setUser(response.data.res)
+      // setUser(response.data.res)
       localStorage.setItem("user",JSON.stringify(response.data.res));
-      console.log(response.data)
-      setIsLogin(true)
-      if(user?.Role.id===1) {
-        navigate('/admin')
-      } 
-      if(user?.Role.id===3) {
-        navigate('/');
-      }
-      //user?.Role.name==='Admin'?navigate('/admin'): navigate('/')
+      console.log(response)
+      state.cuser.setCurrentUser(response.data.res);
+      navigate('/');
+      // setIsLogin(true)
+      // if(user?.Role.id===1) {
+      //   navigate('/admin')
+      // } 
+      // if(user?.Role.id===3) {
+      //   navigate('/');
+      // }
+      // user?.Role.name==='Admin'?navigate('/admin'): navigate('/')
     } catch (e) {
       throw new Error(e);
     }

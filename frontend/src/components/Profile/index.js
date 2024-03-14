@@ -10,7 +10,6 @@ import ContainerProfile from "../../assets/img/Rectangle 26.svg";
 import Avatar from "../../assets/img/avatar.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { CountryDropdown,RegionDropdown } from 'react-country-region-selector';
-import { AuthState } from "../../store/AuthProvider";
 
 const cx = classNames.bind(styles);
 

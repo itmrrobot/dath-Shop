@@ -5,9 +5,26 @@ import {publicAccountRoutes, publicRoutes,privateRoutes} from "./routes/index";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Profile from "./components/Profile";
 import AddNewProduct from "./pages/AddNewProduct";
-
+// const {    } = antd;
+import { FloatButton } from "antd";
+import { CommentOutlined, CustomerServiceOutlined } from '@ant-design/icons';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
+    <>
+      <ToastContainer />
+      <>
+        <FloatButton.Group
+          trigger="click"
+          type="primary"
+          style={{ right: 24 }}
+          icon={<CustomerServiceOutlined />}
+        >
+          <FloatButton />
+          <FloatButton icon={<CommentOutlined />} />
+        </FloatButton.Group>
+      </>
     <Router>
       <div className="App">
         <Routes>
@@ -37,6 +54,8 @@ function App() {
         </Routes>
       </div>
     </Router>
+    </>
+    
   );
 }
 

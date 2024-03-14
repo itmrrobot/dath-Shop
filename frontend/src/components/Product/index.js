@@ -13,34 +13,62 @@ import color2 from "../../assets/img/Group 6.png";
 import color3 from "../../assets/img/Group 7.png";
 import color4 from "../../assets/img/Group 8.png";
 import color5 from "../../assets/img/Group 9.png";
-import Rectangle4 from "../../assets/img/Rectangle4.png";
-import Rectangle5 from "../../assets/img/Rectangle 5.png";
-import Rectangle6 from "../../assets/img/Rectangle 6.png";
-import Rectangle7 from "../../assets/img/Rectangle 7.png";
-import Rectangle8 from "../../assets/img/Rectangle 8.png";
 import RelatedProduct from "../RelatedProduct";
 import prevIcon from "../../assets/img/prev.png";
 import nextIcon from "../../assets/img/Frame (8).png";
 import { useParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { url } from "../../constants";
-import { CartState } from "../../store/CartProvider";
-import { AuthState } from "../../store/AuthProvider";
+import { formatPrice, priceDiscount } from "../../common";
+import { Link } from "react-router-dom";
+import Carousel from '../Carousel/Carousel_Detail_Product';
+import images from "../../assets/img";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from "../Button";
+import Slider from "../Carousel/Slider";
+import { toast } from "react-toastify";
+import { UseContextUser } from "../../hooks/useContextUser";
 
 const cx = classNames.bind(styles);
 
 function Product() {
     const {id} = useParams();
-    const [data,setData] = useState({});
-    const [imgSelectedIndex,setImgSelectedIndex] = useState(0);
-    const [count,setCount] = useState(1);
-    const {cartState:{products,total,quantity,isCheckOut},cartDispatch,increment} = CartState();
-    const {user} = AuthState();
-    let prevCount =0;
-    data.qty = count;
-    //const [imgs,setImgs] = useState([]);
-    let imgs = data.hinh_anh ? JSON.parse(data?.hinh_anh):[];
+    const param = useParams()
+    const [product, setProduct] = useState({});
+    const [checked, setChecked] = useState();
+    const [size, setSize] = useState(['Small', 'Medium', 'Large', 'Extra Large', 'XXL']);
+    const [type, setType] = useState('Description');
+    const [image, setImage] = useState([]);
+    console.log(image);
+    const [quantity_Order, setQuantity_Order] = useState(1);
+    console.log(product);
+    const tabs = ['Description', 'Reviews'];
+    const state = useContext(UseContextUser)
+    const benefits = [
+        'Durable leather is easily cleanable so you can keep your look fresh.',
+        'Water-repellent finish and internal membrane help keep your feet dry.',
+        'Toe piece with star pattern adds durability.',
+        'Synthetic insulation helps keep you warm.',
+        'Originally designed for performance hoops, the Air unit delivers lightweight cushioning.',
+        'Plush tongue wraps over the ankle to help keep out the moisture and cold.',
+    ];
+    const details = [
+        'Not intended for use as Personal Protective Equipment (PPE)',
+        'Water-repellent finish and internal membrane help keep your feet dry.',
+        'Lunarlon midsole delivers ultra-plush responsiveness',
+        'Encapsulated Air-Sole heel unit for lightweight cushioning',
+        'Colour Shown: Ale Brown/Black/Goldtone/Ale Brown',
+        'Style: 805899-202',
+    ];
+    // const [imgSelectedIndex,setImgSelectedIndex] = useState(0);
+    // const [count,setCount] = useState(1);
+    // const {cartState:{products,total,quantity,isCheckOut},cartDispatch,increment} = CartState();
+    // const {user} = AuthState();
+    // let prevCount =0;
+    // data.qty = count;
+    // //const [imgs,setImgs] = useState([]);
+    // let imgs = data.hinh_anh ? JSON.parse(data?.hinh_anh):[];
     useEffect(() => {
         const controller = new AbortController();
         const fetchData = async () => {
@@ -48,8 +76,14 @@ function Product() {
                 const respone = await axios.get(`${url}/products/${id}`,{
                     signal: controller.signal
                 })
-                setData(respone.data);
-                //setImgs(respone.data.hinh_anh)
+                setProduct(respone.data);
+                // setImage(respone?.data?.hinh_anh);
+                const cleanedString = respone?.data?.hinh_anh.slice(1, -1);
+                // Tách chuỗi thành mảng sử dụng dấu phẩy làm dấu phân cách
+                const arrayWithoutQuotes = cleanedString.split(',');
+                // Xóa dấu ngoặc kép và khoảng trắng ở đầu và cuối mỗi phần tử trong mảng
+                const finalArray = arrayWithoutQuotes.map(item => item.replace(/"/g, '').trim());
+                setImage(finalArray);
             } catch(e) {
                 console.log(e);
             }
@@ -59,146 +93,311 @@ function Product() {
             controller.abort();
         }
     },[id])
-    console.log(imgs);
-    const handleIncrease = () => {
-        setCount(count+1);
-    }
+    // console.log(imgs);
+    // const handleIncrease = () => {
+    //     setCount(count+1);
+    // }
 
-    const handleDecrease =() => {
-        if(count>1) {
-            setCount(count-1);
-        }
-    }
-    console.log(count)
-    const handleAddToCart = async() => {
+    // const handleDecrease =() => {
+    //     if(count>1) {
+    //         setCount(count-1);
+    //     }
+    // }
+    // console.log(count)
+    const handleAddToCart = async () => {
         try {
-            await axios.post(url+"/cart/create",{id_user:user.id,id_product:Number(id),so_luong:count,nameProduct:data?.ten_san_pham,priceProduct:data?.gia_khuyen_mai,img:`${url}/img/${imgs?.[0]}`})
+            // console.log(state?.cuser?.value);
+            // console.log(product);
+            // await axios.post(url+"/cart/create",{id_user:user.id,id_product:Number(id),so_luong:count,nameProduct:data?.ten_san_pham,priceProduct:data?.gia_khuyen_mai,img:`${url}/img/${imgs?.[0]}`})
+            let data = {id_user:state?.cuser?.value?.id,id_product:Number(id),so_luong:quantity_Order,nameProduct:product?.ten_san_pham,priceProduct:product?.gia_khuyen_mai,img:`${url}/img/${image[0]}`}
+            await axios.post(url+"/cart/create", data)
+            state?.render?.setRender((prev) => !prev)
+            // console.log(duma)
         } catch(e) {
             console.log(e);
         }
     }
     //`${url}/img/${imgs.current?.[imgSelectedIndex]}`
     return(
-        <div className={cx("wrap")}>
-            <div className={cx("content")}>
-                <div className={cx("left")}>
-                    <img src={`${url}/img/${imgs?.[imgSelectedIndex]}`} alt="product-img" className={cx("img")}/>
-                    <div className={cx("wrap-product-imgs")}>
-                    <img src={prevIcon} alt="" className={cx("btn-prev")}/>
-                        {imgs.map((img,index) => {
-                            return <img key={index} src={`${url}/img/${img}`} alt="img-detail" className={cx("other-img")} onClick={() => setImgSelectedIndex(index)}/>
-                        })}
-                    <img src={nextIcon} alt="" className={cx("btn-next")}/>
-                    </div>
-                    
-                </div>
-                <div className={cx("right")}>
-                    <div className={cx("info")}>
-                        <div className={cx("wrap-name-desc")}>
-                            <h2 className={cx("title")}>{data.ten_san_pham}</h2>
-                            <p className={cx("desc")}>Teixeira Design Studio</p>
-                        </div>
-                        <div className={cx("group")}>
-                            <div className={cx("like")}>
-                                <img src={love} className={cx("love-icon")} alt="icon"/>
-                                <span className={cx("number")}>109</span>
+        <>
+            <div className={cx('wrapper')}>
+                <div className={cx('product-first')}>
+                    <Carousel images={image} product={product} reset={id}></Carousel>
+                    <div className={cx('product-option')}>
+                        <ul className={cx('path')}>
+                            <li>
+                                <Link to="/">Home</Link>
+                            </li>
+                            <span> &#62; </span>
+                            <li>
+                                <Link to="/products">Products</Link>
+                            </li>
+                            <span> &#62; </span>
+                            <li>
+                                <Link to="#">{product?.type}</Link>
+                            </li>
+                            <span> &#62; </span>
+                            <li>
+                                <a href="#">
+                                    <strong>{product?.ten_san_pham}</strong>
+                                </a>
+                            </li>
+                        </ul>
+                        <div className={cx('product-header')}>
+                            <div className={cx('product-title')}>
+                                <p>{product?.ten_san_pham}</p>
+                                <span>Mã sản phẩm: {product?.id}</span>
                             </div>
-                            <button className={cx("btn-bookmark")}>
-                                <img src={bookmark} className={cx("icon")} alt="icon"/>
-                            </button>
-                            <button className={cx("btn-share")}>
-                                <img src={share} className={cx("icon")} alt="icon"/>
-                            </button>
                         </div>
-                    </div>
-                    <div className={cx("wrapper")}>
-                        <div className={cx("wrap-price")}>
-                            <span className={cx("price")}>{data?.gia_khuyen_mai?.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span>
-                            <span className={cx("unused-price")}>{data?.gia_ban?.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span>
-                        </div>
-                        <div className={cx("wrap-reviews")}>
-                            <div className={cx("wrap-reviews-message")}>
-                                <div className={cx("reviews-star")}>
-                                    <img src={star} alt="" className={cx("reviews-icon")}/>
-                                    <span className={cx("reviews-number")}>4.8</span>
+                        <div className={cx('product-price-assess')}>
+                            <div className={cx('product-price-assess-wrapper')}>
+                                <div className={cx('price-wrapper')}>
+                                    <p className={cx('price')}>
+                                        {formatPrice(product?.gia_khuyen_mai)}
+                                    </p>
+                                    <p className={cx('price-old')}>{formatPrice(product?.gia_ban)}</p>
                                 </div>
-                                <div className={cx("reviews-message")}>
-                                    <img src={message} alt="" className={cx("reviews-icon")}/>
-                                    <span className={cx("reviews-number-message")}>67 Reviews</span>
+                                <div className={cx('assess-wrapper')}>
+                                    <div className={cx('star-reviews')}>
+                                        <div className={cx('star')}>
+                                            <img src={images.star} alt="" />
+                                            <span>4.8</span>
+                                        </div>
+                                        <div className={cx('previews')}>
+                                            <img src={images.reviews} alt="" />
+                                            <span>67 Reviews</span>
+                                        </div>
+                                        <div className={cx('heart')}>
+                                            <img src={images.heart} alt="" />
+                                            <span>109</span>
+                                        </div>
+                                    </div>
+                                    <div className={cx('ratio-wrapper')}>
+                                        <p>
+                                            <span>93%</span> of buyers have recommended this
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                            <div className={cx("recommended")}>
-                                <span className={cx("recommended-number")}>93% </span>
-                                <span className={cx("recommended-text")}>of buyers have recommended this.</span>
+                        </div>
+                        <div className={cx('product-size')}>
+                            <div className={cx('product-size-wrapper')}>
+                                <div className={cx('title-size')}>
+                                    <p>Choose a Size</p>
+                                    {/* {checked &&
+                                        (size_quantity_select && size_quantity_select > 0 ? (
+                                            <p className={cx('status')}>{size_quantity_select} products left</p>
+                                        ) : (
+                                            <p className={cx('sold-out')}>Sold out</p>
+                                        ))} */}
+                                    {/* {size_quantity_select && size_quantity_select > 0 ? (
+                                        <p className={cx('status')}>{size_quantity_select} products left</p>
+                                    ) : (
+                                        <p className={cx('sold-out')}>Sold out</p>
+                                    )} */}
+                                </div>
+
+                                {size.map((size, index) => {
+                                    return (
+                                        <label className={cx('size')} key={index}>
+                                            <input
+                                                type="radio"
+                                                name="radio"
+                                                // type="radio"
+                                                // value={}
+                                                checked={checked === size} //logic neu nhu checked === "size" thi no se check
+                                                onChange={() => setChecked(size)}
+                                            />
+                                            <span>{size}</span>
+                                        </label>
+                                    );
+                                })}
                             </div>
                         </div>
-                    </div>
-                    <div className={cx("wrap-colors")}>
-                        <p className={cx("colors-text")}>Choose a color</p>
-                        <div className={cx("list-colors")}>
-                            <img src={color1} alt="" className={cx("color-item")}/>
-                            <img src={color2} alt="" className={cx("color-item")}/>
-                            <img src={color3} alt="" className={cx("color-item")}/>
-                            <img src={color4} alt="" className={cx("color-item")}/>
-                            <img src={color5} alt="" className={cx("color-item")}/>
+
+                        <div className={cx('quantity_product')}>
+                            {/* <p className={cx('quantity')}>Số Lượng: </p> */}
+                            <div className={cx('wrapper-quantity')}>
+                                <span
+                                    className={cx('minus')}
+                                    onClick={() => setQuantity_Order((prev) => (prev === 1 ? prev : prev - 1))}
+                                >
+                                    -
+                                </span>
+                                <span className={cx('num')}>
+                                {quantity_Order}
+                                
+                                </span>
+                                <span
+                                    className={cx('plus')}
+                                    onClick={() =>
+                                        setQuantity_Order((prev) => {
+                                            // if (prev + 1 > size_quantity_select) {
+                                            //     toast.info(`Vượt quá số lượng còn lại trong kho`, {
+                                            //         position: 'top-right',
+                                            //         autoClose: 5000,
+                                            //         hideProgressBar: false,
+                                            //         closeOnClick: true,
+                                            //         pauseOnHover: true,
+                                            //         draggable: true,
+                                            //         progress: undefined,
+                                            //         // theme: 'light',
+                                            //         theme: 'colored',
+                                            //     });
+                                            //     return prev;
+                                            // } else {
+                                            //     return prev + 1;
+                                            // }
+                                            return prev + 1;
+                                        })
+                                    }
+                                >
+                                    +
+                                </span>
+                            </div>
+                            <Button
+                                    primary
+                                    rounded
+                                    shopping
+                                    leftIcon={<img className={cx('shopping-img')} src={images.shopping} />}
+                                    onClick={handleAddToCart}
+                                    // onClick={() => {
+                                    //     handleAddProductToCart(product?.id);
+                                    // }}
+                                >
+                                    Add to Cart!
+                                </Button>
+                            {/* {size_quantity_select > 0 && quantity_Order - 1 < size_quantity_select ? (
+                                <Button
+                                    primary
+                                    rounded
+                                    shopping
+                                    leftIcon={<img className={cx('shopping-img')} src={images.shopping} />}
+                                    onClick={() => {
+                                        handleAddProductToCart(product?.id);
+                                    }}
+                                >
+                                    Add to Cart!
+                                </Button>
+                            ) : (
+                                <Button
+                                    primary
+                                    rounded
+                                    shopping
+                                    leftIcon={<img className={cx('shopping-img')} src={images.shopping} />}
+                                    disabled
+                                >
+                                    Add to Cart!
+                                </Button>
+                            )} */}
+
+                            {/* <img className={cx('cart-img')} src={images.cart} alt="logo-cart" /> */}
+                            {/* <p className={cx("mess_quantity_prod")}>{size_quantiry_select < quantity_Order ? `Size của sản phẩm này không đủ số lượng mà bạn cần. Hiện có ${product?.inventory?.find(i => i.size === size_Order).quantity} sản phẩm` : ""}</p> */}
                         </div>
-                    </div>
-                    <div className={cx("wrap-size")}>
-                        <p className={cx("size-text")}>Choose a size</p>
-                        <div className={cx("group-radio")}>
-                            <div className={cx("radio-item")}>
-                                <input type="radio" className={cx("radio-input")}/>
-                                <span className={cx("radio-text")}>Small</span>
-                            </div>
-                            <div className={cx("radio-item")}>
-                                <input type="radio" className={cx("radio-input")}/>
-                                <span className={cx("radio-text")}>Medium</span>
-                            </div>
-                            <div className={cx("radio-item")}>
-                                <input type="radio" className={cx("radio-input")}/>
-                                <span className={cx("radio-text")}>Large</span>
-                            </div>
-                            <div className={cx("radio-item")}>
-                                <input type="radio" className={cx("radio-input")}/>
-                                <span className={cx("radio-text")}>Extra Large</span>
-                            </div>
-                            <div className={cx("radio-item")}>
-                                <input type="radio" className={cx("radio-input")}/>
-                                <span className={cx("radio-text")}>XXL</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={cx("wrap-btn")}>
-                        <div className={cx("btn-quantity")}>
-                            <span className={cx("btn-decrease")} onClick={handleDecrease}>-</span>
-                            <span className={cx("quantity-number")}>{count}</span>
-                            <span className={cx("btn-increase")} onClick={handleIncrease}>+</span>
-                        </div>
-                        <div className={cx("btn-addToCart")} onClick={handleAddToCart}>
-                            <img src={cart} alt="" className={cx("icon-cart")}/>
-                            <span className={cx("cart-text")}>Add To Cart</span>
-                        </div>
-                    </div>
-                    <div className={cx("wrap-policy")}>
-                        <div className={cx("policy-item")}>
-                            <img src={deliveryIcon} alt="" className={cx("policy-icon")}/>
-                            <div className={cx("policy-content")}>
-                                <h3 className={cx("policy-title")}>Free Delivery</h3>
-                                <p className={cx("policy-text")}>Enter your Postal code for Delivery Availability</p>
-                            </div>
-                        </div>
-                        <div className={cx("policy-item")}>
-                            <img src={returnIcon} alt="" className={cx("policy-icon")}/>
-                            <div className={cx("policy-content")}>
-                                <h3 className={cx("policy-title")}>Return Delivery</h3>
-                                <p className={cx("policy-text")}>Free 30 days Delivery Return. Details</p>
+                        <div className={cx('delivery')}>
+                            <div className={cx('delivery-wrapper')}>
+                                <div className={cx('delivery-promotion')}>
+                                    <div className={cx('icon-delivery')}>
+                                        <img src={images.truck} alt="" />
+                                    </div>
+                                    <div className={cx('content-delivery-promotion')}>
+                                        <p className={cx('delivery-title')}>Free Delivery</p>
+                                        <p className={cx('delivery-sub-title')}>
+                                            Enter your Postal code for Delivery Availability
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className={cx('refund-delivery-detail')}>
+                                    <div className={cx('icon-delivery')}>
+                                        <img src={images.cart_red} alt="" />
+                                    </div>
+                                    <div className={cx('content-delivery-promotion')}>
+                                        <p className={cx('delivery-title')}>Return Delivery</p>
+                                        <p className={cx('delivery-sub-title')}>
+                                            Free 30 days Delivery Return. Details
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div className={cx('product-second')}>
+                    <div className={cx('info-container')}>
+                        <ul className={cx('product-info-menu')}>
+                            {tabs.map((tab, i) => {
+                                return (
+                                    <li
+                                        style={
+                                            type === tab
+                                                ? {
+                                                      color: '#AB8A37',
+                                                      //   backgroundColor: '#333',
+                                                  }
+                                                : {}
+                                        }
+                                        key={i}
+                                        className={cx('p-info-list')}
+                                        onClick={() => setType(tab)}
+                                    >
+                                        {tab}
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                        {type === 'Description' && tabs ? (
+                            <>
+                                <div id="desc" className={cx('infor-container-description')}>
+                                    <h1>Product Description</h1>
+                                    <p>{product.mo_ta_chi_tiet}</p>
+                                </div>
+                                <div className={cx('infor-container-description')}>
+                                    <h1>Benefits</h1>
+                                    <ul className={cx('list-benefit')}>
+                                        {benefits.map((benefit, i) => {
+                                            return (
+                                                <div key={i} className={cx('benefit')}>
+                                                    <img src={images.check_icon} alt="" />
+                                                    <li className={cx('benefit-line')}>{benefit}</li>
+                                                </div>
+                                            );
+                                        })}
+                                    </ul>
+
+                                    {/* <p>{product.description}</p> */}
+                                </div>
+                                <div className={cx('infor-container-description')}>
+                                    <h1>Product Details</h1>
+                                    <ul className={cx('list-benefit')}>
+                                        {details.map((details, i) => {
+                                            return (
+                                                <div key={i} className={cx('benefit')}>
+                                                    <img src={images.check_icon} alt="" />
+                                                    <li className={cx('benefit-line')}>{details}</li>
+                                                </div>
+                                            );
+                                        })}
+                                    </ul>
+
+                                    {/* <p>{product.description}</p> */}
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div></div>
+                            </>
+                        )}
+
+                        <div className={cx('infor-container-description')}>
+                            <h1>Also You Like</h1>
+                            <Slider param={param} images={image}></Slider>
+                        </div>
+                    </div>
+                </div>
+                <div className={cx('product-third')}></div>
             </div>
-            <RelatedProduct categoryId={data?.categoryId}/>
-        </div>
+        </>
     )
 }
 

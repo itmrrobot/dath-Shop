@@ -3,13 +3,14 @@ import styles from "./SideBarFilter.module.scss";
 import classNames from "classnames/bind";
 import axios from "axios";
 import { url } from "../../constants";
-import { FilterState } from "../../store/FilterProvider";
-
+import RangeSlider from 'react-range-slider-input';
+import 'react-range-slider-input/dist/style.css';
+import './priceSlider.css';
 const cx = classNames.bind(styles);
 
 function SideBarFilter() {
     const [data,setData] = useState([]);
-    const {filterId,setFilterId} = FilterState();
+    const [price, setprice] = useState([0, 30000000]);
     useEffect(() => {
         const controller = new AbortController();
         const fetchData = async() => {
@@ -29,49 +30,67 @@ function SideBarFilter() {
     },[])
 
     const handleClick = (e) => {
-        console.log(e.target.checked)
-        let newFilterId = [];
-        if(e.target.checked) {
-            setFilterId([...filterId,e.target.name]);
-        } else {
-            newFilterId=filterId.filter((i) => i!==e.target.name);
-            setFilterId([...newFilterId]);
-        }
+        // let newFilterId = [];
+        // if(e.target.checked) {
+        //     setFilterId([...filterId,e.target.name]);
+        // } else {
+        //     newFilterId=filterId.filter((i) => i!==e.target.name);
+        //     setFilterId([...newFilterId]);
+        // }
     }
-    console.log(filterId)
     return (
-        <div className={cx("sidebar")}>
-            <div className={cx("prices")}>
-                <h4 className={cx("title")}>PRICES</h4>
-                <div className={cx("range")}>
-                    <span className={cx("text")}>Range</span>
-                    <span className={cx("number")}>$120-$300</span>
+        <>
+        <div className={cx('wrapper')}>
+            <div className={cx('sidebar-wrapper')}>
+                <div className={cx('sidebar-section')}>
+                    <p className={cx('title')}>Prices</p>
+                    <div className={cx('range')}>
+                        <p>Range</p>
+                        <div className={cx('number')}>
+                            <span>{price[0].toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> -{' '}
+                            <span>{price[1].toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+                        </div>
+                    </div>
+                    <RangeSlider
+                        id="range-slider-yellow"
+                        value={price}
+                        onInput={setprice}
+                        min={0}
+                        max={10000000}
+                        step={10000}
+                    />
+                    <div className={cx('filter-wrapper')}>
+                        <button className={cx('filter_price_btn')}
+                            // onClick={() => handleFilterPrice()}
+                        >
+                            Lọc
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div className={cx("check-boxes")}>
-                <h4 className={cx("title")}>FILTERS</h4>
-                <div className={cx("wrapper")}>
-                    <div className={cx("item")}>
-                        <input type="checkbox" className={cx("input")}/>
-                        <span className={cx("name")}>Women</span>
-                    </div>
-                    <div className={cx("item")}>
-                        <input type="checkbox" className={cx("input")}/>
-                        <span className={cx("name")}>Men</span>
-                    </div>
-                    <div className={cx("item")}>
-                        <input type="checkbox" className={cx("input")}/>
-                        <span className={cx("name")}>Women's jewelry</span>
-                    </div>
-                    <div className={cx("item")}>
-                        <input type="checkbox" className={cx("input")}/>
-                        <span className={cx("name")}>Men's jewelry</span>
+                <div className={cx('sidebar-section')}>
+                    <p className={cx('title')}>FILTERS</p>
+                    <div className={cx('ckb-wrapper')}>
+                        <div className={cx("item")}>
+                            <input type="checkbox" className={cx("input")}/>
+                            <span className={cx("name")}>Women</span>
+                        </div>
+                        <div className={cx("item")}>
+                            <input type="checkbox" className={cx("input")}/>
+                            <span className={cx("name")}>Men</span>
+                        </div>
+                        <div className={cx("item")}>
+                            <input type="checkbox" className={cx("input")}/>
+                            <span className={cx("name")}>Women's jewelry</span>
+                        </div>
+                        <div className={cx("item")}>
+                            <input type="checkbox" className={cx("input")}/>
+                            <span className={cx("name")}>Men's jewelry</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className={cx("check-boxes")}>
-                <h4 className={cx("title")}>BRANDS</h4>
-                <div className={cx("wrapper")}>
+                <div className={cx('sidebar-section')}>
+                    <p className={cx('title')}>FILTERS</p>
+                    <div className={cx('ckb-wrapper')}>
                     <div className={cx("item")}>
                         <input type="checkbox" className={cx("input")}/>
                         <span className={cx("name")}>H&M</span>
@@ -116,12 +135,12 @@ function SideBarFilter() {
                         <input type="checkbox" className={cx("input")}/>
                         <span className={cx("name")}>Chanel</span>
                     </div>
+                    </div>
                 </div>
-            </div>
-            <div className={cx("check-boxes")}>
-                <h4 className={cx("title")}>CATEGORIES</h4>
-                <div className={cx("wrapper")}>
-                    {data.category!==null&&data?.category?.map((item,index) => {
+                <div className={cx('sidebar-section')}>
+                    <p className={cx('title')}>CATEGORIES</p> 
+                    <div className={cx('ckb-wrapper')}>
+                    {data?.category!==null&&data?.category?.map((item,index) => {
                         return(
                             <div className={cx("item")} key={index}>
                                 <input type="checkbox" name={item?.id} className={cx("input")} onChange={handleClick}/>
@@ -129,11 +148,11 @@ function SideBarFilter() {
                             </div>
                         )
                     })}
+                    </div>   
                 </div>
-            </div>
-            <div className={cx("check-boxes")}>
-                <h4 className={cx("title")}>SIZE</h4>
-                <div className={cx("wrapper")}>
+                <div className={cx('sidebar-section')}>
+                    <p className={cx('title')}>SIZE</p>  
+                    <div className={cx('ckb-wrapper')}>
                     <div className={cx("item")}>
                         <input type="checkbox" className={cx("input")}/>
                         <span className={cx("name")}>Medium</span>
@@ -150,9 +169,13 @@ function SideBarFilter() {
                         <input type="checkbox" className={cx("input")}/>
                         <span className={cx("name")}>Sexy Plus Size</span>
                     </div>
+                    </div>  
                 </div>
             </div>
         </div>
+        
+        </>
+        
     )
 }
 
