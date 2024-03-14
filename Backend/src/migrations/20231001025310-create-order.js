@@ -17,16 +17,16 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       ten_nguoi_nhan: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       dia_chi: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       so_dien_thoai: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       ghi_chu: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       tinh_trang: {
         type: Sequelize.INTEGER
@@ -42,11 +42,14 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        onUpdate: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     });
   },

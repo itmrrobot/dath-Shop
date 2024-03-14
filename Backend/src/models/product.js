@@ -16,21 +16,22 @@ module.exports = (sequelize, DataTypes) => {
         as: "cart",
       });
       Product.belongsTo(models.Category);
+      Product.belongsToMany(models.Inventory,{through:'Product_Inventory'});
     }
   }
   Product.init({
-    ten_san_pham: DataTypes.STRING,
-    slug_san_pham: DataTypes.STRING,
+    ten_san_pham: DataTypes.TEXT,
+    slug_san_pham: DataTypes.TEXT,
     so_luong_nhap: DataTypes.INTEGER,
     so_luong_ban: DataTypes.INTEGER,
     id_partner: DataTypes.INTEGER,
-    hinh_anh: DataTypes.STRING,
+    hinh_anh: DataTypes.TEXT,
     tinh_trang: DataTypes.INTEGER,
-    mo_ta_ngan: DataTypes.STRING,
-    mo_ta_chi_tiet: DataTypes.STRING,
+    mo_ta_ngan: DataTypes.TEXT,
+    mo_ta_chi_tiet: DataTypes.TEXT,
     gia_ban: DataTypes.INTEGER,
     gia_khuyen_mai: DataTypes.INTEGER,
-    categoryId: DataTypes.INTEGER
+    CategoryId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Product',

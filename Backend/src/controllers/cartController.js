@@ -14,16 +14,6 @@ const handleProductInCartList = async(req,res) => {
     }
 }
 
-const handleGetCategoryById = async(req,res) => {
-    try {
-        const cart = await cartService.getCategoryById(req.params.id);
-        if(cart===null) return res.status(404).send();
-        res.send(cart);
-    } catch(e) {
-        res.status(500).send()
-    }
-}
-
 const handleCreateNewCart = async(req,res) => {
     try {
         const newCart = await cartService.createNewCart(req.body);
@@ -43,21 +33,17 @@ const handleUpdateCart = async(req,res) => {
     }
 }
 
-const handleDeleteCategory = async(req,res) => {
+const handleDeleteCart= async(req,res) => {
     let id = req.params.id;
-    let imgs=[]
     try {
-        const cart = await cartService.getCategoryById(id);
+        const cart = await cartService.getCartById(id);
         if(cart===null) return res.status(404).send();
-        imgs=JSON.parse(cart.hinh_anh);
-        await cartService.deleteCategory(id);
-        imgs.forEach((img,index) => {
-            fs.unlinkSync(imgPath+img);
-        })
+        await cartService.deleteCard(id);
+        res.status(200).send({msg:'Delete success'});
     } catch(e) {
         console.log(e);
         res.status(500).send()
     }
 }
 
-module.exports = {handleProductInCartList,handleUpdateCart,handleCreateNewCart,handleDeleteCategory};
+module.exports = {handleProductInCartList,handleUpdateCart,handleCreateNewCart,handleDeleteCart};

@@ -6,7 +6,13 @@ const uploadImage = (req,res) => {
     console.log(req.file)
     res.send("hello")
 }
+const cloudinary = require('cloudinary').v2;
 
+cloudinary.config({
+  cloud_name: 'dzznxekfg',
+  api_key: '651378936647749',
+  api_secret: 'L-YVnYmTUNndTCTi52L_O-keBnk'
+});
 const handleGetProductList = async(req,res) => {
     try {
         let products = await productsService.getProductList();
@@ -29,12 +35,27 @@ const handleGetProductById = async(req,res) => {
 }
 
 const handleCreateNewProduct = async(req,res) => {
-    let img =[]
-    req.files.forEach((file,index) => {
-        img.push(file?.originalname);
-    })
-    console.log(img)
-    req.body.hinh_anh = JSON.stringify(img);
+    const folderName = 'shop_imgs'; // Specify the folder name on Cloudinary
+
+    const promises = req.files.map(async (file) => {
+      const result = await cloudinary.uploader.upload(file.path, {
+        folder: folderName
+      });
+      return result.secure_url;
+    });
+
+    const uploadedImagesUrls = await Promise.all(promises);
+    req.files.forEach((file) => {
+      fs.unlink(file.path, (err) => {
+        if (err) {
+          console.error(`Error deleting file: ${file.path}`, err);
+        } else {
+          console.log(`File deleted: ${file.path}`);
+        }
+      });
+    });
+    console.log(uploadedImagesUrls)
+    req.body.hinh_anh = JSON.stringify(uploadedImagesUrls);
 
     try {
         const newProduct = await productsService.createNewProduct(req.body);

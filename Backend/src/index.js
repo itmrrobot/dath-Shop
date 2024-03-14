@@ -13,6 +13,7 @@ const authRouter = require("./router/users");
 const cartRouter = require("./router/cart");
 const wishlistRouter = require("./router/wishlist");
 const paypalRouter = require("./router/paypalPayment");
+const inventoryRouter = require("./router/invertory");
 
 
 const app = express();
@@ -41,6 +42,7 @@ app.use(authRouter);
 app.use(cartRouter);
 app.use(wishlistRouter);
 app.use(paypalRouter);
+app.use(inventoryRouter);
 app.use(cors());
 connection();
 app.listen(port,() => {

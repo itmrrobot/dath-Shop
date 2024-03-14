@@ -17,22 +17,22 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       password: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       role: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       so_dien_thoai: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       ho_dem: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       ten: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       ngay_sinh: {
         type: Sequelize.DATE
@@ -41,21 +41,24 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       change_pass: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       confirm_pass: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       ly_do_block: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        onUpdate: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     });
   },

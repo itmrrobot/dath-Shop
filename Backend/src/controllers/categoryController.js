@@ -2,10 +2,13 @@ const categoryService = require("../service/categoryService");
 const path = require('path');
 const imgPath = path.join(__dirname,'../public/img/');
 const fs = require('fs');
-const uploadImage = (req,res) => {
-    console.log(req.file)
-    res.send("hello")
-}
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+  cloud_name: 'dzznxekfg',
+  api_key: '651378936647749',
+  api_secret: 'L-YVnYmTUNndTCTi52L_O-keBnk'
+});
 
 const handleGetCategoryList = async(req,res) => {
     try {
@@ -29,12 +32,21 @@ const handleGetCategoryById = async(req,res) => {
 }
 
 const handleCreateNewCategory = async(req,res) => {
-    let img =[]
-    req.files.forEach((file,index) => {
-        img.push(file?.originalname);
-    })
-    console.log(img)
-    req.body.hinh_anh = JSON.stringify(img);
+    const folderName = 'shop_imgs'; // Specify the folder name on Cloudinary
+
+    const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: folderName
+      });
+      // Delete uploaded file from local storage
+      fs.unlink(req.file.path, (unlinkErr) => {
+        if (unlinkErr) {
+          console.error(`Error deleting file: ${req.file.path}`, unlinkErr);
+        } else {
+          console.log(`File deleted: ${req.file.path}`);
+        }
+      });
+    console.log(result)
+    req.body.hinh_anh = JSON.stringify(result.url);
 
     try {
         const newCategory = await categoryService.createNewCategory(req.body);
@@ -74,4 +86,4 @@ const handleDeleteCategory = async(req,res) => {
     }
 }
 
-module.exports = {handleGetCategoryList,uploadImage,handleGetCategoryById,handleCreateNewCategory,handleDeleteCategory,handleUpdateCategory};
+module.exports = {handleGetCategoryList,handleGetCategoryById,handleCreateNewCategory,handleDeleteCategory,handleUpdateCategory};

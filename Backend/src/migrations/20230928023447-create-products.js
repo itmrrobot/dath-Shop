@@ -17,10 +17,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       ten_san_pham: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       slug_san_pham: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       so_luong_nhap: {
         type: Sequelize.INTEGER
@@ -38,10 +38,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       mo_ta_ngan: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       mo_ta_chi_tiet: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       gia_ban: {
         type: Sequelize.INTEGER
@@ -49,16 +49,19 @@ module.exports = {
       gia_khuyen_mai: {
         type: Sequelize.INTEGER
       },
-      categoryId: {
+      CategoryId: {
         type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        onUpdate: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     });
   },

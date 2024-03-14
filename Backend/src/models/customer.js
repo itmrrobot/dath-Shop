@@ -15,17 +15,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Customer.init({
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    role: DataTypes.STRING,
-    so_dien_thoai: DataTypes.STRING,
-    ho_dem: DataTypes.STRING,
-    ten: DataTypes.STRING,
+    email: DataTypes.TEXT,
+    password: DataTypes.TEXT,
+    role: DataTypes.TEXT,
+    so_dien_thoai: DataTypes.TEXT,
+    ho_dem: DataTypes.TEXT,
+    ten: DataTypes.TEXT,
     ngay_sinh: DataTypes.DATE,
     verify: DataTypes.INTEGER,
-    change_pass: DataTypes.STRING,
-    confirm_pass: DataTypes.STRING,
-    ly_do_block: DataTypes.STRING
+    change_pass: DataTypes.TEXT,
+    confirm_pass: DataTypes.TEXT,
+    ly_do_block: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'Customer',

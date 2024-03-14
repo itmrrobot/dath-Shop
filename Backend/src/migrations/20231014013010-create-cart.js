@@ -26,21 +26,24 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nameProduct: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       priceProduct: {
         type: Sequelize.INTEGER
       },
       img: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        onUpdate: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     });
   },

@@ -17,40 +17,43 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       fullname: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       password: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       roleId: {
         type: Sequelize.INTEGER,
         defaultValue: 3
       },
       phone: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       address: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       avatar: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       refreshToken: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        onUpdate: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     });
   },

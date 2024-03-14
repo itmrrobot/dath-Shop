@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Category.init({
-    ten_chuyen_muc: DataTypes.STRING,
-    slug_chuyen_muc: DataTypes.STRING,
-    hinh_anh: DataTypes.STRING,
+    ten_chuyen_muc: DataTypes.TEXT,
+    slug_chuyen_muc: DataTypes.TEXT,
+    hinh_anh: DataTypes.TEXT,
     tinh_trang: DataTypes.INTEGER
   }, {
     sequelize,

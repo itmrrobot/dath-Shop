@@ -17,6 +17,11 @@ cart.forEach((e)=>{
     return newList;
 };
 
+const getCartById = async(id) => {
+  const card = await Cart.findOne({where:{id:id}})
+  return card;
+}
+
 const createNewCart = async (data) => {
   try {
     const carts = await Cart.create(data);
@@ -36,4 +41,8 @@ const updateCart = async (data) => {
   }
 };
 
-module.exports = { getProductsInCart, createNewCart,updateCart };
+const deleteCard = async(id) => {
+  await Cart.destroy({where:{id}});
+}
+
+module.exports = { getProductsInCart, createNewCart,updateCart,getCartById,deleteCard };

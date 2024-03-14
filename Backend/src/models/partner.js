@@ -15,23 +15,23 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Partner.init({
-    ho_lot: DataTypes.STRING,
+    ho_lot: DataTypes.TEXT,
     ten: DataTypes.INTEGER,
     ngay_sinh: DataTypes.DATE,
-    role: DataTypes.STRING,
-    so_dien_thoai: DataTypes.STRING,
-    dia_chi: DataTypes.STRING,
-    ma_so_thue: DataTypes.STRING,
-    ten_cong_ty: DataTypes.STRING,
-    anh_minh_chung: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
+    role: DataTypes.TEXT,
+    so_dien_thoai: DataTypes.TEXT,
+    dia_chi: DataTypes.TEXT,
+    ma_so_thue: DataTypes.TEXT,
+    ten_cong_ty: DataTypes.TEXT,
+    anh_minh_chung: DataTypes.TEXT,
+    email: DataTypes.TEXT,
+    password: DataTypes.TEXT,
     tinh_trang: DataTypes.INTEGER,
     tong_tien_da_ban: DataTypes.DECIMAL(15,2),
     tong_don_hang_da_ban: DataTypes.INTEGER,
     tong_don_hang_doi_tra: DataTypes.INTEGER,
-    change_pass: DataTypes.STRING,
-    confirm_pass: DataTypes.STRING
+    change_pass: DataTypes.TEXT,
+    confirm_pass: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'Partner',

@@ -30,7 +30,7 @@ module.exports = {
             "Khi nhắc đến áo Vest, người ta sẽ nghĩ ngay tới những bộ Âu phục chỉn chu. Chúng mang lại sự lịch lãm, trang nghiêm cho người mặc, thường được diện trong những dịp quan trọng.",
           gia_ban: 1750000,
           gia_khuyen_mai: 1650000,
-          categoryId: 1,
+          CategoryId: 1,
         },
         {
           ten_san_pham: "ÁO HOODIE COOL TEDDY CÁ TÍNH HX074",
@@ -47,7 +47,7 @@ module.exports = {
             "Áo Hoodie là hàng may mặc đa diện trong thế giới ngày nay. Chúng phục vụ nhiều mục đích, nhiều đối tượng. Từ việc giữ ấm cơ thể trong mùa động lạnh, với chất liệu cotton thấm hút mồ hôi và thoáng mát cũng được sử dụng làm áo khoác chống nắng . Cũng là trang phục thời trang sành điệu. ",
           gia_ban: 248000,
           gia_khuyen_mai: 238000,
-          categoryId: 2,
+          CategoryId: 2,
         },
         {
           ten_san_pham: "ÁO GIA ĐÌNH NAVY X1594V",
@@ -64,7 +64,7 @@ module.exports = {
             "Áo gia đình Navy là một lựa chọn tuyệt vời cho những ai muốn thể hiện sự đoàn kết và yêu thương của gia đình. Áo gia đình Navy sẽ là món quà ý nghĩa cho những dịp đặc biệt như sinh nhật, kỷ niệm, du lịch hay chụp ảnh cùng nhau.",
           gia_ban: 175000,
           gia_khuyen_mai: 165000,
-          categoryId: 3,
+          CategoryId: 3,
         },
         {
           ten_san_pham: "NAVY BSX1189WD",
@@ -81,7 +81,7 @@ module.exports = {
             "Chúng được tạo nên từ chất liệu nỉ cotton thấm hút tốt. Ngoài ra, Áo Sweater Cao Cấp  còn phong phú về màu sắc và kiểu dáng. Với đặc tính dễ dàng phối với các loại item thời trang khác nhau, tạo nên nhiều phong cách ấn tượng, mới lạ.  Đây được xem là chiếc áo vô cùng năng động, tươi trẻ và cá tính cần có trong tủ đồ nhà bạn. Áo Sweater Cao Cấp  Navy chất liệu nỉ cotton cao cấp co dãn nhẹ giúp bạn luôn dễ chịu & thoải mái. Dù cho thời tiết nóng hay lạnh và mang trong thời gian dài",
           gia_ban: 388000,
           gia_khuyen_mai: 380000,
-          categoryId: 4,
+          CategoryId: 4,
         },
         {
           ten_san_pham: "ÁO SWEATER NAVY 2010T",
@@ -98,7 +98,7 @@ module.exports = {
             "Áo có chất liệu nỉ bông mềm mại, ấm áp và thoáng khí, không gây kích ứng da. Áo Sweater navy có 4 màu trắng, đen, xanh, xám dễ lựa chọn. Áo có thể kết hợp với quần jeans, quần tây, chân váy hoặc đầm để tạo nên phong cách thời trang cá tính và năng động.",
           gia_ban: 198000,
           gia_khuyen_mai: 180000,
-          categoryId: 4,
+          CategoryId: 4,
         },
         {
           ten_san_pham: "SET TẬP GYM 9024D",
@@ -115,7 +115,7 @@ module.exports = {
             "Chất liệu nỉ cotton mềm mại, ấm áp và thấm hút mồ hôi tốt, giúp bạn cảm thấy thoải mái và dễ chịu khi mặc. Thiết kế sweater đơn giản nhưng không kém phần thời trang, có thể kết hợp với nhiều loại quần áo khác nhau. Bạn có thể chọn màu sắc phù hợp với phong cách và sở thích của mình, những gam màu trung tính như đen, xám, trắng, xanh biển. Set sweater tập gym nỉ cotton thu đông là món đồ không thể thiếu trong tủ đồ của bạn vào mùa này.",
           gia_ban: 345000,
           gia_khuyen_mai: 345000,
-          categoryId: 5,
+          CategoryId: 5,
         },
         {
           ten_san_pham: "Seiko 41mm Nam SRPD51K2",
@@ -132,7 +132,7 @@ module.exports = {
             "Đây là sản phẩm độc đáo đã bán ra thị trường hơn 8 triệu chiếc năm 2007. Nói nôm na Kinetic là “con lai” giữa máy cơ và máy quartz tích hợp ưu điểm 2 dòng máy này làm nên một thiết kế riêng biệt độc quyền của Seiko.",
           gia_ban: 4750000,
           gia_khuyen_mai: 4650000,
-          categoryId: 6,
+          CategoryId: 6,
         },
         {
           ten_san_pham: "Rolex Nam Datejust-126331-41",
@@ -149,7 +149,7 @@ module.exports = {
             "Đến năm 1919, thương hiệu đồng hồ Rolex chính thức chuyển đến Geneva - Thụy Sĩ. Sau đó toàn bộ quy trình sản xuất của hãng đều được thực hiện tại đất nước này.",
           gia_ban: 350000000,
           gia_khuyen_mai: 350000000,
-          categoryId: 6,
+          CategoryId: 6,
         },
         {
           ten_san_pham: "Movado 40mm Nam 0607314",
@@ -166,7 +166,7 @@ module.exports = {
             "Ý nghĩa tên thương hiệu “Movado” đó là không ngừng chuyển động. Đây là một ý nghĩa rất sâu sắc vừa hàm nghĩa chỉ sự vận động của thời gian đồng thời là lời khẳng định về một thương hiệu luôn luôn đổi mới, sáng tạo, cải tiến không ngừng.",
           gia_ban: 17500000,
           gia_khuyen_mai: 16500000,
-          categoryId: 6,
+          CategoryId: 6,
         },
         {
           ten_san_pham: "Bulova 42mm Nam 97A111",
@@ -183,7 +183,7 @@ module.exports = {
             "Năm 2008 thương hiệu Bulova đã chính thức được Citizen mua lại. Ngày nay, Bulova được phân phối bởi Citizen (một thương hiệu chế tác đồng hồ Nhật Bản).Bulova có xuất xứ từ Mỹ nhưng chất lượng đạt chuẩn Thụy Sĩ. Bởi vậy mà sau hơn 140 năm tồn tại, cho đến nay Bulova vẫn có chỗ đứng vững chắc trong phân khúc đồng hồ cao cấp.",
           gia_ban: 8750000,
           gia_khuyen_mai: 8650000,
-          categoryId: 6,
+          CategoryId: 6,
         },
         {
           ten_san_pham: "Hublot 42mm Nam 542.NX.1171.LR",
@@ -200,7 +200,7 @@ module.exports = {
             "Đồng hồ Hublot có nguồn gốc từ nước Thụy Sĩ, mang ý nghĩa là cửa sổ. Những chiếc đồng hồ Hublot mang dây đeo làm từ cao su tự nhiên. nhanh chóng tạo thành cơn sốt ngay sau khi ra mắt. Hublot được mệnh danh là đồng hồ của Hoàng gia Châu Âu.",
           gia_ban: 7750000,
           gia_khuyen_mai: 7650000,
-          categoryId: 6,
+          CategoryId: 6,
         },
       ],
       {}
