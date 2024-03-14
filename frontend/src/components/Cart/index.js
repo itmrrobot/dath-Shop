@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 import imgProduct from "../../assets/img/img-in-cart.png";
 import TotalOrder from "../TotalOrder";
 import ModalPayment from "../ModalPayment";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { CartState } from "../../store/CartProvider";
 import { url } from "../../constants";
 import axios from "axios";
