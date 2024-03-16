@@ -46,4 +46,17 @@ const handleDeleteCart= async(req,res) => {
     }
 }
 
+const handleDeleteProductInCart= async(req,res) => {
+    let id = req.params.id;
+    try {
+        const cart = await cartService.getCartById(id);
+        if(cart===null) return res.status(404).send();
+        await cartService.deleteCard(id);
+        res.status(200).send({msg:'Delete success'});
+    } catch(e) {
+        console.log(e);
+        res.status(500).send()
+    }
+}
+
 module.exports = {handleProductInCartList,handleUpdateCart,handleCreateNewCart,handleDeleteCart};

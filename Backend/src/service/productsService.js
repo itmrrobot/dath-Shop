@@ -1,4 +1,4 @@
-const {Product,Category,Inventory} = require("../models/index");
+const {Product,Category,Inventory,ProductInventory} = require("../models/index");
 
 
 const getProductList = async() => {
@@ -30,9 +30,17 @@ const getProductById = async(id) => {
 
 const createNewProduct = async(data) => {
     try {
+        const listInventoryId = JSON.parse(data.listInventoryId);
         const category = await Category.create({ten_chuyen_muc:data.ten_chuyen_muc})
         const newProduct = await Product.create({...data,categoryId:category.id});
-        
+        if(listInventoryId?.length!==0) {
+            const createProductInventory = async () => {
+                for (const id of listInventoryId) {
+                    await ProductInventory.create({ ProductId: data.id, InventoryId: id });
+                }
+            };
+            createProductInventory();
+        }
         return newProduct;
     } catch(e) {
         console.log(e);
