@@ -28,7 +28,7 @@ module.exports = {
       password: {
         type: Sequelize.TEXT
       },
-      roleId: {
+      RoleId: {
         type: Sequelize.INTEGER,
         defaultValue: 3
       },
