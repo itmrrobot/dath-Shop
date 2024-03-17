@@ -47,16 +47,17 @@ const handleDeleteCart= async(req,res) => {
 }
 
 const handleDeleteProductInCart= async(req,res) => {
+    let listIds = req.body.listIds;
     let id = req.params.id;
     try {
-        const cart = await cartService.getCartById(id);
+        const cart = await cartService.getCartByUserId(id);
         if(cart===null) return res.status(404).send();
-        await cartService.deleteCard(id);
-        res.status(200).send({msg:'Delete success'});
+        const newCart = await cartService.deleteProductInCard(id,listIds);
+        res.status(200).send(newCart);
     } catch(e) {
         console.log(e);
         res.status(500).send()
     }
 }
 
-module.exports = {handleProductInCartList,handleUpdateCart,handleCreateNewCart,handleDeleteCart};
+module.exports = {handleProductInCartList,handleUpdateCart,handleCreateNewCart,handleDeleteCart,handleDeleteProductInCart};
