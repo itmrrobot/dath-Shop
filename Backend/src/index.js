@@ -14,6 +14,7 @@ const cartRouter = require("./router/cart");
 const wishlistRouter = require("./router/wishlist");
 const paypalRouter = require("./router/paypalPayment");
 const inventoryRouter = require("./router/invertory");
+const chatbotRouter = require("./router/chatbot");
 
 
 const app = express();
@@ -23,7 +24,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 const corsOptions ={
-    origin:'http://localhost:3000', 
+    origin:'*', 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
@@ -43,6 +44,7 @@ app.use(cartRouter);
 app.use(wishlistRouter);
 app.use(paypalRouter);
 app.use(inventoryRouter);
+app.use(chatbotRouter);
 app.use(cors());
 connection();
 app.listen(port,() => {

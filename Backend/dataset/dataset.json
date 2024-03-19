@@ -1,0 +1,100 @@
+{
+  "conversations": [
+    {
+      "input": "How are you?",
+      "output": "I'm fine, thank you."
+    },
+    {
+      "input": "What is your name?",
+      "output": "My name is Chatbot."
+    },
+    {
+      "input": "Chào (Hello)! Bạn có thể cho tôi biết thêm về trang web này không?",
+      "output": "Chào mừng bạn! Trang web này là cửa hàng thời trang , cung cấp các sản phẩm mới nhất và hot nhất cho cả nam và nữ. Chúng tôi có nhiều loại mặt hàng từ các thương hiệu hàng đầu với giá cả phải chăng và dịch vụ khách hàng tuyệt vời."
+    },
+    {
+      "input": "Các sản phẩm mới nhất của bạn là gì?",
+      "output": "Chúng tôi vừa cập nhật bộ sưu tập mới nhất với nhiều mẫu mã đa dạng, bạn có thể xem tại mục 'Sản phẩm mới'."
+    },
+    {
+      "input": "Chào bạn, tôi đang tìm một chiếc áo [kiểu dáng]!",
+      "output": "Chào mừng bạn! Để giúp bạn tìm được chiếc áo phù hợp nhất, bạn có thể cho tôi biết thêm về [kiểu dáng] bạn đang tìm kiếm không? "
+    },
+    {
+      "input": "Chào bạn, tôi đang tìm một chiếc quần [kiểu dáng]!",
+      "output": "Chào mừng bạn! Để giúp bạn tìm được chiếc quần phù hợp nhất, bạn có thể cho tôi biết thêm về [kiểu dáng] bạn đang tìm kiếm không? "
+    },
+    {
+      "input": "Chào bạn, tôi đang tìm một đồng hồ [kiểu dáng]!",
+      "output": "Chào mừng bạn! Để giúp bạn tìm được đồng hồ phù hợp nhất, bạn có thể cho tôi biết thêm về [kiểu dáng] bạn đang tìm kiếm không? "
+    },
+    {
+      "input": "Chào bạn, tôi đang tìm một đôi giày [kiểu dáng]!",
+      "output": "Chào mừng bạn! Để giúp bạn tìm được đôi giày phù hợp nhất, bạn có thể cho tôi biết thêm về [kiểu dáng] bạn đang tìm kiếm không? "
+    },
+    {
+      "input": "Sản phẩm này có màu nào khác không?",
+      "output": "Chắc chắn rồi! Bạn có thể xem tất cả các màu sắc có sẵn của sản phẩm trên trang web của chúng tôi. Chỉ cần cuộn xuống bên dưới hình ảnh chính, bạn sẽ thấy danh sách các màu sắc khác."
+    },
+    {
+      "input": "Làm thế nào để tôi theo dõi đơn hàng của mình?",
+      "output": "Bạn có thể theo dõi đơn hàng bằng cách vào mục 'Theo dõi đơn hàng' trên trang web của chúng tôi."
+    },
+    {
+      "input": "Bạn có chính sách đổi trả hàng không?",
+      "output": "Chúng tôi có chính sách đổi trả hàng trong vòng 7 ngày kể từ ngày mua, miễn là sản phẩm còn nguyên vẹn và chưa qua sử dụng."
+    },
+    {
+      "input": "Tôi có thể thanh toán bằng cách nào?",
+      "output": "Chúng tôi chấp nhận nhiều phương thức thanh toán bao gồm thẻ tín dụng, thẻ ghi nợ, và các dịch vụ thanh toán trực tuyến."
+    },
+    {
+      "input": "Các sản phẩm của bạn có bền không?",
+      "output": "Chúng tôi cam kết cung cấp sản phẩm chất lượng cao với độ bền vững, được làm từ những chất liệu tốt nhất."
+    },
+    {
+      "input": "Tôi có thể nhận được tư vấn thời trang cá nhân không?",
+      "output": "Chắc chắn rồi, chúng tôi có dịch vụ tư vấn thời trang cá nhân. Bạn chỉ cần để lại thông tin liên lạc và chúng tôi sẽ sắp xếp lịch hẹn."
+    },
+    {
+      "input": "Có khuyến mãi nào đang diễn ra không?",
+      "output": "Hiện tại chúng tôi đang có chương trình khuyến mãi đặc biệt cho mùa này, bạn có thể xem chi tiết tại mục 'Khuyến mãi'."
+    },
+    {
+      "input": "Làm sao để biết sản phẩm nào phù hợp với tôi?",
+      "output": "Bạn có thể sử dụng công cụ 'Tìm kiếm theo phong cách' của chúng tôi để tìm ra những sản phẩm phù hợp với phong cách cá nhân."
+    },
+    {
+      "input": "Tôi có thể đặt hàng qua điện thoại không?",
+      "output": "Rất tiếc, hiện tại chúng tôi chỉ hỗ trợ đặt hàng trực tuyến trên website. Nếu bạn cần hỗ trợ, hãy liên hệ với chúng tôi qua chat hoặc email."
+    },
+    {
+      "input": "Làm sao để biết kích cỡ của mình?",
+      "output": "Bạn có thể tham khảo bảng hướng dẫn kích cỡ trên trang web hoặc liên hệ với chúng tôi để được tư vấn chi tiết hơn."
+    },
+    {
+      "input": "Tôi có thể nhận được lời khuyên về cách phối đồ không?",
+      "output": "Chắc chắn rồi! Hãy cho chúng tôi biết phong cách của bạn và chúng tôi sẽ đề xuất những set đồ tuyệt vời phù hợp với bạn."
+    },
+    {
+      "input": "Size đồ nào hợp với cân nặng của tôi?",
+      "output": "Để chọn kích cỡ phù hợp, bạn cần cung cấp thông tin cân nặng cụ thể của mình. Chúng tôi cũng khuyến khích bạn đo các số đo cơ thể khác như vòng ngực, eo, và hông để có kết quả chính xác nhất. Bạn có thể tham khảo bảng hướng dẫn kích cỡ của chúng tôi hoặc liên hệ trực tiếp để được tư vấn kỹ hơn."
+    },
+    {
+      "input": "Size giày nào hợp với chân của tôi?",
+      "output": "Để chọn size giày phù hợp, bạn cần đo chiều dài và chiều rộng của bàn chân mình. Thêm khoảng 1,5cm vào chiều dài chân để đảm bảo sự thoải mái khi di chuyển. Cuối cùng, hãy so sánh kết quả với bảng quy đổi size giày để tìm ra kích cỡ phù hợp nhất cho bạn."
+    },
+    {
+      "input": "Size đồng hồ nào hợp với tay của tôi?",
+      "output": "Để chọn size đồng hồ phù hợp, bạn cần đo chu vi cổ tay của mình. Sau đó, sử dụng công thức sau để xác định size mặt đồng hồ phù hợp: Chu vi cổ tay chia cho 4.5 sẽ cho bạn size mặt đồng hồ tối ưu, chia cho 4 sẽ cho bạn size mặt đồng hồ tối đa, và chia cho 5 sẽ cho bạn size mặt đồng hồ tối thiểu. Ví dụ, nếu chu vi cổ tay của bạn là 18cm, size mặt đồng hồ tối ưu sẽ là khoảng 40mm."
+    },
+    {
+      "input": "Bạn có muốn nhận lời khuyên cá nhân hóa về thời trang không?",
+      "output": "Chúng tôi sẽ rất vui lòng tư vấn cho bạn! Bạn có thể cho chúng tôi biết một chút về sở thích của bạn không?"
+    },
+    {
+      "input": "Bạn có quan tâm đến xu hướng thời trang mới nhất không?",
+      "output": "Chúng tôi luôn cập nhật những xu hướng mới nhất. Bạn có thể chia sẻ với chúng tôi loại trang phục bạn đang tìm kiếm?"
+    }
+  ]
+}
