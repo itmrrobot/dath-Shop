@@ -9,7 +9,7 @@ const register = async(data) => {
     try {
         const res = await User.findOrCreate({where:{email:data.email},defaults:{...data,password:password}});
         console.log(res);
-        const access_token = res[1] ? jwt.sign({id:res[0].id,email:res[0].email,roleId:res[0].roleId},process.env.JWT_SECRET,{expiresIn:'5s'}):null;
+        const access_token = res[1] ? jwt.sign({id:res[0].id,email:res[0].email,roleId:res[0].roleId},process.env.JWT_SECRET,{expiresIn:'5d'}):null;
         const refresh_token = res[1] ? jwt.sign({id:res[0].id},process.env.JWT_SECRET_REFRESH_TOKEN,{expiresIn:'60s'}):null;
         if(refresh_token) {
             await User.update({refreshToken:refresh_token},{where:{id:res[0].id}});
@@ -26,7 +26,7 @@ const login = async(data) => {
         const res = await User.findOne({where:{email:data.email},raw:true,include: { model: Role, as: 'Role',attributes: ["id","name"]},nest: true,attributes: {exclude: ['createdAt','updatedAt','RoleId','roleId']}});
         console.log(res);
         const isChecked = res && bcrypt.compareSync(data.password,res.password);
-        const access_token = isChecked && jwt.sign({id:res.id,email:res.email,roleId:res.roleId},process.env.JWT_SECRET,{expiresIn:'5s'});
+        const access_token = isChecked && jwt.sign({id:res.id,email:res.email,roleId:res.roleId},process.env.JWT_SECRET,{expiresIn:'5d'});
         //const token = res[1] ? jwt.sign({id:res[0].id,email:res[0].email,roleId:res[0].roleId},process.env.JWT_SECRET,{expiresIn:'120s'}):null;
         const refresh_token = isChecked ? jwt.sign({id:res.id},process.env.JWT_SECRET_REFRESH_TOKEN,{expiresIn:'5d'}):null;
         if(refresh_token) {
@@ -48,7 +48,7 @@ const refreshToken = async(data) => {
             const result=jwt.verify(refresh_token,process.env.JWT_SECRET_REFRESH_TOKEN,(err) => {
                 if(err) {return {err:1,msg:"Refresh token has expired. Required login!"}}
                 else {
-                    const access_token = jwt.sign({id:res.id,email:res.email,roleId:res.roleId},process.env.JWT_SECRET,{expiresIn:'60s'});
+                    const access_token = jwt.sign({id:res.id,email:res.email,roleId:res.roleId},process.env.JWT_SECRET,{expiresIn:'5d'});
                     return {err:access_token?0:1,msg:access_token?"OK":"Cannot generate access token",access_token:access_token?`Bearer ${access_token}`:null,refresh_token}
                 }
             })
