@@ -10,8 +10,10 @@ const UserProvider = ({ children }) => {
     // Khoi tao bien State de luu tru trang thai nguoi dung
     const [cart, setCart] = useState([]);
     const [render, setRender] = useState(false)
-    // console.log(cart);
     const [currentUser, setCurrentUser] = useState(null);
+    // console.log(currentUser);
+    console.log(currentUser);
+    console.log(cart);
     // console.log(currentUser?.id);
     // const {setUser,setIsLogin,user} = AuthState();
     const state = {
@@ -34,6 +36,7 @@ const UserProvider = ({ children }) => {
             // Ham isAuthenticated co the tra ve hai gia tri: null (trong truong hop ko co token)
             // va tra ve 1 token da duoc parse(da duoc xu ly ben ham isAuthenticated)
             let cuser = isAuthenticated();
+            // console.log(cuser);
             // Neu cuser tra ve null =>
             if (cuser === null) {
                 // Tien hanh lam rong lai localStorage
@@ -47,7 +50,8 @@ const UserProvider = ({ children }) => {
     }, []);
     useEffect(() => {
         const getData = async () => {
-            if (currentUser === null) {
+            let cuser = isAuthenticated();
+            if (cuser === null) {
                 setCart([]);
             } else {
                 try {

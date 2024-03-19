@@ -35,7 +35,7 @@ function PopularProducts() {
           <ContentSection name="Featured Products" navigation upper>
             <div className={cx("products")}>
                 {newProducts?.map((product,index) => {
-                    let imgs = JSON.parse(product?.hinh_anh);
+                    let imgs = product?.hinh_anh;
                     return <Link to={`/product/${product.id}`} className={cx("item")} key={index}>
 
                     <img src={`${url}/img/${imgs[0]}`} alt="Rectangle-1394" className={cx("img")}/>

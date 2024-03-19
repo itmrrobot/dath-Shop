@@ -13,7 +13,13 @@ const images = {
     truck: require('./truck.svg').default,
     cart_red: require('./cart_red.svg').default,
     check_icon: require('./check_icon.svg').default,
-    remove: require('./delete.svg').default
+    remove: require('./delete.svg').default,
+    clear: require('./Clear.svg').default,
+    location: require('./location.svg').default,
+    location_active: require('./location_active.svg').default,
+    location_title: require('./location_title.svg').default,
+    active_chat: require('./active_chat.svg').default,
+    avatar_test: require("./avatar-test.png")
     // thumbnail2: require('./thumbnail_2.png'),
     
 };

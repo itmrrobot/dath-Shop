@@ -10,10 +10,19 @@ import { FloatButton } from "antd";
 import { CommentOutlined, CustomerServiceOutlined } from '@ant-design/icons';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Chatbox from "./components/Chatbox";
+import { useContext, useState } from "react";
+import { UseContextUser } from "./hooks/useContextUser";
+import LayoutUserInfor from "../src/components/Layout/LayoutUserInfor"
 function App() {
+  const [chat, setChat] = useState(false)
+  const state = useContext(UseContextUser)
+  // console.log();
   return (
     <>
+      {/* Toast Dialog */}
       <ToastContainer />
+      {/* Chatbox Floater */}
       <>
         <FloatButton.Group
           trigger="click"
@@ -21,13 +30,41 @@ function App() {
           style={{ right: 24 }}
           icon={<CustomerServiceOutlined />}
         >
-          <FloatButton />
-          <FloatButton icon={<CommentOutlined />} />
+          <FloatButton icon={<CommentOutlined />} onClick={() =>{
+            setChat((prev) => !prev)
+          }}
+            // style={{position: 'relative'}}
+          />
+          {
+          chat === true && (
+            <Chatbox></Chatbox>
+          )
+          }
         </FloatButton.Group>
       </>
     <Router>
       <div className="App">
         <Routes>
+          {
+            state?.cuser?.value?.Role?.id === 3 && (
+              <>
+                <Route
+                  path="/user/profile"
+                  element={
+                    <DefaultLayout>
+                      <LayoutUserInfor
+                        path={'User Profile'}
+                        title={'Personal Information'}
+                        profile={true}
+                      >
+                        <Profile></Profile>
+                      </LayoutUserInfor>
+                    </DefaultLayout>
+                  }
+                />
+              </>
+            )
+          }
           {publicAccountRoutes.map((route,index) => {
             const Layout = AccountLayout;
             const Page = route.component;
@@ -49,7 +86,7 @@ function App() {
               <Page/>
             </Layout>}/>
           })}
-          <Route path={"/account/profile"} element={<Profile/>}/>
+          {/* <Route path={"/account/profile"} element={<Profile/>}/> */}
           <Route path="/admin/products/add" element={<AddNewProduct/>}/>
         </Routes>
       </div>

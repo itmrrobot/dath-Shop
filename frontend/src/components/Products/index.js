@@ -68,7 +68,7 @@ function Products() {
         <div className={cx("wrap-products")}>
           <div className={cx("products-list")}>
             {loading&&data?.map((product,index) => {
-                let imgs = JSON.parse(product?.hinh_anh);
+                let imgs = product?.hinh_anh;
                 return (
                     product!==null&&<div className={cx("product")} key={index}>
               <Link to={`/product/${product.id}`} className={cx("product-link")}>

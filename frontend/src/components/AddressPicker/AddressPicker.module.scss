@@ -1,0 +1,131 @@
+.address-wrapper{
+    padding: 20px 0;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    margin-bottom: 20px;
+
+}
+.address-picker{
+    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 cột với chiều rộng bằng nhau */
+    grid-gap: 10px; /* Khoảng cách giữa các ô */
+}
+.address-child{
+    position: relative;
+    display: flex;
+    padding: 25px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    // gap: var(--Radius-20, 20px);
+    align-self: stretch;
+    border-radius: 10px;
+    border: 1.5px dashed var(--Secondary-300, #D8BC7E);
+    cursor: pointer;
+    // height: 100px;
+    &.active{
+        border-radius: 10px;
+        background: var(--Secondary-300, #D8BC7E);
+    }
+    .add{
+        text-align: center;
+        width: 100%;
+        // font-size: 1.8rem;
+        font-weight: 600;
+        // height: 50px;
+    }
+    .name, .phone-number, .address{
+        display: block;
+        font-size: 14px;
+        // font-weight: 700;
+        line-height: 20px;
+        overflow: hidden;
+        /* padding-top: 10px; */
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 138px;
+    }
+    img{
+        margin-bottom: 20px;
+    }
+    .name{
+
+    }
+    .phone-number{
+
+    }
+    .address{
+
+    }
+    .remove-address{
+        position: absolute;
+        top: 10px;
+        right: 22px;
+        font-size: 2rem;
+        &:hover{
+            color: #ff7d1f;
+        }
+    }
+}
+
+.title{
+    margin-bottom: 20px;
+    display: flex;
+    .line-title{
+        display: inline-block;
+        margin-left: 12px;
+        color: var(--Primary-950, #171212);
+        // font-family: Poppins;
+        font-size: 2.4rem;
+        // font-style: normal;
+        font-weight: 600;
+        // line-height: normal;
+    }
+}
+
+.input_product {
+    margin-bottom: 25px;
+    position: relative;
+
+    .label-product {
+        display: inline-block;
+        // width: 119px;
+        text-transform: capitalize;
+        font-size: 19px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    input {
+        font-size: 18px;
+        border: none;
+        outline: none;
+        border-bottom: 1px solid #333;
+        width: 100%;
+        color: #656464;
+    }
+
+    select {
+        font-size: 17px;
+        outline: none;
+        border: none;
+        padding: 5px;
+        text-transform: capitalize;
+        width: 300px;
+    }
+    .message_err {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        display: inline-block;
+        color: rgb(248, 118, 118);
+    }
+}
+
+.btn-handle {
+    text-align: end;
+    .cancel {
+        margin-right: 16px;
+    }
+}

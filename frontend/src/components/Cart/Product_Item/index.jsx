@@ -8,6 +8,8 @@ import { toast } from 'react-toastify';
 import { UseContextUser } from '../../../hooks/useContextUser';
 import { formatPrice, priceDiscount } from '../../../common';
 import images from '../../../assets/img';
+import axios from 'axios';
+import { url } from '../../../constants';
 const cx = classNames.bind(styles);
 function Product_Item({ item, index }) {
     // const [isChecked, setIsChecked] = useState(false);
@@ -124,7 +126,6 @@ function Product_Item({ item, index }) {
     //     state.cart.setCart(cart_sort);
     // };
     const handleCheckboxChange = (e) => {
-        console.log(e.target.checked);
         let oldCart = [...state?.cart?.value]
         // // console.log(newArr);
         // console.log();
@@ -142,14 +143,24 @@ function Product_Item({ item, index }) {
         // console.log(state?.cart?.value?.);
         // console.log(item?.id_product);
     }
+    const handleRemoveItem = () => {
+        axios.delete(`${url}/cart/delete/${item?.id}`).then((res) => {
+            // console.log(res);
+            toast.success(`${res.data.msg}!`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
+            state?.render?.setRender((prev)=>!prev)
+        })
+    }
     return (
         <div className={cx('product-item')}>
-            {/* <div class={cx('item')}>
-                <div class={cx('checkbox-rect2')}>
-                <input type="checkbox" id={cx('checkbox-rect2')} name="check" checked={item?.isChecked} onChange={handleCheckboxChange}/>
-                <label for={cx('checkbox-rect2')}></label>
-            </div>
-            </div> */}
             <div className={cx('product-check')}>
                 <input
                     type="checkbox"
@@ -243,6 +254,7 @@ function Product_Item({ item, index }) {
             
             <span
                 className={cx('remove')} 
+                onClick={handleRemoveItem}
             >
                 <img src={images.remove} alt="" />
             </span>

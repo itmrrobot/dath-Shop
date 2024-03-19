@@ -5,7 +5,6 @@ import ArrowNext from "../../assets/img/Frame.svg";
 const cx = classNames.bind(styles);
 
 function PurchaseOrder() {
-    const {user} = AuthState();
     return(
         <div className={cx("wrap-manage","wrap")}>
             <h2 className={cx("title-manage")}>Purchase order</h2>
@@ -34,9 +33,9 @@ function PurchaseOrder() {
             </div>
             <div className={cx("wrap-address")}>
                 <h4 className={cx("wrap-address__title")}>Delivery address</h4>
-                <div className={cx("wrap-address__name")}>{user.fullname}</div>
-                <div className={cx("wrap-address__address")}>{user.address}</div>
-                <div className={cx("wrap-address__phone")}>{user.phone}</div>
+                <div className={cx("wrap-address__name")}></div>
+                <div className={cx("wrap-address__address")}></div>
+                <div className={cx("wrap-address__phone")}></div>
             </div>
         </div>
     )

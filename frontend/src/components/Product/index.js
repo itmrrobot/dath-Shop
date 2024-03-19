@@ -77,13 +77,14 @@ function Product() {
                     signal: controller.signal
                 })
                 setProduct(respone.data);
+                console.log(respone.data);
                 // setImage(respone?.data?.hinh_anh);
-                const cleanedString = respone?.data?.hinh_anh.slice(1, -1);
-                // Tách chuỗi thành mảng sử dụng dấu phẩy làm dấu phân cách
-                const arrayWithoutQuotes = cleanedString.split(',');
-                // Xóa dấu ngoặc kép và khoảng trắng ở đầu và cuối mỗi phần tử trong mảng
-                const finalArray = arrayWithoutQuotes.map(item => item.replace(/"/g, '').trim());
-                setImage(finalArray);
+                // const cleanedString = respone?.data?.hinh_anh.slice(1, -1);
+                // // Tách chuỗi thành mảng sử dụng dấu phẩy làm dấu phân cách
+                // const arrayWithoutQuotes = cleanedString.split(',');
+                // // Xóa dấu ngoặc kép và khoảng trắng ở đầu và cuối mỗi phần tử trong mảng
+                // const finalArray = arrayWithoutQuotes.map(item => item.replace(/"/g, '').trim());
+                setImage(respone?.data?.hinh_anh);
             } catch(e) {
                 console.log(e);
             }

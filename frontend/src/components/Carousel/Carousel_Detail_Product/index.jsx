@@ -6,7 +6,7 @@ const cx = classNames.bind(styles);
 
 export default function Carousel({ images, product, reset = false }) {
     const [selectedImg, setSelectedImg] = useState(1);
-    console.log(typeof images);
+    console.log(images);
     
     // console.log();
     // const [img, setImg] = useState(`https://shoesshop-6n6z.onrender.com/imgs/${selectedImg}`);

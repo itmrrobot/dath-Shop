@@ -339,7 +339,7 @@ function Header() {
 
                                 </div>
                             </HeadlessTippy>
-                            
+                    {/* {console.log(state.cuser.value)}        */}
                     {state.cuser.value !== ''&&<DropdownAccount/>} 
                 </div>
             </div>

@@ -37,7 +37,7 @@ function RelatedProduct({ ...props }) {
       <h3 className={cx("title")}>Similar Items You Might Also Like</h3>
       <div className={cx("list")}>
         {data.products&&products.map((product, index) => {
-            let imgs = JSON.parse(product?.hinh_anh);
+            let imgs = product?.hinh_anh;
           return <div key={index} className={cx("item")}>
             <img src={`${url}/img/${imgs[0]}`} alt="" className={cx("img")} />
             <h5 className={cx("product-title")}>{product.ten_san_pham}</h5>

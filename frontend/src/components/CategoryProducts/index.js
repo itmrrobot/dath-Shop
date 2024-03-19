@@ -17,18 +17,19 @@ function CategoryProducts() {
         
         const fetchData =async() => {
             try {
-                const respone =await axios.get(url+"/category",{
+                const respone = await axios.get("http://localhost:4000/category",{
                     signal: controller.signal
                 })
+                // console.log(respone);
                 setData(respone.data)
             } catch(e) {
                 console.log(e);
             }
         }   
         fetchData();
-        return () => {
-            controller.abort();
-        }
+        return () => controller.abort();
+            
+        
     },[])
 
 

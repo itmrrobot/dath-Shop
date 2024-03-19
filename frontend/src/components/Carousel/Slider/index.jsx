@@ -17,13 +17,15 @@ const cx = classNames.bind(styles);
 // import required modules
 
 function Slider({ param, brand_id, images }) {
+    // console.log(images);
     // const array = [product];
     // console.log(brand_id);
     const [recommend, setRecommend] = useState([]);
-    console.log(recommend);
+    // console.log(recommend);
     const [brand, setBrand] = useState([]);
-    console.log(brand);
+    // console.log(brand);
     const handleImage = respone => {
+        console.log(respone);
         const cleanedString = respone.slice(1, -1);
                 // Tách chuỗi thành mảng sử dụng dấu phẩy làm dấu phân cách
                 const arrayWithoutQuotes = cleanedString.split(',');
@@ -98,14 +100,15 @@ function Slider({ param, brand_id, images }) {
                     randomValues.length > 0 &&
                     randomValues?.map((slide, i) => {
                         // console.log(slide[0].name);
+                        // console.log(slide);
                         return (
                             <div key={i}>
                                 <SwiperSlide>
-                                    <Link to={`http://localhost:3004/product/${slide.id}`}>
+                                    <Link to={`http://localhost:3000/product/${slide.id}`}>
                                         <div className={cx('item-slider')}>
                                             <img
                                                 // src={'https://shoesshop-6n6z.onrender.com/imgs/' + slide?.img}
-                                                src={`${url}/img/${handleImage(slide.hinh_anh)[0]}`}
+                                                src={`${slide.hinh_anh[0]}`}
                                                 alt={slide.name}
                                                 title={slide.name}
                                                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -123,7 +126,7 @@ function Slider({ param, brand_id, images }) {
                             return (
                                 <div key={i}>
                                     <SwiperSlide>
-                                        <Link to={`http://localhost:3001/product/${slide.id}`}>
+                                        <Link to={`http://localhost:3000/product/${slide.id}`}>
                                             <div className={cx('item-slider')}>
                                                 <img
                                                 src={`${url}/img/${slide.hinh_anh[0]}`}

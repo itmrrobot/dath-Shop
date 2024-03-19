@@ -401,3 +401,45 @@
 .form-message {
   color: red;
 }
+
+.select-remove{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // height: 130px;
+    border-radius: 12px;
+    // border: 2px solid black;
+    padding: 20px;
+    // margin-bottom: 20px;
+    background: white;
+  .select{
+    display: flex;
+    input{
+      margin-right: 10px;
+    }
+    p{
+      // font-size: 30px;
+      font-weight: 700;
+    }
+  }
+  .remove{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    img{
+      width: 25px;
+    }
+    p{
+      color: #FF7D1F;
+      font-weight: 500;
+    }
+    &:hover{
+      color: #FF7D1F;
+      font-weight: 700;
+    }
+  }
+}
+
+.header-title{
+  margin-bottom: 20px;
+}
