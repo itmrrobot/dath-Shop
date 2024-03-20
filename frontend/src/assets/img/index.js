@@ -19,7 +19,9 @@ const images = {
     location_active: require('./location_active.svg').default,
     location_title: require('./location_title.svg').default,
     active_chat: require('./active_chat.svg').default,
-    avatar_test: require("./avatar-test.png")
+    avatar_test: require("./avatar-test.png"),
+    bot: require('./Bot.svg').default,
+
     // thumbnail2: require('./thumbnail_2.png'),
     
 };
