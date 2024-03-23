@@ -16,22 +16,22 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ten_nguoi_nhan: {
+      name: {
         type: Sequelize.TEXT
       },
-      dia_chi: {
+      address: {
         type: Sequelize.TEXT
       },
-      so_dien_thoai: {
+      phone: {
         type: Sequelize.TEXT
       },
-      ghi_chu: {
+      note: {
         type: Sequelize.TEXT
       },
-      tinh_trang: {
+      status: {
         type: Sequelize.INTEGER
       },
-      tong_tien: {
+      total: {
         type: Sequelize.INTEGER
       },
       id_customer: {

@@ -25,16 +25,16 @@ module.exports = {
       role: {
         type: Sequelize.TEXT
       },
-      so_dien_thoai: {
+      phone: {
         type: Sequelize.TEXT
       },
-      ho_dem: {
+      last_name: {
         type: Sequelize.TEXT
       },
       ten: {
         type: Sequelize.TEXT
       },
-      ngay_sinh: {
+      birth: {
         type: Sequelize.DATE
       },
       verify: {
@@ -46,7 +46,7 @@ module.exports = {
       confirm_pass: {
         type: Sequelize.TEXT
       },
-      ly_do_block: {
+      reason_block: {
         type: Sequelize.TEXT
       },
       createdAt: {

@@ -34,7 +34,7 @@ const handleCreateNewPartner = async(req,res) => {
         img.push(file?.originalname);
     })
     console.log(img)
-    req.body.hinh_anh = JSON.stringify(img);
+    req.body.img = JSON.stringify(img);
 
     try {
         const newPartner = await partnerService.createNewPartner(req.body);
@@ -63,7 +63,7 @@ const handleDeletePartner= async(req,res) => {
     try {
         const partner = await partnerService.getPartnerById(id);
         if(partner===null) return res.status(404).send();
-        imgs=JSON.parse(partner.hinh_anh);
+        imgs=JSON.parse(partner.img);
         await partnerService.deletePartner(id);
         imgs.forEach((img,index) => {
             fs.unlinkSync(imgPath+img);

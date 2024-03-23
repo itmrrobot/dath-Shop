@@ -34,7 +34,7 @@ const handleCreateNewCustomer = async(req,res) => {
         img.push(file?.originalname);
     })
     console.log(img)
-    req.body.hinh_anh = JSON.stringify(img);
+    req.body.img = JSON.stringify(img);
 
     try {
         const newCategory = await customerService.createNewCustomer(req.body);
@@ -63,7 +63,7 @@ const handleDeleteCustomer = async(req,res) => {
     try {
         const customer = await customerService.getCustomerById(id);
         if(customer===null) return res.status(404).send();
-        imgs=JSON.parse(customer.hinh_anh);
+        imgs=JSON.parse(customer.img);
         await customerService.deleteCustomer(id);
         imgs.forEach((img,index) => {
             fs.unlinkSync(imgPath+img);

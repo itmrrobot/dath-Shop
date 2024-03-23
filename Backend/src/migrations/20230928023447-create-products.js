@@ -16,37 +16,37 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ten_san_pham: {
+      name: {
         type: Sequelize.TEXT
       },
-      slug_san_pham: {
+      slug_product: {
         type: Sequelize.TEXT
       },
-      so_luong_nhap: {
+      import_quatity: {
         type: Sequelize.INTEGER
       },
-      so_luong_ban: {
+      sell_quantity: {
         type: Sequelize.INTEGER
       },
       id_partner: {
         type: Sequelize.INTEGER
       },
-      hinh_anh: {
+      img: {
         type: Sequelize.JSON
       },
-      tinh_trang: {
+      status: {
         type: Sequelize.INTEGER
       },
-      mo_ta_ngan: {
+      short_description: {
         type: Sequelize.TEXT
       },
-      mo_ta_chi_tiet: {
+      detail_description: {
         type: Sequelize.TEXT
       },
-      gia_ban: {
+      price: {
         type: Sequelize.INTEGER
       },
-      gia_khuyen_mai: {
+      discount_price: {
         type: Sequelize.INTEGER
       },
       CategoryId: {

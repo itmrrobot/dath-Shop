@@ -16,14 +16,14 @@ module.exports = {
       email: "customer1@gmail.com",
       password: "123",
       role: "customer",
-      so_dien_thoai: "4434993994",
-      ho_dem: "Nguyễn",
+      phone: "4434993994",
+      last_name: "Nguyễn",
       ten: "Đức",
-      ngay_sinh: null,
+      birth: null,
       verify: null,
       change_pass: null,
       confirm_pass: null,
-      ly_do_block: null
+      reason_block: null
      }], {});
   },
 

@@ -18,14 +18,14 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.TEXT,
     password: DataTypes.TEXT,
     role: DataTypes.TEXT,
-    so_dien_thoai: DataTypes.TEXT,
-    ho_dem: DataTypes.TEXT,
+    phone: DataTypes.TEXT,
+    last_name: DataTypes.TEXT,
     ten: DataTypes.TEXT,
-    ngay_sinh: DataTypes.DATE,
+    birth: DataTypes.DATE,
     verify: DataTypes.INTEGER,
     change_pass: DataTypes.TEXT,
     confirm_pass: DataTypes.TEXT,
-    ly_do_block: DataTypes.TEXT
+    reason_block: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'Customer',

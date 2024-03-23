@@ -22,7 +22,7 @@ module.exports = {
       id_product: {
         type: Sequelize.INTEGER
       },
-      so_luong: {
+      quantity: {
         type: Sequelize.INTEGER
       },
       nameProduct: {

@@ -19,16 +19,16 @@ module.exports = {
       ho_lot: {
         type: Sequelize.TEXT
       },
-      ngay_sinh: {
+      birth: {
         type: Sequelize.DATE
       },
       role: {
         type: Sequelize.TEXT
       },
-      so_dien_thoai: {
+      phone: {
         type: Sequelize.TEXT
       },
-      dia_chi: {
+      address: {
         type: Sequelize.TEXT
       },
       ma_so_thue: {
@@ -46,10 +46,10 @@ module.exports = {
       password: {
         type: Sequelize.TEXT
       },
-      tinh_trang: {
+      status: {
         type: Sequelize.INTEGER
       },
-      tong_tien_da_ban: {
+      total_da_ban: {
         type: Sequelize.DECIMAL(15,2)
       },
       tong_don_hang_da_ban: {

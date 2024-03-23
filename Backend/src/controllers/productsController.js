@@ -15,8 +15,8 @@ cloudinary.config({
 });
 const handleGetProductList = async(req,res) => {
     try {
-        let products = await productsService.getProductList();
-        console.log(products)
+        const querys = req.query;
+        let products = await productsService.getProductList(querys);
         return res.send({products});
     } catch(e) {
         console.log(e);
@@ -55,7 +55,7 @@ const handleCreateNewProduct = async(req,res) => {
       });
     });
     console.log(uploadedImagesUrls)
-    req.body.hinh_anh = JSON.stringify(uploadedImagesUrls);
+    req.body.img = JSON.stringify(uploadedImagesUrls);
 
     try {
         const newProduct = await productsService.createNewProduct(req.body);
@@ -84,7 +84,7 @@ const handleDeleteProduct = async(req,res) => {
     try {
         const product = await productsService.getProductById(id);
         if(product===null) return res.status(404).send();
-        imgs=JSON.parse(product.hinh_anh);
+        imgs=JSON.parse(product.img);
         await productsService.deleteProduct(id);
         imgs.forEach((img,index) => {
             fs.unlinkSync(imgPath+img);

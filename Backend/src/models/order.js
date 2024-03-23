@@ -15,12 +15,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Order.init({
-    ten_nguoi_nhan: DataTypes.TEXT,
-    dia_chi: DataTypes.INTEGER,
-    so_dien_thoai: DataTypes.TEXT,
-    ghi_chu: DataTypes.TEXT,
-    tinh_trang: DataTypes.INTEGER,
-    tong_tien: DataTypes.DECIMAL(15,2),
+    name: DataTypes.TEXT,
+    address: DataTypes.INTEGER,
+    phone: DataTypes.TEXT,
+    note: DataTypes.TEXT,
+    status: DataTypes.INTEGER,
+    total: DataTypes.DECIMAL(15,2),
     id_customer: DataTypes.INTEGER,
     id_partner: DataTypes.INTEGER
   }, {

@@ -10,7 +10,7 @@ const getProductsInWishList = async (id) => {
 //   let newList = [];
 //   wishlist.forEach((e) => {
 //     let el = newList.find((n) => n.nameProduct == e.nameProduct);
-//     if (el) el.so_luong += e.so_luong;
+//     if (el) el.quantity += e.quantity;
 //     else newList.push(e);
 //   });
   return wishlist;

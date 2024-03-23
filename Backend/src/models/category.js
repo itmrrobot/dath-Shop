@@ -16,10 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Category.init({
-    ten_chuyen_muc: DataTypes.TEXT,
-    slug_chuyen_muc: DataTypes.TEXT,
-    hinh_anh: DataTypes.TEXT,
-    tinh_trang: DataTypes.INTEGER
+    category_name: DataTypes.TEXT,
+    category_slug: DataTypes.TEXT,
+    img: DataTypes.TEXT,
+    status: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Category',

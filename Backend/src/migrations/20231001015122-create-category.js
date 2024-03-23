@@ -16,16 +16,16 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ten_chuyen_muc: {
+      category_name: {
         type: Sequelize.TEXT
       },
-      slug_chuyen_muc: {
+      category_slug: {
         type: Sequelize.TEXT
       },
-      hinh_anh: {
+      img: {
         type: Sequelize.TEXT
       },
-      tinh_trang: {
+      status: {
         type: Sequelize.INTEGER
       },
       createdAt: {

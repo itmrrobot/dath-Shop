@@ -46,7 +46,7 @@ const handleCreateNewCategory = async(req,res) => {
         }
       });
     console.log(result)
-    req.body.hinh_anh = JSON.stringify(result.url);
+    req.body.img = JSON.stringify(result.url);
 
     try {
         const newCategory = await categoryService.createNewCategory(req.body);
@@ -75,7 +75,7 @@ const handleDeleteCategory = async(req,res) => {
     try {
         const category = await categoryService.getCategoryById(id);
         if(category===null) return res.status(404).send();
-        imgs=JSON.parse(category.hinh_anh);
+        imgs=JSON.parse(category.img);
         await categoryService.deleteCategory(id);
         imgs.forEach((img,index) => {
             fs.unlinkSync(imgPath+img);

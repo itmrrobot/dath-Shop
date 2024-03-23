@@ -20,17 +20,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Product.init({
-    ten_san_pham: DataTypes.TEXT,
-    slug_san_pham: DataTypes.TEXT,
-    so_luong_nhap: DataTypes.INTEGER,
-    so_luong_ban: DataTypes.INTEGER,
+    name: DataTypes.TEXT,
+    slug_product: DataTypes.TEXT,
+    import_quatity: DataTypes.INTEGER,
+    sell_quantity: DataTypes.INTEGER,
     id_partner: DataTypes.INTEGER,
-    hinh_anh: DataTypes.TEXT,
-    tinh_trang: DataTypes.INTEGER,
-    mo_ta_ngan: DataTypes.TEXT,
-    mo_ta_chi_tiet: DataTypes.TEXT,
-    gia_ban: DataTypes.INTEGER,
-    gia_khuyen_mai: DataTypes.INTEGER,
+    img: DataTypes.TEXT,
+    status: DataTypes.INTEGER,
+    short_description: DataTypes.TEXT,
+    detail_description: DataTypes.TEXT,
+    price: DataTypes.INTEGER,
+    discount_price: DataTypes.INTEGER,
     CategoryId: DataTypes.INTEGER
   }, {
     sequelize,
