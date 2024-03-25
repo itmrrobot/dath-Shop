@@ -36,7 +36,7 @@ const getProductList = async (querys) => {
       [Sequelize.Op.between]: [minPrice, maxPrice],
     };
   }
-  let products = await Product.findAll({
+  let queryOptions = {
     raw: true,
     include: [
       { model: Category },
@@ -51,10 +51,18 @@ const getProductList = async (querys) => {
     ],
     where: whereClause,
     nest: true,
-    limit: pageSize,
-    offset: (pages - 1) * pageSize,
-    order: orderOption
-  });
+  };
+  
+  // Conditionally add pagination options
+  if (limit !== undefined) {
+    queryOptions.limit = pageSize;
+    queryOptions.offset = (pages - 1) * pageSize;
+  }
+  if (orderOption.length > 0) {
+    queryOptions.order = orderOption;
+  }
+  
+  let products = await Product.findAll(queryOptions);
   const combinedProducts = {};
 
   // Loop through each product
