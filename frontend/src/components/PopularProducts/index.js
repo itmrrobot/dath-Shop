@@ -11,7 +11,7 @@ const cx = classNames.bind(styles);
 function PopularProducts() {
     const [data, setData] = useState([]);
   const [loading,setIsLoading] = useState(false);
-  let newProducts = data && data?.products?.filter(p=>p?.so_luong_ban>=100)?.slice(0,4)
+  let newProducts = data && data?.products?.filter(p=>p?.sell_quantity>=100)?.slice(0,4)
   useEffect(() => {
     const control = new AbortController();
     const fetchData = async () => {
@@ -35,10 +35,9 @@ function PopularProducts() {
           <ContentSection name="Featured Products" navigation upper>
             <div className={cx("products")}>
                 {newProducts?.map((product,index) => {
-                    let imgs = product?.hinh_anh;
+                    let imgs = product?.Category?.img;
                     return <Link to={`/product/${product.id}`} className={cx("item")} key={index}>
-
-                    <img src={`${url}/img/${imgs[0]}`} alt="Rectangle-1394" className={cx("img")}/>
+                    <img src={`${url}/img/${imgs}`} alt="Rectangle-1394" className={cx("img")}/>
                     </Link>
                 })}
             </div>

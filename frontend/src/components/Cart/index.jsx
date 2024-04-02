@@ -31,7 +31,7 @@ function Cart() {
         })
         // console.log(check);
         let total = check.reduce((cur, acc) => {
-            return cur + acc.so_luong * acc.priceProduct;
+            return cur + acc.quantity * acc.priceProduct;
         }, 0);
         return total;
     }, [product, state?.cart?.value]);

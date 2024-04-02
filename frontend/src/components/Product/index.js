@@ -84,7 +84,7 @@ function Product() {
                 // const arrayWithoutQuotes = cleanedString.split(',');
                 // // Xóa dấu ngoặc kép và khoảng trắng ở đầu và cuối mỗi phần tử trong mảng
                 // const finalArray = arrayWithoutQuotes.map(item => item.replace(/"/g, '').trim());
-                setImage(respone?.data?.hinh_anh);
+                setImage(respone?.data?.img);
             } catch(e) {
                 console.log(e);
             }
@@ -110,7 +110,7 @@ function Product() {
             // console.log(state?.cuser?.value);
             // console.log(product);
             // await axios.post(url+"/cart/create",{id_user:user.id,id_product:Number(id),so_luong:count,nameProduct:data?.ten_san_pham,priceProduct:data?.gia_khuyen_mai,img:`${url}/img/${imgs?.[0]}`})
-            let data = {id_user:state?.cuser?.value?.id,id_product:Number(id),so_luong:quantity_Order,nameProduct:product?.ten_san_pham,priceProduct:product?.gia_khuyen_mai,img:`${url}/img/${image[0]}`}
+            let data = {id_user:state?.cuser?.value?.id,id_product:Number(id),quantity:quantity_Order,nameProduct:product?.name,priceProduct:product?.discount_price,img:`${url}/img/${image[0]}`}
             await axios.post(url+"/cart/create", data)
             state?.render?.setRender((prev) => !prev)
             // console.log(duma)
@@ -140,13 +140,13 @@ function Product() {
                             <span> &#62; </span>
                             <li>
                                 <a href="#">
-                                    <strong>{product?.ten_san_pham}</strong>
+                                    <strong>{product?.name}</strong>
                                 </a>
                             </li>
                         </ul>
                         <div className={cx('product-header')}>
                             <div className={cx('product-title')}>
-                                <p>{product?.ten_san_pham}</p>
+                                <p>{product?.name}</p>
                                 <span>Mã sản phẩm: {product?.id}</span>
                             </div>
                         </div>
@@ -154,9 +154,9 @@ function Product() {
                             <div className={cx('product-price-assess-wrapper')}>
                                 <div className={cx('price-wrapper')}>
                                     <p className={cx('price')}>
-                                        {formatPrice(product?.gia_khuyen_mai)}
+                                        {formatPrice(product?.discount_price)}
                                     </p>
-                                    <p className={cx('price-old')}>{formatPrice(product?.gia_ban)}</p>
+                                    <p className={cx('price-old')}>{formatPrice(product?.price)}</p>
                                 </div>
                                 <div className={cx('assess-wrapper')}>
                                     <div className={cx('star-reviews')}>

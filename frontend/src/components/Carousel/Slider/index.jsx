@@ -108,7 +108,7 @@ function Slider({ param, brand_id, images }) {
                                         <div className={cx('item-slider')}>
                                             <img
                                                 // src={'https://shoesshop-6n6z.onrender.com/imgs/' + slide?.img}
-                                                src={`${slide.hinh_anh[0]}`}
+                                                src={`${slide.img[0]}`}
                                                 alt={slide.name}
                                                 title={slide.name}
                                                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -129,14 +129,14 @@ function Slider({ param, brand_id, images }) {
                                         <Link to={`http://localhost:3000/product/${slide.id}`}>
                                             <div className={cx('item-slider')}>
                                                 <img
-                                                src={`${url}/img/${slide.hinh_anh[0]}`}
+                                                src={`${url}/img/${slide.img[0]}`}
                                                     // src={'https://shoesshop-6n6z.onrender.com/imgs/' + slide?.img}
                                                     alt={slide.name}
                                                     title={slide.name}
                                                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                                                 />
                                                 <img
-                                                src={`${url}/img/${slide.hinh_anh[1]}`}
+                                                src={`${url}/img/${slide.img[1]}`}
 
                                                     // src={`https://shoesshop-6n6z.onrender.com/imgs/${slide.hinh_anh[1]}`}
                                                     alt="rear product image"

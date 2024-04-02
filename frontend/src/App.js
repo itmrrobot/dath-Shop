@@ -14,6 +14,7 @@ import Chatbox from "./components/Chatbox";
 import { useContext, useState } from "react";
 import { UseContextUser } from "./hooks/useContextUser";
 import LayoutUserInfor from "../src/components/Layout/LayoutUserInfor"
+import ChangePasswordUser from "./pages/ChangePasswordUser";
 function App() {
   const [chat, setChat] = useState(false)
   const state = useContext(UseContextUser)
@@ -58,6 +59,18 @@ function App() {
                         profile={true}
                       >
                         <Profile></Profile>
+                      </LayoutUserInfor>
+                    </DefaultLayout>
+                  }
+                />
+                <Route
+                  path="/user/password"
+                  element={
+                    <DefaultLayout>
+                      <LayoutUserInfor
+                        path={'Password'} title={'Password'} password={true}
+                      >
+                        <ChangePasswordUser></ChangePasswordUser>
                       </LayoutUserInfor>
                     </DefaultLayout>
                   }

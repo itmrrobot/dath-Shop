@@ -14,6 +14,7 @@ function Chatbox() {
 
     const scrollToBottom = () => {
         console.log("Hello");
+        console.log(messagesEndRef.current);
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
@@ -63,6 +64,7 @@ function Chatbox() {
                 });
                 setTimeout(() => {
                     setConservation(prevConservation => [...prevConservation, ...answer]);
+                    scrollToBottom();
                 }, 3000);
         
                 // Đặt thời gian trễ trước khi hiển thị câu trả lời từ chatbot
@@ -90,6 +92,7 @@ function Chatbox() {
                 });
                 setTimeout(() => {
                     setConservation(prevConservation => [...prevConservation, ...answer]);
+                    scrollToBottom();
                 }, 3000);
         
                 // Đặt thời gian trễ trước khi hiển thị câu trả lời từ chatbot
@@ -123,8 +126,8 @@ function Chatbox() {
             </div>
         </div> */}
             </div>
-    <div className={cx('content__body')} ref={messagesEndRef}>
-        <div className={cx('chat__items')}>
+    <div className={cx('content__body')} >
+        <div className={cx('chat__items')} ref={messagesEndRef}>
             <div className={cx('chat__item', 'other')} style={{ animationDelay: '0.8s' }}>
                 <div className={cx('chat__item__content')}>
                     <div className={cx('chat__msg')}>Hello, I’m LuxuryCloset’s! 👋 I’m your personal sport assistant. How can I help you?</div>

@@ -47,6 +47,9 @@ function Login() {
       cookies.set('refreshToken', refresh_token);
       // setUser(response.data.res)
       localStorage.setItem("user",JSON.stringify(response.data.res));
+      localStorage.setItem("accessToken",JSON.stringify(access_token));
+      localStorage.setItem("refreshToken",JSON.stringify(refresh_token));
+
       console.log(response)
       state.cuser.setCurrentUser(response.data.res);
       navigate('/');

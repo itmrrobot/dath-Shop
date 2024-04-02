@@ -13,7 +13,7 @@ import { url } from '../../../constants';
 const cx = classNames.bind(styles);
 function Product_Item({ item, index }) {
     // const [isChecked, setIsChecked] = useState(false);
-    // console.log(item);
+    console.log(item);
     // console.log(item);
     const [size, setSize] = useState(item?.size);
     const [quantity_Order, setQuantity_Order] = useState();
@@ -184,7 +184,7 @@ function Product_Item({ item, index }) {
                         <Link to={`/product/${item?.id}`}>{item?.nameProduct}</Link>
                     </p>
                     <p className={cx('product-type')}>
-                        {item?.product?.tinh_trang} Products Left
+                        {item?.product?.status} Products Left
                     </p>
                     <p className={cx('product-type')}>
                         Size: M
@@ -227,11 +227,11 @@ function Product_Item({ item, index }) {
                 <div className={cx('price-quantity')}>
                     <div className={cx('price')}>
                         <p className={cx('price-discount')}>
-                            {formatPrice(item?.product?.gia_khuyen_mai)}
+                            {formatPrice(item?.product?.discount_price)}
                             {/* {formatPrice(priceDiscount(item?.product?.price, item?.product?.discount_id))} */}
                         </p>
                         <p className={cx('price-origin')}>
-                            {formatPrice(item?.product?.gia_ban)}
+                            {formatPrice(item?.product?.price)}
                             {/* {formatPrice(priceDiscount(item?.product?.price, item?.product?.discount_id))} */}
                         </p>
                     </div>
@@ -242,7 +242,7 @@ function Product_Item({ item, index }) {
                         >
                             -
                         </span>
-                        <span className={cx('num')}>{item?.so_luong}</span>
+                        <span className={cx('num')}>{item?.quantity}</span>
                         <span className={cx('plus')} 
                         // onClick={() => modifyQuantity(true)}
                         >

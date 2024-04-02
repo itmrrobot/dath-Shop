@@ -21,7 +21,8 @@ const images = {
     active_chat: require('./active_chat.svg').default,
     avatar_test: require("./avatar-test.png"),
     bot: require('./Bot.svg').default,
-
+    eye: require('./eye.svg').default,
+    eye_slash: require('./eye-slash.svg').default,
     // thumbnail2: require('./thumbnail_2.png'),
     
 };

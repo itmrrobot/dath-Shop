@@ -27,11 +27,13 @@ function Header() {
     const [isSuccess,setIsSuccess] = useState(false);
     const [products, setProducts] = useState([]);
     const [cartHeader, setCartHeader] = useState([]);
+    // console.log();
+    console.log(cartHeader);
     const inputRef = useRef();
     const navigate = useNavigate();
     const totalProduct = useMemo(() => {
         return cartHeader.reduce((acc, cur) => {
-            return acc + Number(cur?.so_luong);
+            return acc + Number(cur?.quantity);
         }, 0);
     }, [cartHeader]);
     const handleClickCart = () => {
@@ -168,7 +170,7 @@ function Header() {
                                 >
                                     Store
                                 </Button> */}
-                                <Link className={cx("nav-link")} to="/products">Store</Link>
+                                <Link className={cx("nav-link")} to="/products?page=1&limit=3">Store</Link>
                     </Tippy>
                     {state?.cuser?.value === '' &&
                                 <HeadlessTippy
@@ -293,7 +295,7 @@ function Header() {
                                                                             </Link>
                                                                             <span className={cx('cart-item-price')}>
                                                                                 {formatPrice(
-                                                                                    prod.priceProduct,
+                                                                                    prod.priceProduct
                                                                                 )}
                                                                             </span>
                                                                             <div className={cx('cart-item-quantity')}>
@@ -301,7 +303,7 @@ function Header() {
                                                                                     {/* Size: <span>{prod?.size}</span> */}
                                                                                 </p>
                                                                                 <p>
-                                                                                    x<span>{prod?.so_luong}</span>
+                                                                                    x<span>{prod?.quantity}</span>
                                                                                 </p>
                                                                             </div>
                                                                         </div>

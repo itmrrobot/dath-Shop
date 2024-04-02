@@ -19,6 +19,7 @@ function SideBarFilter() {
                     signal: controller.signal
                 })
                 setData(respone.data);
+                console.log(respone.data);
             } catch(e) {
                 console.log(e);
             }
@@ -144,7 +145,7 @@ function SideBarFilter() {
                         return(
                             <div className={cx("item")} key={index}>
                                 <input type="checkbox" name={item?.id} className={cx("input")} onChange={handleClick}/>
-                                <span className={cx("name")}>{item?.ten_chuyen_muc}</span>
+                                <span className={cx("name")}>{item?.category_name}</span>
                             </div>
                         )
                     })}
