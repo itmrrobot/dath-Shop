@@ -7,7 +7,6 @@ const verifyToken = async(req,res,next) => {
         console.log(token)
         const decoded = jwt.verify(token,process.env.JWT_SECRET);
         const user = await User.findOne({where:{ id: decoded.id}})
-
         if(!user) {
             throw new Error();
         }
@@ -17,7 +16,6 @@ const verifyToken = async(req,res,next) => {
     } catch(e) {
         console.log(e)
         if(e) {
-
             const isChecked = e instanceof jwt.TokenExpiredError;
             if(!isChecked) return res.status(401).send({err:2,msg:"Token is invalid"})
             else return res.status(401).send({err:1,msg:"Token has expired"})
