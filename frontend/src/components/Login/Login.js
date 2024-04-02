@@ -65,6 +65,12 @@ function Login() {
       throw new Error(e);
     }
   };
+  // const getGoogleAuthUrl = () => {
+  //   const url = `https://accounts.google.com/o/oauth2/v2/auth`
+  //   const query= {
+  //     client_id: 
+  //   }
+  // }
   return (
     <div className={cx("wrap-login")}>
       <div className={cx("wrapper")}>
