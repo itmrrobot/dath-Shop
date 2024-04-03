@@ -1,40 +1,40 @@
-import classNames from "classnames/bind";
-import styles from "./Product.module.scss";
-import share from "../../assets/img/share.png";
-import bookmark from "../../assets/img/book-mark.png";
-import love from "../../assets/img/love.png";
-import star from "../../assets/img/star.png";
-import message from "../../assets/img/message.png";
-import cart from "../../assets/img/icon-cart.png";
-import deliveryIcon from "../../assets/img/delivery.png";
-import returnIcon from "../../assets/img/return.png";
-import color1 from "../../assets/img/Group 5.png";
-import color2 from "../../assets/img/Group 6.png";
-import color3 from "../../assets/img/Group 7.png";
-import color4 from "../../assets/img/Group 8.png";
-import color5 from "../../assets/img/Group 9.png";
-import RelatedProduct from "../RelatedProduct";
-import prevIcon from "../../assets/img/prev.png";
-import nextIcon from "../../assets/img/Frame (8).png";
-import { useParams } from "react-router-dom";
-import { useContext, useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { url } from "../../constants";
-import { formatPrice, priceDiscount } from "../../common";
-import { Link } from "react-router-dom";
+import classNames from 'classnames/bind';
+import styles from './Product.module.scss';
+import share from '../../assets/img/share.png';
+import bookmark from '../../assets/img/book-mark.png';
+import love from '../../assets/img/love.png';
+import star from '../../assets/img/star.png';
+import message from '../../assets/img/message.png';
+import cart from '../../assets/img/icon-cart.png';
+import deliveryIcon from '../../assets/img/delivery.png';
+import returnIcon from '../../assets/img/return.png';
+import color1 from '../../assets/img/Group 5.png';
+import color2 from '../../assets/img/Group 6.png';
+import color3 from '../../assets/img/Group 7.png';
+import color4 from '../../assets/img/Group 8.png';
+import color5 from '../../assets/img/Group 9.png';
+import RelatedProduct from '../RelatedProduct';
+import prevIcon from '../../assets/img/prev.png';
+import nextIcon from '../../assets/img/Frame (8).png';
+import { useParams } from 'react-router-dom';
+import { useContext, useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { url } from '../../constants';
+import { formatPrice, priceDiscount } from '../../common';
+import { Link } from 'react-router-dom';
 import Carousel from '../Carousel/Carousel_Detail_Product';
-import images from "../../assets/img";
+import images from '../../assets/img';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from "../Button";
-import Slider from "../Carousel/Slider";
-import { toast } from "react-toastify";
-import { UseContextUser } from "../../hooks/useContextUser";
+import Button from '../Button';
+import Slider from '../Carousel/Slider';
+import { toast } from 'react-toastify';
+import { UseContextUser } from '../../hooks/useContextUser';
 
 const cx = classNames.bind(styles);
 
 function Product() {
-    const {id} = useParams();
-    const param = useParams()
+    const { id } = useParams();
+    const param = useParams();
     const [product, setProduct] = useState({});
     const [checked, setChecked] = useState();
     const [size, setSize] = useState(['Small', 'Medium', 'Large', 'Extra Large', 'XXL']);
@@ -44,7 +44,7 @@ function Product() {
     const [quantity_Order, setQuantity_Order] = useState(1);
     console.log(product);
     const tabs = ['Description', 'Reviews'];
-    const state = useContext(UseContextUser)
+    const state = useContext(UseContextUser);
     const benefits = [
         'Durable leather is easily cleanable so you can keep your look fresh.',
         'Water-repellent finish and internal membrane help keep your feet dry.',
@@ -73,9 +73,9 @@ function Product() {
         const controller = new AbortController();
         const fetchData = async () => {
             try {
-                const respone = await axios.get(`${url}/products/${id}`,{
-                    signal: controller.signal
-                })
+                const respone = await axios.get(`${url}/products/${id}`, {
+                    signal: controller.signal,
+                });
                 setProduct(respone.data);
                 console.log(respone.data);
                 // setImage(respone?.data?.hinh_anh);
@@ -84,16 +84,16 @@ function Product() {
                 // const arrayWithoutQuotes = cleanedString.split(',');
                 // // Xóa dấu ngoặc kép và khoảng trắng ở đầu và cuối mỗi phần tử trong mảng
                 // const finalArray = arrayWithoutQuotes.map(item => item.replace(/"/g, '').trim());
-                setImage(respone?.data?.hinh_anh);
-            } catch(e) {
+                setImage(respone?.data?.img);
+            } catch (e) {
                 console.log(e);
             }
-        }
+        };
         fetchData();
         return () => {
             controller.abort();
-        }
-    },[id])
+        };
+    }, [id]);
     // console.log(imgs);
     // const handleIncrease = () => {
     //     setCount(count+1);
@@ -110,16 +110,23 @@ function Product() {
             // console.log(state?.cuser?.value);
             // console.log(product);
             // await axios.post(url+"/cart/create",{id_user:user.id,id_product:Number(id),so_luong:count,nameProduct:data?.ten_san_pham,priceProduct:data?.gia_khuyen_mai,img:`${url}/img/${imgs?.[0]}`})
-            let data = {id_user:state?.cuser?.value?.id,id_product:Number(id),so_luong:quantity_Order,nameProduct:product?.ten_san_pham,priceProduct:product?.gia_khuyen_mai,img:`${url}/img/${image[0]}`}
-            await axios.post(url+"/cart/create", data)
-            state?.render?.setRender((prev) => !prev)
+            let data = {
+                id_user: state?.cuser?.value?.id,
+                id_product: Number(id),
+                quantity: quantity_Order,
+                nameProduct: product?.name,
+                priceProduct: product?.discount_price,
+                img: `${url}/img/${image[0]}`,
+            };
+            await axios.post(url + '/cart/create', data);
+            state?.render?.setRender((prev) => !prev);
             // console.log(duma)
-        } catch(e) {
+        } catch (e) {
             console.log(e);
         }
-    }
+    };
     //`${url}/img/${imgs.current?.[imgSelectedIndex]}`
-    return(
+    return (
         <>
             <div className={cx('wrapper')}>
                 <div className={cx('product-first')}>
@@ -140,13 +147,13 @@ function Product() {
                             <span> &#62; </span>
                             <li>
                                 <a href="#">
-                                    <strong>{product?.ten_san_pham}</strong>
+                                    <strong>{product?.name}</strong>
                                 </a>
                             </li>
                         </ul>
                         <div className={cx('product-header')}>
                             <div className={cx('product-title')}>
-                                <p>{product?.ten_san_pham}</p>
+                                <p>{product?.name}</p>
                                 <span>Mã sản phẩm: {product?.id}</span>
                             </div>
                         </div>
@@ -154,9 +161,9 @@ function Product() {
                             <div className={cx('product-price-assess-wrapper')}>
                                 <div className={cx('price-wrapper')}>
                                     <p className={cx('price')}>
-                                        {formatPrice(product?.gia_khuyen_mai)}
+                                        {formatPrice(product?.discount_price)}
                                     </p>
-                                    <p className={cx('price-old')}>{formatPrice(product?.gia_ban)}</p>
+                                    <p className={cx('price-old')}>{formatPrice(product?.price)}</p>
                                 </div>
                                 <div className={cx('assess-wrapper')}>
                                     <div className={cx('star-reviews')}>
@@ -221,14 +228,13 @@ function Product() {
                             <div className={cx('wrapper-quantity')}>
                                 <span
                                     className={cx('minus')}
-                                    onClick={() => setQuantity_Order((prev) => (prev === 1 ? prev : prev - 1))}
+                                    onClick={() =>
+                                        setQuantity_Order((prev) => (prev === 1 ? prev : prev - 1))
+                                    }
                                 >
                                     -
                                 </span>
-                                <span className={cx('num')}>
-                                {quantity_Order}
-                                
-                                </span>
+                                <span className={cx('num')}>{quantity_Order}</span>
                                 <span
                                     className={cx('plus')}
                                     onClick={() =>
@@ -257,17 +263,19 @@ function Product() {
                                 </span>
                             </div>
                             <Button
-                                    primary
-                                    rounded
-                                    shopping
-                                    leftIcon={<img className={cx('shopping-img')} src={images.shopping} />}
-                                    onClick={handleAddToCart}
-                                    // onClick={() => {
-                                    //     handleAddProductToCart(product?.id);
-                                    // }}
-                                >
-                                    Add to Cart!
-                                </Button>
+                                primary
+                                rounded
+                                shopping
+                                leftIcon={
+                                    <img className={cx('shopping-img')} src={images.shopping} />
+                                }
+                                onClick={handleAddToCart}
+                                // onClick={() => {
+                                //     handleAddProductToCart(product?.id);
+                                // }}
+                            >
+                                Add to Cart!
+                            </Button>
                             {/* {size_quantity_select > 0 && quantity_Order - 1 < size_quantity_select ? (
                                 <Button
                                     primary
@@ -351,7 +359,7 @@ function Product() {
                             <>
                                 <div id="desc" className={cx('infor-container-description')}>
                                     <h1>Product Description</h1>
-                                    <p>{product.mo_ta_chi_tiet}</p>
+                                    <p>{product.description}</p>
                                 </div>
                                 <div className={cx('infor-container-description')}>
                                     <h1>Benefits</h1>
@@ -360,7 +368,9 @@ function Product() {
                                             return (
                                                 <div key={i} className={cx('benefit')}>
                                                     <img src={images.check_icon} alt="" />
-                                                    <li className={cx('benefit-line')}>{benefit}</li>
+                                                    <li className={cx('benefit-line')}>
+                                                        {benefit}
+                                                    </li>
                                                 </div>
                                             );
                                         })}
@@ -375,7 +385,9 @@ function Product() {
                                             return (
                                                 <div key={i} className={cx('benefit')}>
                                                     <img src={images.check_icon} alt="" />
-                                                    <li className={cx('benefit-line')}>{details}</li>
+                                                    <li className={cx('benefit-line')}>
+                                                        {details}
+                                                    </li>
                                                 </div>
                                             );
                                         })}
@@ -399,7 +411,7 @@ function Product() {
                 <div className={cx('product-third')}></div>
             </div>
         </>
-    )
+    );
 }
 
 export default Product;

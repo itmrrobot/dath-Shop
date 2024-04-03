@@ -10,7 +10,7 @@ import 'swiper/css/pagination';
 import classNames from 'classnames/bind';
 import styles from './Slider.module.scss';
 import { formatPrice, priceDiscount } from '../../../common';
-import { url } from "../../../constants";
+import { url } from '../../../constants';
 
 const cx = classNames.bind(styles);
 
@@ -24,41 +24,41 @@ function Slider({ param, brand_id, images }) {
     // console.log(recommend);
     const [brand, setBrand] = useState([]);
     // console.log(brand);
-    const handleImage = respone => {
+    const handleImage = (respone) => {
         console.log(respone);
         const cleanedString = respone.slice(1, -1);
-                // Tách chuỗi thành mảng sử dụng dấu phẩy làm dấu phân cách
-                const arrayWithoutQuotes = cleanedString.split(',');
-                // Xóa dấu ngoặc kép và khoảng trắng ở đầu và cuối mỗi phần tử trong mảng
-                const finalArray = arrayWithoutQuotes.map(item => item.replace(/"/g, '').trim());
-                // setImage(finalArray);
-                return finalArray
-    }
+        // Tách chuỗi thành mảng sử dụng dấu phẩy làm dấu phân cách
+        const arrayWithoutQuotes = cleanedString.split(',');
+        // Xóa dấu ngoặc kép và khoảng trắng ở đầu và cuối mỗi phần tử trong mảng
+        const finalArray = arrayWithoutQuotes.map((item) => item.replace(/"/g, '').trim());
+        // setImage(finalArray);
+        return finalArray;
+    };
     useEffect(() => {
         const controller = new AbortController();
         const fetchData = async () => {
             try {
-                const respone = await axios.get(`${url}/products`,{
+                const respone = await axios.get(`${url}/products`, {
                     signal: controller.signal,
                     params: {
                         brand_id: brand_id,
                     },
-                })
+                });
                 if (param) {
                     setRecommend(respone.data.products);
                 } else {
                     setBrand(respone.data);
                 }
                 //setImgs(respone.data.hinh_anh)
-            } catch(e) {
+            } catch (e) {
                 console.log(e);
             }
-        }
+        };
         fetchData();
         return () => {
             controller.abort();
-        }
-    },[param, brand_id])
+        };
+    }, [param, brand_id]);
     // useEffect(() => {
     //     axios
     //         .get(`http://localhost:3000/product`, {
@@ -108,10 +108,12 @@ function Slider({ param, brand_id, images }) {
                                         <div className={cx('item-slider')}>
                                             <img
                                                 // src={'https://shoesshop-6n6z.onrender.com/imgs/' + slide?.img}
-                                                src={`${slide.hinh_anh[0]}`}
+                                                src={`${slide.img[0]}`}
                                                 alt={slide.name}
                                                 title={slide.name}
-                                                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                                                onClick={() =>
+                                                    window.scrollTo({ top: 0, behavior: 'smooth' })
+                                                }
                                             />
                                         </div>
                                     </Link>
@@ -129,15 +131,19 @@ function Slider({ param, brand_id, images }) {
                                         <Link to={`http://localhost:3000/product/${slide.id}`}>
                                             <div className={cx('item-slider')}>
                                                 <img
-                                                src={`${url}/img/${slide.hinh_anh[0]}`}
+                                                    src={`${url}/img/${slide.img[0]}`}
                                                     // src={'https://shoesshop-6n6z.onrender.com/imgs/' + slide?.img}
                                                     alt={slide.name}
                                                     title={slide.name}
-                                                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                                                    onClick={() =>
+                                                        window.scrollTo({
+                                                            top: 0,
+                                                            behavior: 'smooth',
+                                                        })
+                                                    }
                                                 />
                                                 <img
-                                                src={`${url}/img/${slide.hinh_anh[1]}`}
-
+                                                    src={`${url}/img/${slide.img[1]}`}
                                                     // src={`https://shoesshop-6n6z.onrender.com/imgs/${slide.hinh_anh[1]}`}
                                                     alt="rear product image"
                                                     className={cx('rear-img')}

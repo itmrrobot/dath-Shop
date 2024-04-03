@@ -126,39 +126,39 @@ function Product_Item({ item, index }) {
     //     state.cart.setCart(cart_sort);
     // };
     const handleCheckboxChange = (e) => {
-        let oldCart = [...state?.cart?.value]
+        let oldCart = [...state?.cart?.value];
         // // console.log(newArr);
         // console.log();
-        let check_Prod = oldCart.find(prod => item?.id_product === prod?.id_product)
+        let check_Prod = oldCart.find((prod) => item?.id_product === prod?.id_product);
         check_Prod = {
             ...check_Prod,
             isChecked: e.target.checked,
-        }
-        let index = oldCart.findIndex(prod => item?.id_product === prod?.id_product);
+        };
+        let index = oldCart.findIndex((prod) => item?.id_product === prod?.id_product);
         oldCart[index] = check_Prod;
-        state?.cart?.setCart(oldCart)
+        state?.cart?.setCart(oldCart);
         // console.log(oldCart);
         // console.log(index);
         // console.log(check_Prod);
         // console.log(state?.cart?.value?.);
         // console.log(item?.id_product);
-    }
+    };
     const handleRemoveItem = () => {
         axios.delete(`${url}/cart/delete/${item?.id}`).then((res) => {
             // console.log(res);
             toast.success(`${res.data.msg}!`, {
-                position: "top-right",
+                position: 'top-right',
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-                theme: "light",
-                });
-            state?.render?.setRender((prev)=>!prev)
-        })
-    }
+                theme: 'light',
+            });
+            state?.render?.setRender((prev) => !prev);
+        });
+    };
     return (
         <div className={cx('product-item')}>
             <div className={cx('product-check')}>
@@ -173,7 +173,7 @@ function Product_Item({ item, index }) {
             <div className={cx('product-img')}>
                 <div className={cx('product-img-wrapper')}>
                     <img
-                         src={`${item?.img}`}
+                        src={`${item?.img}`}
                         // alt={prod.name}
                     />
                 </div>
@@ -183,12 +183,8 @@ function Product_Item({ item, index }) {
                     <p className={cx('product-name')}>
                         <Link to={`/product/${item?.id}`}>{item?.nameProduct}</Link>
                     </p>
-                    <p className={cx('product-type')}>
-                        {item?.product?.tinh_trang} Products Left
-                    </p>
-                    <p className={cx('product-type')}>
-                        Size: M
-                    </p>
+                    <p className={cx('product-type')}>{item?.product?.status} Products Left</p>
+                    <p className={cx('product-type')}>Size: M</p>
                     {/* <div className={cx('product-size')}>
                         <select
                             value={size}
@@ -227,35 +223,34 @@ function Product_Item({ item, index }) {
                 <div className={cx('price-quantity')}>
                     <div className={cx('price')}>
                         <p className={cx('price-discount')}>
-                            {formatPrice(item?.product?.gia_khuyen_mai)}
+                            {formatPrice(item?.product?.discount_price)}
                             {/* {formatPrice(priceDiscount(item?.product?.price, item?.product?.discount_id))} */}
                         </p>
                         <p className={cx('price-origin')}>
-                            {formatPrice(item?.product?.gia_ban)}
+                            {formatPrice(item?.product?.price)}
                             {/* {formatPrice(priceDiscount(item?.product?.price, item?.product?.discount_id))} */}
                         </p>
                     </div>
 
                     <div className={cx('wrapper-quantity')}>
-                        <span className={cx('minus')} 
-                        // onClick={() => modifyQuantity(false)}
+                        <span
+                            className={cx('minus')}
+                            // onClick={() => modifyQuantity(false)}
                         >
                             -
                         </span>
-                        <span className={cx('num')}>{item?.so_luong}</span>
-                        <span className={cx('plus')} 
-                        // onClick={() => modifyQuantity(true)}
+                        <span className={cx('num')}>{item?.quantity}</span>
+                        <span
+                            className={cx('plus')}
+                            // onClick={() => modifyQuantity(true)}
                         >
                             +
                         </span>
                     </div>
                 </div>
             </div>
-            
-            <span
-                className={cx('remove')} 
-                onClick={handleRemoveItem}
-            >
+
+            <span className={cx('remove')} onClick={handleRemoveItem}>
                 <img src={images.remove} alt="" />
             </span>
         </div>
