@@ -13,7 +13,6 @@ cloudinary.config({
 const handleGetCategoryList = async(req,res) => {
     try {
         let category = await categoryService.getCategoryList();
-        console.log(category)
         return res.send({category});
     } catch(e) {
         console.log(e);
@@ -45,7 +44,6 @@ const handleCreateNewCategory = async(req,res) => {
           console.log(`File deleted: ${req.file.path}`);
         }
       });
-    console.log(result)
     req.body.img = JSON.stringify(result.url);
 
     try {

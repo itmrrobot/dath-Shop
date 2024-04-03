@@ -5,6 +5,7 @@ const userController = require('../controllers/userController');
 const { verifyToken } = require('../middleware/verifyToken');
 const { isAdmin } = require('../middleware/verifyRole');
 const passport = require('passport');
+const session = require('express-session');
 
 
 router.post('/auth/register',authController.handleRegister)
@@ -16,8 +17,19 @@ router.post('/auth/register',authController.handleRegister)
 // initial google ouath login
 .get("/auth/google",passport.authenticate("google",{scope:["profile","email"]}))
 .get("/auth/google/callback",passport.authenticate("google",{
-    successRedirect:"http://localhost:3000",
+    //successRedirect:"http://localhost:3000",
     failureRedirect:"http://localhost:3000/login"
-}))
+}),
+function(req, res) {
+  // Successful authentication, redirect home.
+  if (req.user) {
+    req.body.user = req.user;
+}
+//console.log(req.body);
+session.user = req.user;
+  res.redirect('http://localhost:3000');
+}
+)
+.get('/login/success',authController.handleLoginSuccess)
 
 module.exports = router;
