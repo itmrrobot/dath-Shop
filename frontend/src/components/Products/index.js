@@ -32,6 +32,7 @@ function Products() {
         const respone = await axios.get(url + "/products", {
           signal: control.signal,
         });
+        console.log(respone);
         setData(respone.data.products);
         setIsLoading(true);
       } catch (e) {
@@ -68,7 +69,7 @@ function Products() {
         <div className={cx("wrap-products")}>
           <div className={cx("products-list")}>
             {loading&&data?.map((product,index) => {
-                let imgs = product?.hinh_anh;
+                let imgs = product?.img;
                 return (
                     product!==null&&<div className={cx("product")} key={index}>
               <Link to={`/product/${product.id}`} className={cx("product-link")}>
@@ -79,12 +80,12 @@ function Products() {
                   </div>
                 </div>
                 <p className={cx("desc")}>
-                  {product.ten_san_pham}
+                  {product.name}
                 </p>
                 <div className={cx("wrap-all")}>
                   <div className={cx("wrap-price")}>
-                    <span className={cx("price")}>{product?.gia_khuyen_mai?.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span>
-                    <span className={cx("unused-price")}>{product?.gia_ban?.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span>
+                    <span className={cx("price")}>{product?.discount_price?.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span>
+                    <span className={cx("unused-price")}>{product?.price?.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span>
                   </div>
                   <div className={cx("wrap-orders-category")}>
                     <span className={cx("order-number")}>24 Orders</span>
