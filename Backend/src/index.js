@@ -47,15 +47,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.use(
     new OAuth2Strategy({
-        clientID:process.env.CLIENT_ID,
-        clientSecret:process.env.CLIENT_SECRET,
+        clientID:process.env.GOOGLE_CLIENT_ID,
+        clientSecret:process.env.GOOGLE_CLIENT_SECRET,
         callbackURL:"/auth/google/callback",
         scope:["profile","email"]
     },
     async(accessToken,refreshToken,profile,done)=>{
         try {
             let user = await User.findOne({id:profile.id});
-
+            console.log(profile.id);
             if(!user){
                 user = await User.create({
                     id:profile.id,
