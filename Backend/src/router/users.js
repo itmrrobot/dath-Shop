@@ -31,6 +31,7 @@ router
     //  console.log(res);
     }
   )
-  .get("/login/success", authController.handleLoginSuccess);
+  .get("/login/success", authController.handleLoginSuccess)
+  .post("/auth/logout",authController.handleLogout)
 
 module.exports = router;

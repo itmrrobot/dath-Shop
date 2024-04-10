@@ -9,27 +9,33 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.createTable('WishList', {
+    await queryInterface.createTable('Reviews', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id_user: {
-        type: Sequelize.INTEGER
-      },
       id_product: {
         type: Sequelize.INTEGER
       },
-      nameProduct: {
-        type: Sequelize.TEXT
-      },
-      priceProduct: {
+      id_user: {
         type: Sequelize.INTEGER
+      },
+      rating: {
+        type: Sequelize.INTEGER
+      },
+      content: {
+        type: Sequelize.TEXT
       },
       img: {
         type: Sequelize.TEXT
+      },
+      video: {
+        type: Sequelize.TEXT
+      },
+      numberLikes: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

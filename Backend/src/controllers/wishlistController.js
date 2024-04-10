@@ -1,7 +1,5 @@
 const wishlistService = require("../service/wishlistService");
 const path = require('path');
-const imgPath = path.join(__dirname,'../public/img/');
-const fs = require('fs');
 
 const handleProductInWishList = async(req,res) => {
     try {
@@ -30,6 +28,23 @@ const handleUpdateWishList = async(req,res) => {
     } catch(e) {
         console.log(e);
         res.status(400).send();
+    }
+}
+
+const handleDeleteWishList = async(req,res) => {
+    let id = req.params.id;
+    let imgs=[]
+    try {
+        const category = await categoryService.getCategoryById(id);
+        if(category===null) return res.status(404).send();
+        imgs=JSON.parse(category.img);
+        await categoryService.deleteCategory(id);
+        imgs.forEach((img,index) => {
+            fs.unlinkSync(imgPath+img);
+        })
+    } catch(e) {
+        console.log(e);
+        res.status(500).send()
     }
 }
 

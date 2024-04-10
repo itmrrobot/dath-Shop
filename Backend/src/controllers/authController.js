@@ -34,6 +34,14 @@ const handleLoginSuccess = async(req,res) => {
     }
 }
 
+const handleLogout = async(req,res) => {
+    if(session.user) {
+        delete session.user;
+        return res.status(200).json({message:"Logout success",user:null})
+    }
+    return res.status(400).send();
+}
+
 const handleRefreshToken = async(req,res) => {
     try {
         const respone = await authService.refreshToken(req.body);
@@ -46,4 +54,4 @@ const handleRefreshToken = async(req,res) => {
     }
 }
 
-module.exports = {handleRegister,handleLogin,handleRefreshToken,handleLoginSuccess};
+module.exports = {handleRegister,handleLogin,handleRefreshToken,handleLoginSuccess,handleLogout};

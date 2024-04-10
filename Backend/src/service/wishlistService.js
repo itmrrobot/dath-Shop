@@ -1,4 +1,4 @@
-const { WishList, Product, CartProduct } = require("../models/index");
+const { WishList } = require("../models/index");
 
 const getProductsInWishList = async (id) => {
   let wishlist = [];
@@ -22,6 +22,7 @@ const createNewWishlist = async (data) => {
     return wishlist;
   } catch (e) {
     console.log(e);
+    throw new Error(e);
   }
 };
 
