@@ -31,21 +31,17 @@ const handleUpdateWishList = async(req,res) => {
     }
 }
 
-const handleDeleteWishList = async(req,res) => {
+const handleDeleteWishList= async(req,res) => {
     let id = req.params.id;
-    let imgs=[]
     try {
-        const category = await categoryService.getCategoryById(id);
-        if(category===null) return res.status(404).send();
-        imgs=JSON.parse(category.img);
-        await categoryService.deleteCategory(id);
-        imgs.forEach((img,index) => {
-            fs.unlinkSync(imgPath+img);
-        })
+        const wishList = await wishlistService.getWishListById(id);
+        if(wishList===null) return res.status(404).send();
+        await wishlistService.deleteWishList(id);
+        res.status(200).send({msg:'Delete success'});
     } catch(e) {
         console.log(e);
         res.status(500).send()
     }
 }
 
-module.exports = {handleProductInWishList,handleUpdateWishList,handleCreateNewWishList};
+module.exports = {handleProductInWishList,handleUpdateWishList,handleCreateNewWishList,handleDeleteWishList};

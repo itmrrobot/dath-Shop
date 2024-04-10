@@ -39,4 +39,13 @@ const updateWishlist = async (data) => {
   }
 };
 
-module.exports = { getProductsInWishList, createNewWishlist, updateWishlist };
+const getWishListById = async (id) => {
+  const wishList = await WishList.findOne({ where: { id: id } });
+  return wishList;
+};
+
+const deleteWishList = async (id) => {
+  await WishList.destroy({ where: { id } });
+};
+
+module.exports = { getProductsInWishList, createNewWishlist, updateWishlist,deleteWishList,getWishListById };
