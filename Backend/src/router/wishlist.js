@@ -8,5 +8,6 @@ const { verifyToken } = require('../middleware/verifyToken');
 router.post('/wishlist/create',wishlistController.handleCreateNewWishList)
 .get('/wishlist/:id',wishlistController.handleProductInWishList)
 .put('/wishlist/update',wishlistController.handleUpdateWishList)
+.delete('/wishlist/delete/:id',wishlistController.handleDeleteWishList)
 
 module.exports = router;
