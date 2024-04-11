@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const productsController = require('../controllers/productsController');
-const upload = require('../common/upload');
+const {upload} = require('../common/upload');
 // const path = require('path');
 // const multer = require('multer');
 // const storage = multer.diskStorage({
@@ -26,7 +26,6 @@ const upload = require('../common/upload');
 router.get('/products',productsController.handleGetProductList)
 .get('/products/:id',productsController.handleGetProductById)
 .post('/products/create',upload.array('img',4),productsController.handleCreateNewProduct)
-.post('/products/upload',upload.single('upload'),productsController.uploadImage)
 .put('/products/update/:id',productsController.handleUpdateProduct)
 .delete('/products/delete/:id',productsController.handleDeleteProduct)
 

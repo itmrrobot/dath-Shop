@@ -2,10 +2,6 @@ const customerService = require("../service/customerService");
 const path = require('path');
 const imgPath = path.join(__dirname,'../public/img/');
 const fs = require('fs');
-const uploadImage = (req,res) => {
-    console.log(req.file)
-    res.send("hello")
-}
 
 const handleGetCustomerList = async(req,res) => {
     try {
@@ -74,4 +70,4 @@ const handleDeleteCustomer = async(req,res) => {
     }
 }
 
-module.exports = {handleGetCustomerList,uploadImage,handleGetCustomerById,handleCreateNewCustomer,handleDeleteCustomer,handleUpdateCustomer};
+module.exports = {handleGetCustomerList,handleGetCustomerById,handleCreateNewCustomer,handleDeleteCustomer,handleUpdateCustomer};

@@ -2,13 +2,7 @@ const categoryService = require("../service/categoryService");
 const path = require('path');
 const imgPath = path.join(__dirname,'../public/img/');
 const fs = require('fs');
-const cloudinary = require('cloudinary').v2;
-
-cloudinary.config({
-  cloud_name: 'dzznxekfg',
-  api_key: '651378936647749',
-  api_secret: 'L-YVnYmTUNndTCTi52L_O-keBnk'
-});
+const cloudinary = require('../common/cloudinary-config');
 
 const handleGetCategoryList = async(req,res) => {
     try {
