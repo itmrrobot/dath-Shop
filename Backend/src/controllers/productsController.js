@@ -30,30 +30,30 @@ const handleGetProductById = async(req,res) => {
 }
 
 const handleCreateNewProduct = async(req,res) => {
-    const folderName = 'shop_imgs'; // Specify the folder name on Cloudinary
+    // const folderName = 'shop_imgs'; // Specify the folder name on Cloudinary
 
-    const promises = req.files.map(async (file) => {
-      const result = await cloudinary.uploader.upload(file.path, {
-        folder: folderName
-      });
-      return result.secure_url;
-    });
+    // const promises = req.files.map(async (file) => {
+    //   const result = await cloudinary.uploader.upload(file.path, {
+    //     folder: folderName
+    //   });
+    //   return result.secure_url;
+    // });
 
-    const uploadedImagesUrls = await Promise.all(promises);
-    req.files.forEach((file) => {
-      fs.unlink(file.path, (err) => {
-        if (err) {
-          console.error(`Error deleting file: ${file.path}`, err);
-        } else {
-          console.log(`File deleted: ${file.path}`);
-        }
-      });
-    });
-    console.log(uploadedImagesUrls)
-    req.body.img = JSON.stringify(uploadedImagesUrls);
+    // const uploadedImagesUrls = await Promise.all(promises);
+    // req.files.forEach((file) => {
+    //   fs.unlink(file.path, (err) => {
+    //     if (err) {
+    //       console.error(`Error deleting file: ${file.path}`, err);
+    //     } else {
+    //       console.log(`File deleted: ${file.path}`);
+    //     }
+    //   });
+    // });
+    // console.log(uploadedImagesUrls)
+    // req.body.img = JSON.stringify(uploadedImagesUrls);
 
     try {
-        const newProduct = await productsService.createNewProduct(req.body);
+        const newProduct = await productsService.createNewProduct(req.body,req.files);
         res.send(newProduct);
     } catch(e) {
         res.status(400).send()

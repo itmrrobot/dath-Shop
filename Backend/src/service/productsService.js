@@ -4,12 +4,14 @@ const {
   Inventory,
   ProductInventory,
 } = require("../models/index");
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
+const cloudinary = require("../common/cloudinary-config");
+const fs = require("fs");
 
 const getProductList = async (querys) => {
   //let products = []
-  const { page, limit, categoryId, sort, order,price_gte,price_lte } = querys;
-  console.log(page, limit,order,sort, typeof sort === "string");
+  const { page, limit, categoryId, sort, order, price_gte, price_lte } = querys;
+  console.log(page, limit, order, sort, typeof sort === "string");
   const pages = page || 1;
   const pageSize = limit || 10;
   const minPrice = price_gte;
@@ -17,16 +19,11 @@ const getProductList = async (querys) => {
   let whereClause = {};
   let orderOption = [];
 
-  if (
-    sort &&
-    order &&
-    typeof sort === "string" &&
-    typeof order === "string"
-  ) {
+  if (sort && order && typeof sort === "string" && typeof order === "string") {
     // Sort by price in ascending order
     orderOption = [[`${sort}`.toLowerCase(), `${order}`.toUpperCase()]];
   }
-  console.log(orderOption)
+  console.log(orderOption);
   if (categoryId) {
     whereClause.CategoryId = categoryId;
   }
@@ -42,17 +39,23 @@ const getProductList = async (querys) => {
       { model: Category },
       {
         model: Inventory,
-        as: 'Inventories',
+        as: "Inventories",
         through: { attributes: [] },
         attributes: {
-          exclude: ["createdAt", "updatedAt", "Product_Inventory", "InventoryId", "ProductId"],
+          exclude: [
+            "createdAt",
+            "updatedAt",
+            "ProductInventory",
+            "InventoryId",
+            "ProductId",
+          ],
         },
       },
     ],
     where: whereClause,
     nest: true,
   };
-  
+
   // Conditionally add pagination options
   if (limit !== undefined) {
     queryOptions.limit = pageSize;
@@ -61,7 +64,7 @@ const getProductList = async (querys) => {
   if (orderOption.length > 0) {
     queryOptions.order = orderOption;
   }
-  
+
   let products = await Product.findAll(queryOptions);
   const combinedProducts = {};
 
@@ -82,9 +85,9 @@ const getProductList = async (querys) => {
 
   // Convert the combined products object to an array
   const combinedProductsArray = Object.values(combinedProducts);
-  if(order?.toUpperCase()==='ASC') {
+  if (order?.toUpperCase() === "ASC") {
     return combinedProductsArray.sort((a, b) => a.price - b.price);
-  } else if(order?.toUpperCase()==='DESC') {
+  } else if (order?.toUpperCase() === "DESC") {
     return combinedProductsArray.sort((a, b) => b.price - a.price);
   }
   return combinedProductsArray;
@@ -95,9 +98,32 @@ const getProductById = async (id) => {
   return product;
 };
 
-const createNewProduct = async (data) => {
+const createNewProduct = async (data, files) => {
   try {
+    const folderName = "shop_imgs"; // Specify the folder name on Cloudinary
+
+    const promises = files.map(async (file) => {
+      const result = await cloudinary.uploader.upload(file.path, {
+        folder: folderName,
+      });
+      return result.secure_url;
+    });
+
+    const uploadedImagesUrls = await Promise.all(promises);
+    files.forEach((file) => {
+      fs.unlink(file.path, (err) => {
+        if (err) {
+          console.error(`Error deleting file: ${file.path}`, err);
+        } else {
+          console.log(`File deleted: ${file.path}`);
+        }
+      });
+    });
+    data.img = JSON.stringify(uploadedImagesUrls);
+
     const listInventoryId = JSON.parse(data.listInventoryId);
+
+    console.log(data.img, listInventoryId, data.category_name);
     const category = await Category.create({
       category_name: data.category_name,
     });
@@ -105,11 +131,12 @@ const createNewProduct = async (data) => {
       ...data,
       categoryId: category.id,
     });
+    console.log(data.id);
     if (listInventoryId?.length !== 0) {
       const createProductInventory = async () => {
         for (const id of listInventoryId) {
           await ProductInventory.create({
-            ProductId: data.id,
+            ProductId: newProduct.id,
             InventoryId: id,
           });
         }
@@ -119,6 +146,7 @@ const createNewProduct = async (data) => {
     return newProduct;
   } catch (e) {
     console.log(e);
+    throw new Error(e);
   }
 };
 
