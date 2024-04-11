@@ -5,4 +5,14 @@ const getReviewsByProductId = async(id) => {
     return reviewsList;
 }
 
-module.exports = {getReviewsByProductId};
+const createReviews = async(data) => {
+    try {
+        const reviews = await Reviews.create(data);
+        return reviews;
+      } catch (e) {
+        console.log(e);
+        throw new Error(e);
+      }
+}
+
+module.exports = {getReviewsByProductId,createReviews};

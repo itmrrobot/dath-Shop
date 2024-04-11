@@ -14,4 +14,13 @@ const handleGetReviewList = async(req,res) => {
     }
 }
 
-module.exports = {handleGetReviewList};
+const handleCreateReviews = async(req,res) => {
+    try {
+        const newReviews = await reviewsService.createReviews(req.body);
+        res.send(newReviews);
+    } catch(e) {
+        res.status(400).send()
+    }
+}
+
+module.exports = {handleGetReviewList,handleCreateReviews};

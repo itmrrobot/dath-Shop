@@ -6,13 +6,8 @@ const uploadImage = (req,res) => {
     console.log(req.file)
     res.send("hello")
 }
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require('../common/cloudinary-config');
 
-cloudinary.config({
-  cloud_name: 'dzznxekfg',
-  api_key: '651378936647749',
-  api_secret: 'L-YVnYmTUNndTCTi52L_O-keBnk'
-});
 const handleGetProductList = async(req,res) => {
     try {
         const querys = req.query;
