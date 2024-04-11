@@ -2,10 +2,6 @@ const partnerService = require("../service/partnerService");
 const path = require('path');
 const imgPath = path.join(__dirname,'../public/img/');
 const fs = require('fs');
-const uploadImage = (req,res) => {
-    console.log(req.file)
-    res.send("hello")
-}
 
 const handleGetPartnerList = async(req,res) => {
     try {
@@ -74,4 +70,4 @@ const handleDeletePartner= async(req,res) => {
     }
 }
 
-module.exports = {handleGetPartnerList,uploadImage,handleGetPartnerById,handleCreateNewPartner,handleDeletePartner,handleUpdatePartner};
+module.exports = {handleGetPartnerList,handleGetPartnerById,handleCreateNewPartner,handleDeletePartner,handleUpdatePartner};
