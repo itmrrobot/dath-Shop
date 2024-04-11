@@ -19,4 +19,15 @@ const upload = multer({
     }
 });
 
-module.exports = upload;
+const uploadImgVideo = multer({
+  storage: storage,
+  limits: { fileSize: 5000000 }, // 5MB in bytes
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|mp4|mov|avi)$/)) {
+      return cb(new Error("Please upload an image or video file"));
+    }
+    cb(undefined, true);
+  }
+});
+
+module.exports = {upload,uploadImgVideo};

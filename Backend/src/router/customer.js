@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const customerController = require('../controllers/customerController');
-const upload = require('../common/upload');
+const {upload} = require('../common/upload');
 
 router.get('/customer',customerController.handleGetCustomerList)
 .get('/customer/:id',customerController.handleGetCustomerById)

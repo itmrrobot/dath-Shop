@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const categoryController = require('../controllers/categoryController');
-const upload = require('../common/upload');
+const {upload} = require('../common/upload');
 
 router.get('/category',categoryController.handleGetCategoryList)
 .get('/category/:id',categoryController.handleGetCategoryById)
