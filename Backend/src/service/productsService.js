@@ -94,23 +94,26 @@ const getProductList = async (querys) => {
 };
 
 const getProductById = async (id) => {
-  const product = await Product.findOne({ where: { id: id },include: [
-    { model: Category },
-    {
-      model: Inventory,
-      as: "Inventories",
-      through: { attributes: [] },
-      attributes: {
-        exclude: [
-          "createdAt",
-          "updatedAt",
-          "ProductInventory",
-          "InventoryId",
-          "ProductId",
-        ],
+  const product = await Product.findOne({
+    where: { id: id },
+    include: [
+      { model: Category },
+      {
+        model: Inventory,
+        as: "Inventories",
+        through: { attributes: [] },
+        attributes: {
+          exclude: [
+            "createdAt",
+            "updatedAt",
+            "ProductInventory",
+            "InventoryId",
+            "ProductId",
+          ],
+        },
       },
-    },
-  ], });
+    ],
+  });
   return product;
 };
 
