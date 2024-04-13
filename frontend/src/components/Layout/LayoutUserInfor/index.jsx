@@ -6,12 +6,21 @@ import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UseContextUser } from '../../../hooks/useContextUser';
 const cx = classNames.bind(styles);
-function LayoutUserInfor({ children, path, title, profile = false, order = false, password = false, returnn = false }) {
+function LayoutUserInfor({
+    children,
+    path,
+    title,
+    profile = false,
+    order = false,
+    password = false,
+    returnn = false,
+    wishlist = false,
+}) {
     const navigate = useNavigate();
-    const state = useContext(UseContextUser)
+    const state = useContext(UseContextUser);
     const handleLogout = () => {
         localStorage.removeItem('user');
-        state?.cuser?.setCurrentUser()
+        state?.cuser?.setCurrentUser();
         navigate('/login');
     };
     return (
@@ -49,6 +58,10 @@ function LayoutUserInfor({ children, path, title, profile = false, order = false
                         </li>
                         <li className={cx(returnn ? 'isActive' : '')}>
                             <Link to="/user/return">Returns</Link>
+                            <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
+                        </li>
+                        <li className={cx(wishlist ? 'isActive' : '')}>
+                            <Link to={`/user/wishlist/${state?.cuser?.value?.id}`}>Wish list</Link>
                             <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
                         </li>
                     </ul>

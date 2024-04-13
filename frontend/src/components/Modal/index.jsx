@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import './CustomModal.css'
+import './CustomModal.css';
 function ModalComp({ children, showModal, handleClose }) {
     // const [showModal, setShowModal] = useState(false);
     return (

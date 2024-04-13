@@ -169,7 +169,7 @@ function Header() {
                                 >
                                     Store
                                 </Button> */}
-                        <Link className={cx('nav-link')} to="/products">
+                        <Link className={cx('nav-link')} to="/products?page=1&limit=15">
                             Store
                         </Link>
                     </Tippy>
@@ -253,18 +253,7 @@ function Header() {
                                 <p className={cx("nav-link")}>Account</p>
                             </HeadlessTippy>}    */}
                     <Tippy delay={[0, 50]} content="Your Favourites!" placement="bottom">
-                        {/* <Button
-                                    text
-                                    onClick={() => {
-                                        navigator('/product?_page=1&_limit=9');
-                                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                                    }}
-                                >
-                                    Store
-                                </Button> */}
-                        <a className={cx('nav-link')} href="/">
-                            Wish List
-                        </a>
+                        <Link to={`/user/wishlist/${state?.cuser?.value?.id}`}>Wish List</Link>
                     </Tippy>
                     <HeadlessTippy
                         // Cho phep duoc active thanh phan trong Tippy

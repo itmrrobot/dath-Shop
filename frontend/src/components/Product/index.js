@@ -1,21 +1,5 @@
 import classNames from 'classnames/bind';
 import styles from './Product.module.scss';
-import share from '../../assets/img/share.png';
-import bookmark from '../../assets/img/book-mark.png';
-import love from '../../assets/img/love.png';
-import star from '../../assets/img/star.png';
-import message from '../../assets/img/message.png';
-import cart from '../../assets/img/icon-cart.png';
-import deliveryIcon from '../../assets/img/delivery.png';
-import returnIcon from '../../assets/img/return.png';
-import color1 from '../../assets/img/Group 5.png';
-import color2 from '../../assets/img/Group 6.png';
-import color3 from '../../assets/img/Group 7.png';
-import color4 from '../../assets/img/Group 8.png';
-import color5 from '../../assets/img/Group 9.png';
-import RelatedProduct from '../RelatedProduct';
-import prevIcon from '../../assets/img/prev.png';
-import nextIcon from '../../assets/img/Frame (8).png';
 import { useParams } from 'react-router-dom';
 import { useContext, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
@@ -37,12 +21,13 @@ function Product() {
     const param = useParams();
     const [product, setProduct] = useState({});
     const [checked, setChecked] = useState();
-    const [size, setSize] = useState(['Small', 'Medium', 'Large', 'Extra Large', 'XXL']);
+    console.log(checked);
+    const [size, setSize] = useState([]);
     const [type, setType] = useState('Description');
     const [image, setImage] = useState([]);
-    console.log(image);
+    // console.log(image);
     const [quantity_Order, setQuantity_Order] = useState(1);
-    console.log(product);
+    // console.log(product);
     const tabs = ['Description', 'Reviews'];
     const state = useContext(UseContextUser);
     const benefits = [
@@ -77,7 +62,8 @@ function Product() {
                     signal: controller.signal,
                 });
                 setProduct(respone.data);
-                console.log(respone.data);
+                setSize(respone.data.Inventories);
+                // console.log(respone.data);
                 // setImage(respone?.data?.hinh_anh);
                 // const cleanedString = respone?.data?.hinh_anh.slice(1, -1);
                 // // Tách chuỗi thành mảng sử dụng dấu phẩy làm dấu phân cách
@@ -98,7 +84,6 @@ function Product() {
     // const handleIncrease = () => {
     //     setCount(count+1);
     // }
-
     // const handleDecrease =() => {
     //     if(count>1) {
     //         setCount(count-1);
@@ -116,8 +101,10 @@ function Product() {
                 quantity: quantity_Order,
                 nameProduct: product?.name,
                 priceProduct: product?.discount_price,
+                size: checked,
                 img: `${url}/img/${image[0]}`,
             };
+            console.log(data);
             await axios.post(url + '/cart/create', data);
             state?.render?.setRender((prev) => !prev);
             // console.log(duma)
@@ -126,6 +113,7 @@ function Product() {
         }
     };
     //`${url}/img/${imgs.current?.[imgSelectedIndex]}`
+    // const handleAddProductToCart = () => {};
     return (
         <>
             <div className={cx('wrapper')}>
@@ -213,10 +201,10 @@ function Product() {
                                                 name="radio"
                                                 // type="radio"
                                                 // value={}
-                                                checked={checked === size} //logic neu nhu checked === "size" thi no se check
-                                                onChange={() => setChecked(size)}
+                                                checked={checked === size.size} //logic neu nhu checked === "size" thi no se check
+                                                onChange={() => setChecked(size.size)}
                                             />
-                                            <span>{size}</span>
+                                            <span>{size.size}</span>
                                         </label>
                                     );
                                 })}
