@@ -1,4 +1,5 @@
 const { Cart, Product, CartProduct,Inventory } = require("../models/index");
+const mergedEntries = require("../utils/util");
 
 const getProductsInCart = async (id) => {
   let cart = [];
@@ -7,15 +8,7 @@ const getProductsInCart = async (id) => {
       id_user: id,
     },
   });
-  // //console.log(cart);
-  // let newList = [];
-  // cart.forEach((e) => {
-  //   let el = newList.find((n) => n.nameProduct == e.nameProduct);
-  //   if (el) el.quantity += e.quantity;
-  //   else newList.push(e);
-  // });
-  // console.log(newList);
-  return cart;
+  return mergedEntries(cart);
 };
 
 const getCartById = async (id) => {
