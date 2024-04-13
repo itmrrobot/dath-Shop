@@ -1,4 +1,4 @@
-const { Cart, Product, CartProduct } = require("../models/index");
+const { Cart, Product, CartProduct,Inventory } = require("../models/index");
 
 const getProductsInCart = async (id) => {
   let cart = [];
@@ -7,6 +7,7 @@ const getProductsInCart = async (id) => {
       id_user: id,
     },
   });
+  
   let newList = [];
   cart.forEach((e) => {
     let el = newList.find((n) => n.nameProduct == e.nameProduct);
