@@ -7,14 +7,15 @@ const getProductsInCart = async (id) => {
       id_user: id,
     },
   });
-  
-  let newList = [];
-  cart.forEach((e) => {
-    let el = newList.find((n) => n.nameProduct == e.nameProduct);
-    if (el) el.quantity += e.quantity;
-    else newList.push(e);
-  });
-  return newList;
+  // //console.log(cart);
+  // let newList = [];
+  // cart.forEach((e) => {
+  //   let el = newList.find((n) => n.nameProduct == e.nameProduct);
+  //   if (el) el.quantity += e.quantity;
+  //   else newList.push(e);
+  // });
+  // console.log(newList);
+  return cart;
 };
 
 const getCartById = async (id) => {
