@@ -34,7 +34,7 @@ const updateCart = async (data) => {
   try {
     await Cart.update(
       { ...data },
-      { where: { id_product: data.id_product }, raw: true }
+      { where: { id: data.id }, raw: true }
     );
     //console.log(Cart)
     return getProductsInCart(data.id_user);
