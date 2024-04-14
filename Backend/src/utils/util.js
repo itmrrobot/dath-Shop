@@ -10,6 +10,6 @@ module.exports = function mergeEntries(entries) {
         }
     });
     mergedEntries = Array.from(keyMap.values());
-
+    mergedEntries.sort((a, b) => a.id - b.id);
     return mergedEntries;
 }
