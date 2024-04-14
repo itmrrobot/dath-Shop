@@ -26,7 +26,7 @@ const createNewCart = async (data) => {
     const product = await Cart.findOne({where:{id_product:data.id_product,size:data.size}});
     let carts;
     if(product) {
-      await Cart.update({quantity:products.quantity+data.quantity},{ where: { id_product: data.id_product,size:data.size }, raw: true });
+      await Cart.update({quantity:product.quantity+data.quantity},{ where: { id_product: data.id_product,size:data.size }, raw: true });
       return await Cart.findOne({where:{id_product: data.id_product,size:data.size}});
     } else {
       carts = await Cart.create(data);
