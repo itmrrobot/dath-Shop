@@ -1,14 +1,15 @@
 module.exports = function mergeEntries(entries) {
     let mergedEntries = [];
-    let sizeMap = new Map();
+    let keyMap = new Map();
     entries.forEach(entry => {
-        let size = entry.size.toString();
-        if (sizeMap.has(size)) {
-            sizeMap.get(size).quantity += entry.quantity;
+        let key = entry.size.toString() + entry.id_product.toString();
+        if (keyMap.has(key)) {
+            keyMap.get(key).quantity += entry.quantity;
         } else {
-            sizeMap.set(size, entry);
+            keyMap.set(key, entry);
         }
     });
-    mergedEntries = Array.from(sizeMap.values());
+    mergedEntries = Array.from(keyMap.values());
+
     return mergedEntries;
-  }
+}
