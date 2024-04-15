@@ -29,16 +29,16 @@ module.exports = {
         type: Sequelize.TEXT
       },
       status: {
-        type: Sequelize.INTEGER
+        type: Sequelize.TEXT
       },
       total: {
         type: Sequelize.INTEGER
       },
-      id_customer: {
+      id_user: {
         type: Sequelize.INTEGER
       },
-      id_partner: {
-        type: Sequelize.INTEGER
+      ids_product: {
+        type: Sequelize.ARRAY(Sequelize.INTEGER)
       },
       createdAt: {
         allowNull: false,
