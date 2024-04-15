@@ -13,3 +13,4 @@ module.exports = function mergeEntries(entries) {
     mergedEntries.sort((a, b) => a.id - b.id);
     return mergedEntries;
 }
+
