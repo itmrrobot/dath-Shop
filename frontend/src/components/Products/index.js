@@ -260,7 +260,7 @@ function Products() {
                                                 className={cx('loved')}
                                                 onClick={() => handleRemoveWishList(product.id)}
                                             >
-                                                <img src={images.heart} alt="" />
+                                                <img src={images.heart_wishlist} alt="" />
                                                 {/* <p>Có tồn tại</p> */}
                                             </div>
                                         ) : (

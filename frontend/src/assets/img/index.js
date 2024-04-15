@@ -25,6 +25,7 @@ const images = {
     checkmark: require('./checkmark.svg').default,
     eye: require('./eye.svg').default,
     eye_slash: require('./eye_slash.svg').default,
+    heart_wishlist: require('./heart_wishlist.svg').default,
     // thumbnail2: require('./thumbnail_2.png'),
 };
 

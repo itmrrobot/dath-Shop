@@ -46,14 +46,10 @@ function Product() {
         'Colour Shown: Ale Brown/Black/Goldtone/Ale Brown',
         'Style: 805899-202',
     ];
-    // const [imgSelectedIndex,setImgSelectedIndex] = useState(0);
-    // const [count,setCount] = useState(1);
-    // const {cartState:{products,total,quantity,isCheckOut},cartDispatch,increment} = CartState();
-    // const {user} = AuthState();
-    // let prevCount =0;
-    // data.qty = count;
-    // //const [imgs,setImgs] = useState([]);
-    // let imgs = data.hinh_anh ? JSON.parse(data?.hinh_anh):[];
+    const size_quantity_select = product?.Inventories?.find(
+        (obj) => obj?.size === checked,
+    )?.quantity;
+    // console.log(product?.Inventories?.find((obj) => obj?.size === checked)?.quantity);
     useEffect(() => {
         const controller = new AbortController();
         const fetchData = async () => {
@@ -80,40 +76,60 @@ function Product() {
             controller.abort();
         };
     }, [id]);
-    // console.log(imgs);
-    // const handleIncrease = () => {
-    //     setCount(count+1);
-    // }
-    // const handleDecrease =() => {
-    //     if(count>1) {
-    //         setCount(count-1);
-    //     }
-    // }
-    // console.log(count)
+
     const handleAddToCart = async () => {
-        try {
-            // console.log(state?.cuser?.value);
-            // console.log(product);
-            // await axios.post(url+"/cart/create",{id_user:user.id,id_product:Number(id),so_luong:count,nameProduct:data?.ten_san_pham,priceProduct:data?.gia_khuyen_mai,img:`${url}/img/${imgs?.[0]}`})
-            let data = {
-                id_user: state?.cuser?.value?.id,
-                id_product: Number(id),
-                quantity: quantity_Order,
-                nameProduct: product?.name,
-                priceProduct: product?.discount_price,
-                size: checked,
-                img: `${url}/img/${image[0]}`,
-            };
-            console.log(data);
-            await axios.post(url + '/cart/create', data);
-            state?.render?.setRender((prev) => !prev);
-            // console.log(duma)
-        } catch (e) {
-            console.log(e);
+        let sizeToString = JSON.stringify([checked]);
+        // const wishlistObj = state?.cart?.value.find((item) => item.id_product === id);
+        let indexProd = state?.cart?.value?.findIndex((i) => {
+            return i.id_product + i.size === Number(id) + JSON.stringify([checked]);
+        });
+        if (indexProd !== -1) {
+            if (state?.cart?.value[indexProd].quantity + quantity_Order > size_quantity_select) {
+                toast.info('Sản phẩm này đã vượt quá số lượng cho phép đặt', {
+                    // autoClose: 2000,
+                    theme: 'colored',
+                    position: 'top-right',
+                    autoClose: 3000,
+                });
+                // newCart = [...product_list];
+                // state.cart.setCart(newCart);
+            } else {
+                try {
+                    let data = {
+                        id_user: state?.cuser?.value?.id,
+                        id_product: Number(id),
+                        quantity: quantity_Order,
+                        nameProduct: product?.name,
+                        priceProduct: product?.discount_price,
+                        size: sizeToString,
+                        img: `${url}/img/${image[0]}`,
+                    };
+                    console.log(data);
+                    await axios.post(url + '/cart/create', data);
+                    state?.render?.setRender((prev) => !prev);
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        } else {
+            try {
+                let data = {
+                    id_user: state?.cuser?.value?.id,
+                    id_product: Number(id),
+                    quantity: quantity_Order,
+                    nameProduct: product?.name,
+                    priceProduct: product?.discount_price,
+                    size: sizeToString,
+                    img: `${url}/img/${image[0]}`,
+                };
+                console.log(data);
+                await axios.post(url + '/cart/create', data);
+                state?.render?.setRender((prev) => !prev);
+            } catch (e) {
+                console.log(e);
+            }
         }
     };
-    //`${url}/img/${imgs.current?.[imgSelectedIndex]}`
-    // const handleAddProductToCart = () => {};
     return (
         <>
             <div className={cx('wrapper')}>
@@ -180,17 +196,14 @@ function Product() {
                             <div className={cx('product-size-wrapper')}>
                                 <div className={cx('title-size')}>
                                     <p>Choose a Size</p>
-                                    {/* {checked &&
+                                    {checked &&
                                         (size_quantity_select && size_quantity_select > 0 ? (
-                                            <p className={cx('status')}>{size_quantity_select} products left</p>
+                                            <p className={cx('status')}>
+                                                {size_quantity_select} products left
+                                            </p>
                                         ) : (
                                             <p className={cx('sold-out')}>Sold out</p>
-                                        ))} */}
-                                    {/* {size_quantity_select && size_quantity_select > 0 ? (
-                                        <p className={cx('status')}>{size_quantity_select} products left</p>
-                                    ) : (
-                                        <p className={cx('sold-out')}>Sold out</p>
-                                    )} */}
+                                        ))}
                                 </div>
 
                                 {size.map((size, index) => {
@@ -227,52 +240,39 @@ function Product() {
                                     className={cx('plus')}
                                     onClick={() =>
                                         setQuantity_Order((prev) => {
-                                            // if (prev + 1 > size_quantity_select) {
-                                            //     toast.info(`Vượt quá số lượng còn lại trong kho`, {
-                                            //         position: 'top-right',
-                                            //         autoClose: 5000,
-                                            //         hideProgressBar: false,
-                                            //         closeOnClick: true,
-                                            //         pauseOnHover: true,
-                                            //         draggable: true,
-                                            //         progress: undefined,
-                                            //         // theme: 'light',
-                                            //         theme: 'colored',
-                                            //     });
-                                            //     return prev;
-                                            // } else {
-                                            //     return prev + 1;
-                                            // }
-                                            return prev + 1;
+                                            if (prev + 1 > size_quantity_select) {
+                                                toast.info(`Vượt quá số lượng còn lại trong kho`, {
+                                                    position: 'top-right',
+                                                    autoClose: 5000,
+                                                    hideProgressBar: false,
+                                                    closeOnClick: true,
+                                                    pauseOnHover: true,
+                                                    draggable: true,
+                                                    progress: undefined,
+                                                    // theme: 'light',
+                                                    theme: 'colored',
+                                                });
+                                                return prev;
+                                            } else {
+                                                return prev + 1;
+                                            }
                                         })
                                     }
                                 >
                                     +
                                 </span>
                             </div>
-                            <Button
-                                primary
-                                rounded
-                                shopping
-                                leftIcon={
-                                    <img className={cx('shopping-img')} src={images.shopping} />
-                                }
-                                onClick={handleAddToCart}
-                                // onClick={() => {
-                                //     handleAddProductToCart(product?.id);
-                                // }}
-                            >
-                                Add to Cart!
-                            </Button>
-                            {/* {size_quantity_select > 0 && quantity_Order - 1 < size_quantity_select ? (
+
+                            {size_quantity_select > 0 &&
+                            quantity_Order - 1 < size_quantity_select ? (
                                 <Button
                                     primary
                                     rounded
                                     shopping
-                                    leftIcon={<img className={cx('shopping-img')} src={images.shopping} />}
-                                    onClick={() => {
-                                        handleAddProductToCart(product?.id);
-                                    }}
+                                    leftIcon={
+                                        <img className={cx('shopping-img')} src={images.shopping} />
+                                    }
+                                    onClick={handleAddToCart}
                                 >
                                     Add to Cart!
                                 </Button>
@@ -281,12 +281,14 @@ function Product() {
                                     primary
                                     rounded
                                     shopping
-                                    leftIcon={<img className={cx('shopping-img')} src={images.shopping} />}
+                                    leftIcon={
+                                        <img className={cx('shopping-img')} src={images.shopping} />
+                                    }
                                     disabled
                                 >
                                     Add to Cart!
                                 </Button>
-                            )} */}
+                            )}
 
                             {/* <img className={cx('cart-img')} src={images.cart} alt="logo-cart" /> */}
                             {/* <p className={cx("mess_quantity_prod")}>{size_quantiry_select < quantity_Order ? `Size của sản phẩm này không đủ số lượng mà bạn cần. Hiện có ${product?.inventory?.find(i => i.size === size_Order).quantity} sản phẩm` : ""}</p> */}

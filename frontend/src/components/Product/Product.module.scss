@@ -13,7 +13,9 @@ $white: #fff;
 
 .path {
     // border: 1px solid #edf0f8;
-    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    box-shadow:
+        rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+        rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
     min-width: 70%;
     font-size: 1.2rem;
     background-color: #edf0f8;
@@ -44,9 +46,9 @@ $white: #fff;
 .product-title {
     width: 100%;
     p {
-      color: var(--primary-950, #171212);
-      font-size: 2.8rem;
-      font-weight: 600;
+        color: var(--primary-950, #171212);
+        font-size: 2.8rem;
+        font-weight: 600;
     }
     span {
         color: #b9bbbf;
@@ -110,16 +112,8 @@ $white: #fff;
     }
 }
 
-.product-size {
-    border-bottom: 1px solid #ccc;
-    min-height: 170px;
-    display: flex;
-    /* justify-content: center; */
-    align-items: center;
-    font-size: 1.5rem;
-}
-
 .product-size-wrapper {
+    width: 100%;
     p {
         color: var(--Primary-300, #afa095);
         font-size: 1.6rem;
@@ -365,4 +359,12 @@ $white: #fff;
         color: #e94545;
         font-weight: 500;
     }
+}
+
+.product-size {
+    border-bottom: 1px solid #ccc;
+    min-height: 170px;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
 }

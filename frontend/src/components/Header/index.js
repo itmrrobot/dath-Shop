@@ -315,7 +315,13 @@ function Header() {
                                                                         )}
                                                                     >
                                                                         <p>
-                                                                            {/* Size: <span>{prod?.size}</span> */}
+                                                                            Size:{' '}
+                                                                            <span>
+                                                                                {prod?.size.replace(
+                                                                                    /[\[\]"]+/g,
+                                                                                    '',
+                                                                                )}
+                                                                            </span>
                                                                         </p>
                                                                         <p>
                                                                             x
