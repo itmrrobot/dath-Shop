@@ -22,6 +22,9 @@ module.exports = {
       quantity: {
         type: Sequelize.INTEGER,
       },
+      id_product: {
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

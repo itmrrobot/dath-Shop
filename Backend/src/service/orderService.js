@@ -1,8 +1,27 @@
-const {Order} = require('../models/index');
+const {Order,Product,Inventory,Category} = require('../models/index');
 
-const getOrderList = async() => {
-    let order = []
-    order = await Order.findAll({raw:true});
+const getOrderList = async(id) => {
+    let order = {};
+    order = await Order.findOne({where:{id},raw:true});
+    const products = await Product.findAll({where:{id:order.ids_product},include: [
+        { model: Category },
+        {
+          model: Inventory,
+          as: "Inventories",
+          through: { attributes: [] },
+          attributes: {
+            exclude: [
+              "createdAt",
+              "updatedAt",
+              "ProductInventory",
+              "InventoryId",
+              "ProductId",
+            ],
+          },
+        },
+      ]});
+    order.products = products;
+    console.log(products);
     return order;
 }
 

@@ -40,14 +40,11 @@ const getProductList = async (querys) => {
       {
         model: Inventory,
         as: "Inventories",
-        through: { attributes: [] },
         attributes: {
           exclude: [
             "createdAt",
             "updatedAt",
-            "ProductInventory",
-            "InventoryId",
-            "ProductId",
+            "id_product",
           ],
         },
       },

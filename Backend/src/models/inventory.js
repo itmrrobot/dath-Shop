@@ -11,12 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Inventory.belongsToMany(models.Product,{through:'ProductInventory'});
+      Inventory.belongsTo(models.Product,{foreignKey:"id_product"});
     }
   }
   Inventory.init({
     size: DataTypes.TEXT,
     quantity: DataTypes.INTEGER,
+    id_product: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Inventory',

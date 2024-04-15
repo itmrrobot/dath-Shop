@@ -20,8 +20,8 @@ module.exports = (sequelize, DataTypes) => {
         as: "wishList"
       });
       Product.belongsTo(models.Category);
-      Product.belongsToMany(models.Inventory,{through:'ProductInventory'});
       Product.hasMany(models.Reviews,{foreignKey:"id_product"});
+      Product.hasMany(models.Inventory,{foreignKey:"id_product"});
     }
   }
   Product.init({
