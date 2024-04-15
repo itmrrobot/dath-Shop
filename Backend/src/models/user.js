@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.belongsTo(models.Role)
       User.hasMany(models.Reviews,{foreignKey:"id_user"})
+      User.hasMany(models.Order,{foreignKey:"id_user"})
       //User.hasOne(models.Cart)
     }
   }
