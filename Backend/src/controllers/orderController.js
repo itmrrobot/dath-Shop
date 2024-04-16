@@ -1,6 +1,16 @@
 const orderService = require("../service/orderService");
 const path = require('path');
 
+const handleGetOrderList = async(req,res) => {
+    try {
+        const order = await orderService.getOrderList(req.params.id);
+        res.send(order);
+    } catch(e) {
+        console.log(e);
+        res.status(500).send()
+    }
+}
+
 const handleGetOrderById = async(req,res) => {
     try {
         const order = await orderService.getOrderById(req.params.id);
@@ -46,4 +56,4 @@ const handleDeleteOrder = async(req,res) => {
     }
 }
 
-module.exports = {handleGetOrderById,handleCreateNewOrder,handleDeleteOrder,handleUpdateOrder};
+module.exports = {handleGetOrderList,handleGetOrderById,handleCreateNewOrder,handleDeleteOrder,handleUpdateOrder};
