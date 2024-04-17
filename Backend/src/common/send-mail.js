@@ -10,7 +10,7 @@ const oAuth2Client = new google.auth.OAuth2(
 oAuth2Client.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
 
 const sendEmail = async (content) => {
-  const {email:to,password} = content;
+  const {email:to,newPassword} = content;
   const ACCESS_TOKEN = await oAuth2Client.getAccessToken();
   const transport = nodemailer.createTransport({
     service: "gmail",
@@ -32,7 +32,7 @@ const sendEmail = async (content) => {
   const subject = "This Is Sent By Admin of shop";
   const html = `
     <p>Hey ${to},</p>
-    <p>This is your password ${password}</p>
+    <p>This is your new password: ${newPassword}</p>
     <p>Thank you</p>
     `;
   return new Promise((resolve, reject) => {
