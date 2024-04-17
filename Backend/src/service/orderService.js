@@ -14,7 +14,7 @@ const getOrderList = async (id) => {
       {
         model: OrderDetail,
         attributes: {
-          exclude: ["createdAt", "updatedAt"],
+          exclude: ["createdAt", "updatedAt","id_order","id_user"],
         },
       },
     ],
@@ -32,7 +32,7 @@ const getOrderById = async (id) => {
       {
         model: OrderDetail,
         attributes: {
-          exclude: ["createdAt", "updatedAt"],
+          exclude: ["createdAt", "updatedAt","id_order","id_user"],
         },
       },
     

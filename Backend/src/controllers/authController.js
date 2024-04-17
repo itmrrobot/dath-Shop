@@ -42,6 +42,16 @@ const handleLogout = async(req,res) => {
     return res.status(400).send();
 }
 
+const handleForgotPassword = async(req,res) => {
+    try {
+        const respone = await authService.forgotPassword(req.body.email);
+        return res.status(200).send(respone);
+    } catch(e) {
+        console.log(e);
+        return res.status(500).send();
+    }
+}
+
 const handleRefreshToken = async(req,res) => {
     try {
         const respone = await authService.refreshToken(req.body);
@@ -54,4 +64,4 @@ const handleRefreshToken = async(req,res) => {
     }
 }
 
-module.exports = {handleRegister,handleLogin,handleRefreshToken,handleLoginSuccess,handleLogout};
+module.exports = {handleRegister,handleLogin,handleRefreshToken,handleLoginSuccess,handleLogout,handleForgotPassword};
