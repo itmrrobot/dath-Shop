@@ -8,7 +8,7 @@ const getProductsInCart = async (id) => {
       id_user: id,
     },
   });
-  return mergeEntries(cart);
+  return cart;
 };
 
 const getCartById = async (id) => {
@@ -70,7 +70,7 @@ const deleteProductInCard = async (id, listIds) => {
   for (let idProduct of JSON.parse(listIds)) {
     console.log(idProduct);
     await Cart.destroy({
-      where: { id_product: String(idProduct), id_user: id },
+      where: { id_product: String(idProduct), id_user: id, size },
     });
   }
   if (isExsist === true) {
