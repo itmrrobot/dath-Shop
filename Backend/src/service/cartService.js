@@ -58,7 +58,7 @@ const deleteProductInCard = async (id, listIds) => {
   const productsInCart = await getCartByUserId(id);
   let isExsist = false;
   const idsProductsInCart = productsInCart.map(
-    (obj) => obj?.dataValues?.id_product
+    (obj) => obj?.dataValues?.id
   );
   for (let idProduct of JSON.parse(listIds)) {
     if (!idsProductsInCart.includes(idProduct)) {
@@ -70,7 +70,7 @@ const deleteProductInCard = async (id, listIds) => {
   for (let idProduct of JSON.parse(listIds)) {
     console.log(idProduct);
     await Cart.destroy({
-      where: { id_product: String(idProduct), id_user: id },
+      where: { id: String(idProduct), id_user: id },
     });
   }
   if (isExsist === true) {
