@@ -33,5 +33,6 @@ router
   )
   .get("/login/success", authController.handleLoginSuccess)
   .post("/auth/logout",authController.handleLogout)
+  .post("/auth/forgot/password",authController.handleForgotPassword)
 
 module.exports = router;

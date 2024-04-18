@@ -2,6 +2,8 @@ const hashPassword = require('../common/hashPassword');
 const {User,Role} = require('../models/index');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const {generateRandomPassword} = require("../utils/util");
+const sendMail = require("../common/send-mail");
 
 const register = async(data) => {
     console.log(data);
@@ -39,6 +41,22 @@ const login = async(data) => {
     }
 }
 
+const forgotPassword = async(email) => {
+    const user = await User.findOne({where:{email}});
+    if(!user) {
+        return null;
+    }
+    const password = user?.password;
+    let newPassword,newPassworDB;
+    if(password) {
+        newPassword = generateRandomPassword(12)
+        newPassworDB =await hashPassword(newPassword);
+        const info = await sendMail({email,newPassword});
+        await User.update({password:newPassworDB},{where:{email}});
+        return {msg:'Change password success!',info}
+    }
+}
+
 const refreshToken = async(data) => {
 
     let refresh_token = data.refreshToken;
@@ -60,5 +78,5 @@ const refreshToken = async(data) => {
 }
 
 module.exports = {
-    register,login,refreshToken
+    register,login,refreshToken,forgotPassword
 }

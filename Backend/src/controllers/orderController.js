@@ -3,9 +3,8 @@ const path = require('path');
 
 const handleGetOrderList = async(req,res) => {
     try {
-        let order = await orderService.getOrderList();
-        console.log(order)
-        return res.send({order});
+        const order = await orderService.getOrderList(req.params.id);
+        res.send(order);
     } catch(e) {
         console.log(e);
         res.status(500).send()
@@ -18,6 +17,7 @@ const handleGetOrderById = async(req,res) => {
         if(order===null) return res.status(404).send();
         res.send(order);
     } catch(e) {
+        console.log(e);
         res.status(500).send()
     }
 }

@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Order.belongsTo(models.User,{foreignKey:"id_user"});
+      Order.hasMany(models.OrderDetail,{foreignKey:"id_order"});
     }
   }
   Order.init({
@@ -22,8 +23,6 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.TEXT,
     total: DataTypes.DECIMAL(15,2),
     id_user: DataTypes.INTEGER,
-    ids_product: DataTypes.ARRAY(DataTypes.INTEGER)
-
   }, {
     sequelize,
     modelName: 'Order',

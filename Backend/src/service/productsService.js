@@ -40,15 +40,8 @@ const getProductList = async (querys) => {
       {
         model: Inventory,
         as: "Inventories",
-        through: { attributes: [] },
         attributes: {
-          exclude: [
-            "createdAt",
-            "updatedAt",
-            "ProductInventory",
-            "InventoryId",
-            "ProductId",
-          ],
+          exclude: ["createdAt", "updatedAt", "id_product"],
         },
       },
     ],
@@ -101,15 +94,8 @@ const getProductById = async (id) => {
       {
         model: Inventory,
         as: "Inventories",
-        through: { attributes: [] },
         attributes: {
-          exclude: [
-            "createdAt",
-            "updatedAt",
-            "ProductInventory",
-            "InventoryId",
-            "ProductId",
-          ],
+          exclude: ["createdAt", "updatedAt", "id_product"],
         },
       },
     ],
@@ -140,9 +126,9 @@ const createNewProduct = async (data, files) => {
     });
     data.img = JSON.stringify(uploadedImagesUrls);
 
-    const listInventoryId = JSON.parse(data.listInventoryId);
-
-    console.log(data.img, listInventoryId, data.category_name);
+    const listInventory = data.listInventory;
+    let array = eval(listInventory);
+    console.log(data.img,array, data.category_name);
     const category = await Category.create({
       category_name: data.category_name,
     });
@@ -150,17 +136,14 @@ const createNewProduct = async (data, files) => {
       ...data,
       categoryId: category.id,
     });
-    console.log(data.id);
-    if (listInventoryId?.length !== 0) {
-      const createProductInventory = async () => {
-        for (const id of listInventoryId) {
-          await ProductInventory.create({
-            ProductId: newProduct.id,
-            InventoryId: id,
-          });
-        }
-      };
-      createProductInventory();
+    if (listInventory?.length !== 0) {
+      for (const list of array) {
+        await Inventory.create({
+          size: list.size,
+          quantity: list.quantity,
+          id_product: newProduct.id 
+        });
+      }
     }
     return newProduct;
   } catch (e) {

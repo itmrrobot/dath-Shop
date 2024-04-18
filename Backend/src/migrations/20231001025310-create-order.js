@@ -37,9 +37,6 @@ module.exports = {
       id_user: {
         type: Sequelize.INTEGER
       },
-      ids_product: {
-        type: Sequelize.ARRAY(Sequelize.INTEGER)
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
