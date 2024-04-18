@@ -1,9 +1,19 @@
-const { Reviews } = require("../models/index");
+const { Reviews,User } = require("../models/index");
 const cloudinary = require("../common/cloudinary-config");
 const fs = require("fs");
 
 const getReviewsByProductId = async (id) => {
-  const reviewsList = await Reviews.findAll({ where: { id_product: id } });
+  const reviewsList = await Reviews.findAll({
+    where: { id_product: id },
+    include: [
+      {
+        model: User,
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "id_order", "id_user"],
+        },
+      },
+    ],
+  });
   return reviewsList;
 };
 
