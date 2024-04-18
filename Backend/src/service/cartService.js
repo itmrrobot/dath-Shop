@@ -1,5 +1,5 @@
 const { Cart, Product, CartProduct,Inventory } = require("../models/index");
-const {mergedEntries} = require("../utils/util");
+const {mergeEntries} = require("../utils/util");
 
 const getProductsInCart = async (id) => {
   let cart = [];
@@ -8,7 +8,7 @@ const getProductsInCart = async (id) => {
       id_user: id,
     },
   });
-  return mergedEntries(cart);
+  return mergeEntries(cart);
 };
 
 const getCartById = async (id) => {
