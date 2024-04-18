@@ -8,6 +8,7 @@ const getProductsInCart = async (id) => {
       id_user: id,
     },
   });
+  cart.sort((a, b) => a.id - b.id);
   return cart;
 };
 
