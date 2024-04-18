@@ -8,7 +8,7 @@ const getProductsInCart = async (id) => {
       id_user: id,
     },
   });
-  return mergeEntries(cart);
+  return cart;
 };
 
 const getCartById = async (id) => {
