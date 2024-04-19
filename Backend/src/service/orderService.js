@@ -5,10 +5,11 @@ const {
   Category,
   OrderDetail,
 } = require("../models/index");
+const {combineArray} = require("../utils/util");
 
 const getOrderList = async (id) => {
-  let order = [];
-  order = await Order.findAll({
+  let orders = [];
+  orders = await Order.findAll({
     where: { id_user: id },
     include: [
       {
@@ -21,7 +22,7 @@ const getOrderList = async (id) => {
     raw: true,
     nest: true
   });
-  return order;
+  return combineArray(orders,"name","OrderDetails");
 };
 
 const getOrderById = async (id) => {

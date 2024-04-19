@@ -2,7 +2,7 @@ function mergeEntries(entries) {
   let mergedEntries = [];
   let keyMap = new Map();
   entries.forEach((entry) => {
-    let key = entry.size.toString() + entry.id_product.toString();
+    let key = entry.id_product.toString();
     if (keyMap.has(key)) {
       keyMap.get(key).quantity += entry.quantity;
     } else {
@@ -10,9 +10,30 @@ function mergeEntries(entries) {
     }
   });
   mergedEntries = Array.from(keyMap.values());
-  mergedEntries.sort((a, b) => a.id - b.id);
+  //mergedEntries.sort((a, b) => a.id - b.id);
   return mergedEntries;
 };
+
+function combineArray(arrays,firtProperty,sendcondProperty) {
+  const combinedArrays = {};
+
+  // Loop through each product
+  arrays.forEach((item) => {
+    // Check if the product ID already exists in combinedProducts
+    if (combinedArrays[item[firtProperty]]) {
+      // If exists, push the inventory to the existing product's Inventories array
+      combinedArrays[item[firtProperty]][sendcondProperty].push(item[sendcondProperty]);
+    } else {
+      // If not exists, add the product to combinedProducts and initialize the Inventories array
+      combinedArrays[item[firtProperty]] = {
+        ...item,
+        [sendcondProperty]: [item[sendcondProperty]],
+      };
+    }
+  });
+  const combinedArray = Object.values(combinedArrays);
+  return combinedArray;
+}
 
 function generateRandomPassword(length) {
   let charset =
@@ -34,4 +55,4 @@ function generateRandomPassword(length) {
   return password;
 }
 
-module.exports = {mergeEntries,generateRandomPassword}
+module.exports = {mergeEntries,generateRandomPassword,combineArray}
