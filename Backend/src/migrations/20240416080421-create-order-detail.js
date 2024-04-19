@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       quantity: {
-        type: Sequelize.TEXT
+        type: Sequelize.INTEGER
       },
       size: {
         type: Sequelize.TEXT

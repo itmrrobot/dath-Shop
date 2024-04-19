@@ -5,7 +5,7 @@ const {
   Category,
   OrderDetail,
 } = require("../models/index");
-const {combineArray} = require("../utils/util");
+const {combineArray,mergeEntries} = require("../utils/util");
 
 const getOrderList = async (id) => {
   let orders = [];
@@ -22,7 +22,7 @@ const getOrderList = async (id) => {
     raw: true,
     nest: true
   });
-  return combineArray(orders,"name","OrderDetails");
+  return mergeEntries(combineArray(orders,"name","OrderDetails"));
 };
 
 const getOrderById = async (id) => {

@@ -1,20 +1,53 @@
-function mergeEntries(entries) {
-  let mergedEntries = [];
-  let keyMap = new Map();
-  entries.forEach((entry) => {
-    let key = entry.id_product.toString();
-    if (keyMap.has(key)) {
-      keyMap.get(key).quantity += entry.quantity;
-    } else {
-      keyMap.set(key, entry);
-    }
-  });
-  mergedEntries = Array.from(keyMap.values());
-  //mergedEntries.sort((a, b) => a.id - b.id);
-  return mergedEntries;
-};
+function mergeEntries(orders) {
+  // Create an object to store merged order details for each user
+  const mergedDetailsByUser = {};
 
-function combineArray(arrays,firtProperty,sendcondProperty) {
+  // Iterate over each order
+  orders.forEach((order) => {
+    const userName = order.name;
+
+    // Initialize an object for the user if it doesn't exist
+    if (!mergedDetailsByUser[userName]) {
+      mergedDetailsByUser[userName] = {};
+    }
+
+    // Iterate over each order detail
+    order.OrderDetails.forEach((orderDetail) => {
+      const { id_product, size } = orderDetail;
+      const key = `${id_product}_${size}`;
+
+      // If the key already exists, increase the quantity
+      if (mergedDetailsByUser[userName][key]) {
+        mergedDetailsByUser[userName][key].quantity += parseInt(
+          orderDetail.quantity
+        );
+      } else {
+        // Otherwise, add a new entry
+        mergedDetailsByUser[userName][key] = {
+          ...orderDetail,
+        };
+      }
+    });
+  });
+
+  // Convert the merged details object into the desired format
+  const mergedDetailsArray = Object.entries(mergedDetailsByUser).map(
+    ([name, details]) => {
+      const array = orders.filter((o) => o.name === name);
+      const object = array.reduce((acc, cur) => {
+        delete cur.OrderDetails;
+        cur.OrderDetails = Object.values(details);
+        acc[cur.id] = cur;
+        return acc;
+      }, {});
+      return object;
+    }
+  );
+  const mergedArray = Object.values(Object.assign({}, ...mergedDetailsArray));
+  return mergedArray;
+}
+
+function combineArray(arrays, firtProperty, sendcondProperty) {
   const combinedArrays = {};
 
   // Loop through each product
@@ -22,7 +55,9 @@ function combineArray(arrays,firtProperty,sendcondProperty) {
     // Check if the product ID already exists in combinedProducts
     if (combinedArrays[item[firtProperty]]) {
       // If exists, push the inventory to the existing product's Inventories array
-      combinedArrays[item[firtProperty]][sendcondProperty].push(item[sendcondProperty]);
+      combinedArrays[item[firtProperty]][sendcondProperty].push(
+        item[sendcondProperty]
+      );
     } else {
       // If not exists, add the product to combinedProducts and initialize the Inventories array
       combinedArrays[item[firtProperty]] = {
@@ -55,4 +90,4 @@ function generateRandomPassword(length) {
   return password;
 }
 
-module.exports = {mergeEntries,generateRandomPassword,combineArray}
+module.exports = { mergeEntries, generateRandomPassword, combineArray };
