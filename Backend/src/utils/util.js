@@ -8,7 +8,16 @@ function mergeEntries(orders) {
       mergedOrders[id] = { ...order };
       mergedOrders[id].OrderDetails = [mergedOrders[id].OrderDetails];
     } else {
-      mergedOrders[id].OrderDetails.push(order.OrderDetails);
+      let found = false;
+      mergedOrders[id].OrderDetails.forEach((detail) => {
+        if (detail.size === order.OrderDetails.size) {
+          detail.quantity += order.OrderDetails.quantity;
+          found = true;
+        }
+      });
+      if (!found) {
+        mergedOrders[id].OrderDetails.push(order.OrderDetails);
+      }
     }
   });
 

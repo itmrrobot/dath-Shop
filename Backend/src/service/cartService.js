@@ -24,7 +24,7 @@ const getCartByUserId = async (id) => {
 
 const createNewCart = async (data) => {
   try {
-    const product = await Cart.findOne({where:{id_product:data.id_product,size:data.size}});
+    const product = await Cart.findOne({where:{id_product:data.id_product,size:data.size,id_user:data.id_user}});
     let carts;
     if(product) {
       await Cart.update({quantity:product.quantity+data.quantity},{ where: { id_product: data.id_product,size:data.size }, raw: true });
