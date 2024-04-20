@@ -5,7 +5,7 @@ const {
   Category,
   OrderDetail,
 } = require("../models/index");
-const {combineArray,mergeEntries} = require("../utils/util");
+const { combineArray, mergeEntries } = require("../utils/util");
 
 const getOrderList = async (id) => {
   let orders = [];
@@ -15,32 +15,36 @@ const getOrderList = async (id) => {
       {
         model: OrderDetail,
         attributes: {
-          exclude: ["createdAt", "updatedAt","id_order","id_user"],
+          exclude: ["createdAt", "updatedAt", "id_order", "id_user"],
         },
       },
     ],
     raw: true,
-    nest: true
+    nest: true,
   });
   return mergeEntries(orders);
 };
 
 const getOrderById = async (id) => {
   let order = {};
-  order = await Order.findOne({
+  order = await Order.findAll({
     where: { id },
-    include: 
-      {
-        model: OrderDetail,
-        attributes: {
-          exclude: ["createdAt", "updatedAt","id_order","id_user"],
-        },
+    include: {
+      model: OrderDetail,
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "id_order", "id_user"],
       },
-    
+    },
+
     raw: true,
-    nest: true
+    nest: true,
   });
-  return order;
+  const object = Object.assign(
+    {},
+    ...mergeEntries(order).map((item) => ({ [item.id]: item }))
+  );
+  const newOrder = Object.values(object)[0];
+  return newOrder;
 };
 
 const createNewOrder = async (data) => {
