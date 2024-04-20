@@ -29,9 +29,12 @@ module.exports = {
         type: Sequelize.TEXT
       },
       status: {
-        type: Sequelize.TEXT
+        type: Sequelize.INTEGER
       },
       total: {
+        type: Sequelize.INTEGER
+      },
+      payed: {
         type: Sequelize.INTEGER
       },
       id_user: {
