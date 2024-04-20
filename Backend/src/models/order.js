@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     note: DataTypes.TEXT,
     status: DataTypes.TEXT,
     total: DataTypes.DECIMAL(15,2),
+    payed: DataTypes.INTEGER,
     id_user: DataTypes.INTEGER,
   }, {
     sequelize,

@@ -34,6 +34,9 @@ module.exports = {
       total: {
         type: Sequelize.INTEGER
       },
+      payed: {
+        type: Sequelize.INTEGER
+      },
       id_user: {
         type: Sequelize.INTEGER
       },
