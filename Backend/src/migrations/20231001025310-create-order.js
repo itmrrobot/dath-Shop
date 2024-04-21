@@ -37,6 +37,9 @@ module.exports = {
       payed: {
         type: Sequelize.INTEGER
       },
+      returnDate: {
+        type: Sequelize.DATE
+      },
       id_user: {
         type: Sequelize.INTEGER
       },
