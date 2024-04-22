@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     id_user: DataTypes.INTEGER,
     id_product: DataTypes.INTEGER,
     id_order: DataTypes.INTEGER,
-
+    rating: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'OrderDetail',

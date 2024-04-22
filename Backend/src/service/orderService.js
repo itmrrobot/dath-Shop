@@ -50,10 +50,10 @@ const getOrderById = async (id) => {
 const createNewOrder = async (data) => {
   try {
     const { products, ...orderData } = data;
+    console.log(products, orderData);
     const productsData = eval(products);
     let orderDetail;
     const newOrder = await Order.create({ ...orderData });
-    console.log(products, productsData);
     if (productsData) {
       productsData.forEach(async (p) => {
         orderDetail = await OrderDetail.create({
