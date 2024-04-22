@@ -8,6 +8,7 @@ const paymentRouter = require("./router/payment");
 const productsRouter = require("./router/products");
 const categoryRouter = require("./router/category");
 const orderRouter = require("./router/order");
+const retunrsRouter = require("./router/returns");
 const customerRouter = require("./router/customer");
 const authRouter = require("./router/users");
 const cartRouter = require("./router/cart");
@@ -98,6 +99,7 @@ app.use(paypalRouter);
 app.use(inventoryRouter);
 app.use(chatbotRouter);
 app.use(reviewsRouter);
+app.use(retunrsRouter);
 app.use(cors());
 connection();
 app.listen(port,() => {
