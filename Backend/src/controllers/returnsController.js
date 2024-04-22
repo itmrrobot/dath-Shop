@@ -22,7 +22,7 @@ const handleGetReturnsById = async(req,res) => {
 
 const handleCreateReturns = async(req,res) => {
     try {
-        const returns = await returnsService.createReturns(req.body);
+        const returns = await returnsService.createReturns(req.body,req.files);
         return res.status(200).send(returns);
     } catch(e) {
         console.log(e);
