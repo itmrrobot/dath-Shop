@@ -17,6 +17,7 @@ const paypalRouter = require("./router/paypalPayment");
 const inventoryRouter = require("./router/invertory");
 const chatbotRouter = require("./router/chatbot");
 const reviewsRouter = require("./router/reviews");
+const orderDetailRouter = require("./router/orderDetail");
 const passport = require('passport');
 const OAuth2Strategy = require("passport-google-oauth2").Strategy;
 const session = require('express-session');
@@ -100,6 +101,7 @@ app.use(inventoryRouter);
 app.use(chatbotRouter);
 app.use(reviewsRouter);
 app.use(retunrsRouter);
+app.use(orderDetailRouter);
 app.use(cors());
 connection();
 app.listen(port,() => {
