@@ -38,6 +38,9 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0
       },
+      date_pickup: {
+        type: Sequelize.DATE,
+      },
       id_user: {
         type: Sequelize.INTEGER,
       },
