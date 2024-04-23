@@ -1,4 +1,6 @@
 const { Returns, Order, OrderDetail } = require("../models/index");
+const cloudinary = require("../common/cloudinary-config");
+const fs = require("fs");
 
 const getReturnsList = async (id) => {
   let returnsList = [];
@@ -50,7 +52,6 @@ const getReturnsById = async (id) => {
 const createReturns = async (data, files) => {
   const { orders, ...returnsData } = data;
   const ordersData = eval(orders);
-  let newOrders;
   const folderImgName = "shop_imgs"; // Specify the folder name on Cloudinary
   const folderVideoName = "shop_video";
   const images = [];
@@ -92,7 +93,7 @@ const createReturns = async (data, files) => {
   const newReturns = await Returns.create({ ...returnsData });
   if (ordersData) {
     ordersData.forEach(async (p) => {
-      newOrders = await Order.update(
+      await Order.update(
         {
           id_returns: newReturns.id,
         },
