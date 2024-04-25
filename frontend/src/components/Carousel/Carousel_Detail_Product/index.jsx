@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 export default function Carousel({ images, product, reset = false }) {
     const [selectedImg, setSelectedImg] = useState(1);
     console.log(images);
-    
+
     // console.log();
     // const [img, setImg] = useState(`https://shoesshop-6n6z.onrender.com/imgs/${selectedImg}`);
     // console.log(images);
@@ -62,7 +62,6 @@ export default function Carousel({ images, product, reset = false }) {
                 {images &&
                     images.length > 0 &&
                     images?.map((img, index) => {
-                        console.log(img);
                         return (
                             <div
                                 key={index}
@@ -88,14 +87,16 @@ export default function Carousel({ images, product, reset = false }) {
                         return (
                             <div
                                 key={index}
-                                className={cx(`slider-box`, `${index + 1 === selectedImg ? cx('active') : ''}`)}
+                                className={cx(
+                                    `slider-box`,
+                                    `${index + 1 === selectedImg ? cx('active') : ''}`,
+                                )}
                                 onClick={() => checkSlideShow(index)}
                             >
-                                
-                                <img 
+                                <img
                                     src={`${url}/img/${img}`}
-                                    // src={'https://shoesshop-6n6z.onrender.com/imgs/' + img} 
-                                    alt="" 
+                                    // src={'https://shoesshop-6n6z.onrender.com/imgs/' + img}
+                                    alt=""
                                 />
                             </div>
                         );

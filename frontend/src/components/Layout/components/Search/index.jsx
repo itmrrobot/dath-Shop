@@ -22,7 +22,7 @@ function Search() {
     const [loading, setLoading] = useState(true);
     const debounce = useDebounce(searchValue, 800); // trả về data sau 1 khoảng trễ
     const inputRef = useRef();
-
+    // console.log(products);
     const handleClear = () => {
         setSearchValue('');
         setSearchResult([]);
@@ -44,8 +44,11 @@ function Search() {
                 setSearchResult([]);
                 return;
             }
-            let indexItem = product.ten_san_pham.toLowerCase().includes(debounce.toLowerCase());
-            return indexItem;
+            // console.log(product.name);
+            if (product.name !== null) {
+                let indexItem = product.name.toLowerCase().includes(debounce.toLowerCase());
+                return indexItem;
+            }
         });
 
         return productFilter;
@@ -82,11 +85,19 @@ function Search() {
                         <PopperWrapper overflow>
                             <p className={cx('title-search-result')}>Gợi ý sản phẩm</p>
                             {searchResult.map((result) => (
-                                <Link key={result.id} to={'/product/' + result.id} onClick={() => handleClear()}>
+                                <Link
+                                    key={result.id}
+                                    to={'/product/' + result.id}
+                                    onClick={() => handleClear()}
+                                >
                                     {/* <ProductItem data={result} /> */}
                                     <div className={cx('wrapper')}>
-                                        <img className={cx('search-icon')} src={images.search} alt="search-btn" />
-                                        <p className={cx('product')}>{result.ten_san_pham}</p>
+                                        <img
+                                            className={cx('search-icon')}
+                                            src={images.search}
+                                            alt="search-btn"
+                                        />
+                                        <p className={cx('product')}>{result.name}</p>
                                     </div>
                                 </Link>
                             ))}

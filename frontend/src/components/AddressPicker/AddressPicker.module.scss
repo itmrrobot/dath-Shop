@@ -1,17 +1,16 @@
-.address-wrapper{
+.address-wrapper {
     padding: 20px 0;
     border-bottom: 1px solid black;
     border-top: 1px solid black;
     margin-bottom: 20px;
-
 }
-.address-picker{
+.address-picker {
     display: flex;
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* 4 cột với chiều rộng bằng nhau */
     grid-gap: 10px; /* Khoảng cách giữa các ô */
 }
-.address-child{
+.address-child {
     position: relative;
     display: flex;
     padding: 25px;
@@ -21,21 +20,23 @@
     // gap: var(--Radius-20, 20px);
     align-self: stretch;
     border-radius: 10px;
-    border: 1.5px dashed var(--Secondary-300, #D8BC7E);
+    border: 1.5px dashed var(--Secondary-300, #d8bc7e);
     cursor: pointer;
     // height: 100px;
-    &.active{
+    &.active {
         border-radius: 10px;
-        background: var(--Secondary-300, #D8BC7E);
+        background: var(--Secondary-300, #d8bc7e);
     }
-    .add{
+    .add {
         text-align: center;
         width: 100%;
         // font-size: 1.8rem;
         font-weight: 600;
         // height: 50px;
     }
-    .name, .phone-number, .address{
+    .name,
+    .phone-number,
+    .address {
         display: block;
         font-size: 14px;
         // font-weight: 700;
@@ -46,33 +47,31 @@
         white-space: nowrap;
         width: 138px;
     }
-    img{
+    img {
         margin-bottom: 20px;
     }
-    .name{
-
+    .name {
     }
-    .phone-number{
-
+    .phone-number {
     }
-    .address{
-
+    .address {
     }
-    .remove-address{
+    .remove-address {
         position: absolute;
         top: 10px;
         right: 22px;
         font-size: 2rem;
-        &:hover{
+        // z-index: 999;
+        &:hover {
             color: #ff7d1f;
         }
     }
 }
 
-.title{
+.title {
     margin-bottom: 20px;
     display: flex;
-    .line-title{
+    .line-title {
         display: inline-block;
         margin-left: 12px;
         color: var(--Primary-950, #171212);

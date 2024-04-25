@@ -5,19 +5,102 @@ import { url } from '../../constants';
 import axios from 'axios';
 import { formatPrice, priceDiscount } from '../../common';
 import images from '../../assets/img';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UseContextUser } from '../../hooks/useContextUser';
 import Product_Item from './Product_Item';
 import Button from '../Button';
 import AddressPicker from '../AddressPicker';
 import { toast } from 'react-toastify';
+import ModalComp from '../Modal';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import moment from 'moment';
+import * as yup from 'yup';
 const cx = classNames.bind(styles);
 
 function Cart() {
     const state = useContext(UseContextUser);
     const [product, setProduct] = useState([]);
     const [isAddress, setIsAddress] = useState(false);
-    console.log(isAddress);
+    const [address, setAddress] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [shipment, setShipment] = useState('save');
+    const [city, setCity] = useState('');
+    const [noted, setNoted] = useState('');
+    const navigate = useNavigate();
+    const handleClose = () => setShowModal(false);
+    const handleShow = () => setShowModal(true);
+    const updateState = (newState) => {
+        setIsAddress(newState);
+    };
+    const setAddressToParent = (data) => {
+        setAddress(data);
+    };
+    const phoneRegExp =
+        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+    const schema = yup
+        .object()
+        .shape({
+            select: yup.string().required('Bạn cần lựa chọn thành phố'),
+        })
+        .required();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        defaultValues: {},
+        resolver: yupResolver(schema),
+    });
+    // console.log(product);
+    const handleCreateOrder = async (data) => {
+        let futureDate = moment().add(30, 'days').format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+        let productArr = state?.cart?.value
+            .filter((prod) => prod.isChecked === true)
+            .map((prod) => {
+                return {
+                    id_product: prod?.id_product,
+                    quantity: prod?.quantity,
+                    size: prod?.size,
+                    rating: 0,
+                };
+            });
+        const dataPost = {
+            name: address.name,
+            address: address.address + ', ' + data.select,
+            phone: address.phoneNumber,
+            note: noted,
+            status: 1,
+            payed: 0,
+            total: shipment === 'save' ? totalSum : totalSum + 50000,
+            id_user: state?.cuser?.value?.id,
+            returnDate: futureDate,
+            products: productArr,
+        };
+        let prodTicked = state?.cart?.value?.filter((prod) => prod.isChecked === true);
+        let dataDelete = JSON.stringify(prodTicked.map((prod) => prod.id));
+        console.log(dataPost);
+        try {
+            await axios.post(`${url}/order/create`, dataPost);
+            await axios.post(`${url}/cart/delete/product/${state?.cuser?.value?.id}`, {
+                listIds: dataDelete,
+            });
+            toast.success(`thành công!`, {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
+            state?.render?.setRender((prev) => !prev);
+            handleClose();
+        } catch (error) {
+            console.log(error);
+        }
+    };
     const totalProduct = useMemo(() => {
         return product.reduce((acc, cur) => {
             // console.log(cur.quantity);
@@ -43,114 +126,6 @@ function Cart() {
     const totalSum = useMemo(() => {
         return subtotal + tax - ((subtotal + tax) * 20) / 100;
     }, [product, subtotal]);
-    // console.log(subtotal);
-    // console.log(state?.cart?.value);
-    // console.log(state?.cart?.value);
-    // console.log(product);
-    // console.log(state.cart.value);
-    // useEffect(() => {
-    //     let product_id = state?.cart?.value?.map((i) => i.id);
-    //     const fetchProducts = async () => {
-    //         try {
-    //             const baseUrl = 'http://localhost:4000/products';
-    //             const requests = product_id?.map((id) => axios.get(`${baseUrl}/${id}`));
-    //             const responses = await Promise.all(requests);
-    //             // console.log(responses);
-    //             const products = responses.map((response) => response.data);
-    //             let product_cart = state?.cart?.value;
-    //             console.log(product_cart);
-    //             let a = product_cart?.map((item) => {
-    //                 // console.log(products);
-
-    //                 return {
-    //                     ...item,
-    //                 };
-    //             });
-    //             // console.log(a);
-    //             setProduct(a);
-    //             // setProduct(products);
-    //         } catch (error) {
-    //             console.error('Lỗi khi lấy danh sách sản phẩm:', error);
-    //         }
-    //     };
-
-    //     // Gọi hàm lấy danh sách sản phẩm
-    //     fetchProducts();
-    //     // axios.get(`https://shoesshop-6n6z.onrender.com/shoesList/${product_id}`).then((res) => {
-    //     //     let product_cart = state?.cart?.value;
-    //     //     // console.log(res.data);
-    //     //     let a = product_cart?.map((item) => {
-    //     //         return {
-    //     //             ...item,
-    //     //             product: res.data.find((i) => i.id == item.id),
-    //     //         };
-    //     //     });
-    //     //     setProduct(a);
-    //     //     // console.log(a);
-    // }, [state.cart.value]);
-    // get ra những data bên trong store Cart Provider
-    //   const {
-    //       // Những giá trị
-    //       cartState: { quantity, products,isCheckOut,allProducts},
-    //       // Method
-    //       cartDispatch,
-    //       increment,
-    //       decrement,
-    //       removeProduct
-    //     } = CartState();
-    //   console.log(quantity);
-    //   const [isClickPlaceOrder,setIsClickPlaceOrder] = useState(false);
-    //   const [isLessOne,setIsLessOne] = useState(false);
-    //   const [data,setData] = useState([]);
-    //   const {user} = AuthState();
-    //   // Nếu tồn tại data =>
-    //   const total = data&&data?.reduce((acc,curr) => {return acc+Number(curr?.so_luong)*Number(curr?.priceProduct)},0)
-    //   const qty = data&&data?.reduce((acc,curr) => {return acc+curr?.so_luong},0)
-    // useEffect(() => {
-    //   const control = new AbortController();
-    //   const fetchData = async () => {
-    //     try {
-    //       // Get tới api cart => lấy ra được thông tin của tất cả những mặt hàng mà khách hàng đã đặt
-    //       const respone = await axios.get(`${url}/cart/${user.id}`, {
-    //         signal: control.signal,
-    //       });
-    //       setData(respone.data);
-    //     } catch (e) {
-    //         // console.log(e);
-    //       console.log(e);
-    //     }
-    //   };
-    //   fetchData();
-    //   return () => {
-    //     control.abort();
-    //   };
-    // },[user?.id])
-
-    // const handleDecrese = async(id_user,id_product,so_luong) => {
-    //   cartDispatch({type:"TOTALPRODUCTDECREASE"})
-    //   let count = so_luong-1;
-    //   if(so_luong<=1) {
-    //     count = 0
-    //   }
-    //   try {
-    //     const res = await axios.put(url+'/cart/update',{id_user,id_product,so_luong:count})
-    //     setData(res.data);
-    //   } catch(e) {
-    //     console.log(e);
-    //   }
-    // }
-
-    // const handleIncrese = async(id_user,id_product,so_luong) => {
-    //   setIsLessOne(false);
-    //   cartDispatch({type:"TOTALPRODUCTINCREASE"});
-    //   // let count = so_luong;
-    //   try {
-    //     const res = await axios.put(url+'/cart/update',{id_user,id_product,so_luong:so_luong+1})
-    //     setData(res.data);
-    //   } catch(e) {
-    //     console.log(e);
-    //   }
-    // }
     useEffect(() => {
         let product_id = state.cart.value.map((i) => i.id_product);
         const fetchProducts = async () => {
@@ -159,20 +134,13 @@ function Cart() {
                 const requests = product_id?.map((id) => axios.get(`${baseUrl}/${id}`));
                 const responses = await Promise.all(requests);
                 const products = responses.map((response) => response.data);
-                // console.log(products);
                 let product_cart = state?.cart?.value;
-                // console.log(product_cart);
                 let a = product_cart?.map((item) => {
-                    // console.log(products);
-                    // console.log(products?.find((i) => i.id == item.id_product));
                     return {
                         ...item,
                         product: products?.find((i) => i.id === item.id_product),
                     };
                 });
-                // setCartHeader(a);
-                // console.log(a);
-                // state.cart.setCart(a);
                 setProduct(a);
             } catch (error) {
                 console.error('Lỗi khi lấy danh sách sản phẩm:', error);
@@ -184,23 +152,16 @@ function Cart() {
 
     const handleCheckAll = (e) => {
         let newCart = product?.map((prod) => {
-            // console.log(prod);
             return {
                 ...prod,
                 isChecked: e.target.checked,
             };
         });
-        // console.log(newCart);
         state?.cart?.setCart(newCart);
     };
     const handleRemoveProdTicked = () => {
-        // let prodTicked = JSON.stringify(state?.cart?.value?.filter((prod)=>prod.isChecked === true))
         let prodTicked = state?.cart?.value?.filter((prod) => prod.isChecked === true);
-        let dataDelete = JSON.stringify(prodTicked.map((prod) => prod.id_product));
-        // let listIds = req.body.listIds;
-        // console.log(state?.cuser?.value?.id);
-        // console.log(dataDelete);
-        // console.log(dataDelete);
+        let dataDelete = JSON.stringify(prodTicked.map((prod) => prod.id));
         axios
             .post(`${url}/cart/delete/product/${state?.cuser?.value?.id}`, {
                 listIds: dataDelete,
@@ -223,132 +184,370 @@ function Cart() {
             });
     };
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('content')}>
-                <div className={cx('header-title')}>
-                    <h1>Cart</h1>
-                    {/* <p className="total-product">
+        <>
+            <div className={cx('wrapper')}>
+                <div className={cx('content')}>
+                    <div className={cx('header-title')}>
+                        <h1>Cart</h1>
+                        {/* <p className="total-product">
                         ( <span>{totalProduct}</span> Products )
                     </p> */}
-                </div>
-                <AddressPicker isAddress={setIsAddress}></AddressPicker>
-                <div className={cx('select-remove')}>
-                    <div className={cx('select')}>
-                        <input
-                            type="checkbox"
-                            checked={
-                                state?.cart?.value.find((prod) => prod.isChecked === false) ===
-                                    undefined && state?.cart?.value.length > 0
-                            }
-                            onChange={handleCheckAll}
-                        />
-                        <p>Select All</p>
                     </div>
-                    <div className={cx('remove')} onClick={handleRemoveProdTicked}>
-                        <img src={images.clear} />
-                        <p>Delete</p>
+                    <AddressPicker
+                        isAddress={updateState}
+                        setAddressToParent={setAddressToParent}
+                    ></AddressPicker>
+                    <div className={cx('select-remove')}>
+                        <div className={cx('select')}>
+                            <input
+                                type="checkbox"
+                                checked={
+                                    state?.cart?.value.find((prod) => prod.isChecked === false) ===
+                                        undefined && state?.cart?.value.length > 0
+                                }
+                                onChange={handleCheckAll}
+                            />
+                            <p>Select All</p>
+                        </div>
+                        <div className={cx('remove')} onClick={handleRemoveProdTicked}>
+                            <img src={images.clear} />
+                            <p>Delete</p>
+                        </div>
+                    </div>
+                    <div className={cx('product')}>
+                        {product?.map((item, i) => {
+                            return <Product_Item item={item} key={i} index={i}></Product_Item>;
+                        })}
                     </div>
                 </div>
-                <div className={cx('product')}>
-                    {product?.map((item, i) => {
-                        return <Product_Item item={item} key={i} index={i}></Product_Item>;
-                    })}
+                <div className={cx('payment')}>
+                    <div className={cx('payment-wrapper')}>
+                        <div className={cx('payment-title')}>
+                            <p>Summary</p>
+                        </div>
+                        <div className={cx('payment-display')}>
+                            <p className={cx('label')}>Subtotal</p>
+                            <p className={cx('price')}>{formatPrice(subtotal)}</p>
+                        </div>
+                        <div className={cx('payment-display')}>
+                            <p className={cx('label')}>Sales tax (6.5%)</p>
+                            <p className={cx('price')}>{formatPrice(tax)}</p>
+                        </div>
+                        <div className={cx('payment-display')}>
+                            <p className={cx('label')}>Voucher</p>
+                            <p className={cx('discount-price')}>-20%</p>
+                        </div>
+                        <div className={cx('payment-display')}>
+                            <p className={cx('label')}>Shipping Fee</p>
+                            <p className={cx('discount-price')}>Free</p>
+                        </div>
+                        <div className={cx('payment-display')}>
+                            <p className={cx('label')}>Total Due</p>
+                            <p className={cx('discount-price')}>{formatPrice(totalSum)}</p>
+                        </div>
+                        {state?.cart?.value.find((prod) => prod.isChecked === true) !== undefined &&
+                        product.length > 0 &&
+                        isAddress === true ? (
+                            <Button
+                                // className={cx('btn_payment')}
+
+                                onClick={() => handleShow()}
+                                payment
+                                // rounded
+                                // onClick={(e) => {
+                                //     const user = JSON.parse(localStorage.getItem("tokens"))
+                                //     if(!user.status) {
+                                //         alert("Hãy đăng nhập để mua hàng")
+                                //         navigate("/signin")
+                                //     }
+
+                                //     handleSubmit(handleOrder)(e)
+
+                                // }}
+                            >
+                                {/* Checkout - {formatPrice(totalSum)} */}
+                                Checkout
+                            </Button>
+                        ) : (
+                            <Button
+                                // className={cx('btn_payment')}
+                                // onClick={() => handleShow()}
+                                payment
+                                disabled
+                            >
+                                Checkout
+                            </Button>
+                        )}
+
+                        <Link to={`/product?_page=1&_limit=9`}>
+                            <button className={cx('btn_continue_shopping')}>
+                                Continue Shopping
+                            </button>
+                        </Link>
+                    </div>
+                    <div className={cx('delivery')}>
+                        <div className={cx('delivery-wrapper')}>
+                            <div className={cx('delivery-promotion')}>
+                                <div className={cx('icon-delivery')}>
+                                    <img src={images.truck} alt="" />
+                                </div>
+                                <div className={cx('content-delivery-promotion')}>
+                                    <p className={cx('delivery-title')}>Free Delivery</p>
+                                    <p className={cx('delivery-sub-title')}>
+                                        Enter your Postal code for Delivery Availability
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className={cx('refund-delivery-detail')}>
+                                <div className={cx('icon-delivery')}>
+                                    <img src={images.cart_red} alt="" />
+                                </div>
+                                <div className={cx('content-delivery-promotion')}>
+                                    <p className={cx('delivery-title')}>Return Delivery</p>
+                                    <p className={cx('delivery-sub-title')}>
+                                        30 days to return it to us for a refund. We have made
+                                        returns SO EASY - you can now return your order to a store
+                                        or send it with FedEx FOR FREE
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div className={cx('payment')}>
-                <div className={cx('payment-wrapper')}>
-                    <div className={cx('payment-title')}>
-                        <p>Summary</p>
-                    </div>
-                    <div className={cx('payment-display')}>
-                        <p className={cx('label')}>Subtotal</p>
-                        <p className={cx('price')}>{formatPrice(subtotal)}</p>
-                    </div>
-                    <div className={cx('payment-display')}>
-                        <p className={cx('label')}>Sales tax (6.5%)</p>
-                        <p className={cx('price')}>{formatPrice(tax)}</p>
-                    </div>
-                    <div className={cx('payment-display')}>
-                        <p className={cx('label')}>Voucher</p>
-                        <p className={cx('discount-price')}>-20%</p>
-                    </div>
-                    <div className={cx('payment-display')}>
-                        <p className={cx('label')}>Shipping Fee</p>
-                        <p className={cx('discount-price')}>Free</p>
-                    </div>
-                    <div className={cx('payment-display')}>
-                        <p className={cx('label')}>Total Due</p>
-                        <p className={cx('discount-price')}>{formatPrice(totalSum)}</p>
-                    </div>
-                    {state?.cart?.value.find((prod) => prod.isChecked === true) !== undefined &&
-                    product.length > 0 &&
-                    isAddress === true ? (
-                        <Button
-                            // className={cx('btn_payment')}
-
-                            // onClick={() => handleShow()}
-                            payment
-                            // rounded
-                            // onClick={(e) => {
-                            //     const user = JSON.parse(localStorage.getItem("tokens"))
-                            //     if(!user.status) {
-                            //         alert("Hãy đăng nhập để mua hàng")
-                            //         navigate("/signin")
-                            //     }
-
-                            //     handleSubmit(handleOrder)(e)
-
-                            // }}
-                        >
-                            {/* Checkout - {formatPrice(totalSum)} */}
-                            Checkout
-                        </Button>
-                    ) : (
-                        <Button
-                            // className={cx('btn_payment')}
-                            // onClick={() => handleShow()}
-                            payment
-                            disabled
-                        >
-                            Checkout
-                        </Button>
-                    )}
-
-                    <Link to={`/product?_page=1&_limit=9`}>
-                        <button className={cx('btn_continue_shopping')}>Continue Shopping</button>
-                    </Link>
-                </div>
-                <div className={cx('delivery')}>
-                    <div className={cx('delivery-wrapper')}>
-                        <div className={cx('delivery-promotion')}>
-                            <div className={cx('icon-delivery')}>
-                                <img src={images.truck} alt="" />
-                            </div>
-                            <div className={cx('content-delivery-promotion')}>
-                                <p className={cx('delivery-title')}>Free Delivery</p>
-                                <p className={cx('delivery-sub-title')}>
-                                    Enter your Postal code for Delivery Availability
-                                </p>
+            <ModalComp showModal={showModal} handleClose={handleClose}>
+                <div className={cx('modal-wrapper')}>
+                    <div className={cx('left-modal')}>
+                        <div className={cx('left-title')}>
+                            <p>Product</p>
+                        </div>
+                        <div className={cx('product-modal')}>
+                            <div className={cx('product-frame')}>
+                                {product
+                                    .filter((prod) => prod.isChecked === true)
+                                    .map((item, i) => {
+                                        return (
+                                            <div key={i} className={cx('item-modal')}>
+                                                <div className={cx('img-item')}>
+                                                    <img src={`${item?.img}`} alt="" />
+                                                </div>
+                                                <div className={cx('item-infor')}>
+                                                    <p className={cx('name-prod')}>
+                                                        {item?.product?.name}
+                                                    </p>
+                                                    <p className={cx('price-prod')}>
+                                                        {formatPrice(item.priceProduct)}
+                                                    </p>
+                                                    <div className={cx('size-quantity-prod')}>
+                                                        <div className={cx('size-wrapper')}>
+                                                            <p>
+                                                                Size:{' '}
+                                                                <span>
+                                                                    {item?.size?.replace(
+                                                                        /[\[\]"]+/g,
+                                                                        '',
+                                                                    )}
+                                                                </span>
+                                                            </p>
+                                                        </div>
+                                                        <p>
+                                                            x<span>{item?.quantity}</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
                             </div>
                         </div>
 
-                        <div className={cx('refund-delivery-detail')}>
-                            <div className={cx('icon-delivery')}>
-                                <img src={images.cart_red} alt="" />
+                        <div className={cx('payment-wrapper-modal')}>
+                            <div className={cx('payment-display-modal')}>
+                                <p className={cx('label-modal')}>Subtotal</p>
+                                <p className={cx('price-modal')}>{formatPrice(subtotal)}</p>
                             </div>
-                            <div className={cx('content-delivery-promotion')}>
-                                <p className={cx('delivery-title')}>Return Delivery</p>
-                                <p className={cx('delivery-sub-title')}>
-                                    30 days to return it to us for a refund. We have made returns SO
-                                    EASY - you can now return your order to a store or send it with
-                                    FedEx FOR FREE
+                            <div className={cx('payment-display-modal')}>
+                                <p className={cx('label-modal')}>Sales tax (6.5%)</p>
+                                <p className={cx('discount-price-modal')}>{formatPrice(tax)}</p>
+                            </div>
+                            <div className={cx('payment-display-modal')}>
+                                <p className={cx('label-modal')}>Voucher</p>
+                                <p className={cx('discount-price-modal')}>-20%</p>
+                            </div>
+                            <div className={cx('payment-display-modal')}>
+                                <p className={cx('label-modal')}>Shipping Fee</p>
+                                <p className={cx('discount-price-modal')}>
+                                    {shipment === 'save' ? 'Free' : formatPrice(50000)}
+                                </p>
+                            </div>
+                            <div className={cx('payment-display-modal', 'total-wrapper')}>
+                                <p className={cx('label-modal', 'total')}>Total</p>
+                                <p className={cx('discount-price-modal')}>
+                                    {shipment === 'save'
+                                        ? formatPrice(totalSum)
+                                        : formatPrice(totalSum + 50000)}
                                 </p>
                             </div>
                         </div>
                     </div>
+                    <div className={cx('right-modal')}>
+                        <p className={cx('modal-title')}>Shipping Detail</p>
+                        <div className={cx('content-right')}>
+                            <div className={cx('customer-name')}>
+                                <div className={cx('first-name')}>
+                                    <label htmlFor="firstname" className="form-label">
+                                        Name: *
+                                    </label>
+                                    <input
+                                        id="name"
+                                        name="ho"
+                                        type="text"
+                                        className="form-control"
+                                        disabled
+                                        value={address?.name}
+                                    />
+                                </div>
+                                {/* <div className={cx('last-name')}>
+                                    <label htmlFor="lastname" className="form-label">
+                                        Name: *
+                                    </label>
+                                    <input
+                                        id="lastname"
+                                        name="ten"
+                                        type="text"
+                                        className="form-control"
+                                        {...register('lastname')}
+                                    />
+                                    {errors.lastname && (
+                                        <span className={cx('form-message')}>
+                                            {errors.lastname.message}
+                                        </span>
+                                    )}
+                                </div> */}
+                            </div>
+                            <div className={cx('phone-number')}>
+                                <label htmlFor="phoneNumber" className="form-label">
+                                    Phone Number:
+                                </label>
+                                <input
+                                    id="phoneNumber"
+                                    name="phoneNumber"
+                                    type="text"
+                                    className="form-control"
+                                    disabled
+                                    value={address.phoneNumber}
+                                />
+                            </div>
+                            <div className={cx('city')}>
+                                <label htmlFor="ten" className="form-label">
+                                    City: *
+                                </label>
+
+                                <select
+                                    onChange={(e) => {
+                                        // setCity(e.target.value);
+                                        setCity(e.target.value);
+                                    }}
+                                    className={cx('city-dropdown')}
+                                    {...register('select')}
+                                >
+                                    <option value="">---Chọn Thành phố---</option>
+                                    <option value="Đà Nẵng">Đà Nẵng</option>
+                                    <option value="Quảng Nam">Quảng Nam</option>
+                                    <option value="Huế">Huế</option>
+                                </select>
+                                {errors.select && (
+                                    <span className={cx('form-message')}>
+                                        {errors.select.message}
+                                    </span>
+                                )}
+                            </div>
+                            <div className={cx('address')}>
+                                <label htmlFor="address" className="form-label">
+                                    Address: *
+                                </label>
+                                <input
+                                    id="address"
+                                    name="address"
+                                    type="text"
+                                    className="form-control"
+                                    disabled
+                                    value={address?.address}
+                                />
+                            </div>
+                            <div className={cx('input_product')}>
+                                <label style={{ display: 'block' }} className={cx('label-product')}>
+                                    Noted:{' '}
+                                </label>
+                                <textarea
+                                    className={cx('input_textarea')}
+                                    placeholder="Please Comment!"
+                                    onChange={(e) => setNoted(e.target.value)}
+                                    // {...register("description", { required: true })}
+                                ></textarea>
+                            </div>
+                            {/* <button onClick={() => callAPI()}>Click me!</button> */}
+                        </div>
+                        <p className={cx('modal-title')}>Shipment Method</p>
+                        <ul className={cx('shipment-method')}>
+                            <li className={cx('method')}>
+                                <input
+                                    type="radio"
+                                    id="save"
+                                    checked={shipment === 'save'}
+                                    onChange={() => {
+                                        setShipment('save');
+                                    }}
+                                />
+                                <label htmlFor="save">Vận chuyển Tiết kiệm (từ 3 - 5 ngày)</label>
+                            </li>
+                            <li className={cx('method')}>
+                                <input
+                                    type="radio"
+                                    name=""
+                                    id="fast"
+                                    checked={shipment === 'fast'}
+                                    onChange={() => {
+                                        setShipment('fast');
+                                    }}
+                                />
+                                <label htmlFor="fast">Vận chuyển Nhanh (từ 2 - 3 ngày)</label>
+                            </li>
+                        </ul>
+                        <p className={cx('modal-title')}>Payment Method</p>
+                        <ul className={cx('payment-method')}>
+                            <li className={cx('method')}>
+                                <input type="radio" id="cod" defaultChecked />
+                                <label htmlFor="cod">COD (Cash On Delivery)</label>
+                            </li>
+                        </ul>
+                        <div className={cx('btn-pay')}>
+                            <Button
+                                onClick={(e) => {
+                                    const user = JSON.parse(localStorage.getItem('user'));
+                                    if (!user) {
+                                        alert('Hãy đăng nhập để mua hàng');
+                                        navigate('/login');
+                                    } else {
+                                        handleSubmit(handleCreateOrder)(e);
+                                    }
+                                }}
+                                primary
+                                // rounded
+                                order
+                            >
+                                Xác nhận đặt hàng
+                            </Button>
+                        </div>
+                    </div>
+
+                    <button className={cx('modal-close')} onClick={handleClose}>
+                        &times;
+                    </button>
                 </div>
-            </div>
-        </div>
+            </ModalComp>
+        </>
     );
 }
 
