@@ -114,7 +114,10 @@ function Login() {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className={cx('forgot-password')}>Forgot Password?</div>
+                    <Link to={'/forgot'}>
+                        <div className={cx('forgot-password')}>Forgot Password?</div>
+                    </Link>
+
                     <button className={cx('btn-common')}>Sign in</button>
                 </form>
                 <div className={cx('wrap-text-and-button')}>
