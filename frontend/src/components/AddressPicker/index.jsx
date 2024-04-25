@@ -11,7 +11,7 @@ const cx = classNames.bind(styles);
 function AddressPicker({ isAddress, setAddressToParent }) {
     const [address, setAddress] = useState([]);
     const [addressPicker, setAddressPicker] = useState('');
-    console.log(addressPicker);
+    // console.log(addressPicker);
     setAddressToParent(addressPicker);
     const [showModal, setShowModal] = useState(false);
     const handleClose = () => setShowModal(false);

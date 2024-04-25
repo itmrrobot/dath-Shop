@@ -62,7 +62,7 @@ const UserProvider = ({ children }) => {
             } else {
                 try {
                     const res = await axios.get(`${url}/cart/${currentUser?.id}`);
-                    // console.log(res.data);
+                    console.log(res.data);
                     let a = res?.data?.map((item) => {
                         // console.log(products);
                         // console.log(products?.find((i) => i.id == item.id_product));

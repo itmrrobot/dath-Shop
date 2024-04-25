@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import styles from './Product.module.scss';
 import { useParams } from 'react-router-dom';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 import { url } from '../../constants';
 import { formatPrice, priceDiscount } from '../../common';
@@ -13,7 +13,10 @@ import Button from '../Button';
 import Slider from '../Carousel/Slider';
 import { toast } from 'react-toastify';
 import { UseContextUser } from '../../hooks/useContextUser';
-
+import AvatarAuto from '../AvatarAuto';
+import { expectedDate } from '../../utils';
+import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
+import { AiOutlineStar } from 'react-icons/ai';
 const cx = classNames.bind(styles);
 
 function Product() {
@@ -21,12 +24,13 @@ function Product() {
     const param = useParams();
     const [product, setProduct] = useState({});
     const [checked, setChecked] = useState();
-    console.log(checked);
     const [size, setSize] = useState([]);
     const [type, setType] = useState('Description');
     const [image, setImage] = useState([]);
     // console.log(image);
     const [quantity_Order, setQuantity_Order] = useState(1);
+    const [reviews, setReviews] = useState([]);
+    console.log(reviews);
     // console.log(product);
     const tabs = ['Description', 'Reviews'];
     const state = useContext(UseContextUser);
@@ -49,6 +53,22 @@ function Product() {
     const size_quantity_select = product?.Inventories?.find(
         (obj) => obj?.size === checked,
     )?.quantity;
+    const ratingsCount = Array.from(
+        { length: 5 },
+        (_, i) => reviews.filter((review) => review.rating === i + 1).length,
+    );
+    const ratingPercentages = ratingsCount.map((count) => (count / reviews.length) * 100);
+    const sortedRatingPercentages = ratingPercentages.slice().reverse();
+    const averageRating = useMemo(() => {
+        let result = 0;
+        if (reviews.length > 0) {
+            result =
+                reviews.map((review) => review.rating).reduce((acc, curr) => acc + curr, 0) /
+                reviews.length;
+        }
+
+        return result;
+    }, [reviews]);
     // console.log(product?.Inventories?.find((obj) => obj?.size === checked)?.quantity);
     useEffect(() => {
         const controller = new AbortController();
@@ -57,6 +77,10 @@ function Product() {
                 const respone = await axios.get(`${url}/products/${id}`, {
                     signal: controller.signal,
                 });
+                const reviews = await axios.get(`${url}/reviews/${id}`, {
+                    signal: controller.signal,
+                });
+                setReviews(reviews.data.reviews);
                 setProduct(respone.data);
                 setSize(respone.data.Inventories);
                 // console.log(respone.data);
@@ -104,8 +128,9 @@ function Product() {
                         size: sizeToString,
                         img: `${url}/img/${image[0]}`,
                     };
-                    console.log(data);
-                    await axios.post(url + '/cart/create', data);
+                    // console.log(data);
+                    const response = await axios.post(url + '/cart/create', data);
+                    console.log(response);
                     state?.render?.setRender((prev) => !prev);
                 } catch (e) {
                     console.log(e);
@@ -122,8 +147,9 @@ function Product() {
                     size: sizeToString,
                     img: `${url}/img/${image[0]}`,
                 };
-                console.log(data);
-                await axios.post(url + '/cart/create', data);
+                // console.log(data);
+                const response = await axios.post(url + '/cart/create', data);
+                console.log(response);
                 state?.render?.setRender((prev) => !prev);
             } catch (e) {
                 console.log(e);
@@ -173,11 +199,11 @@ function Product() {
                                     <div className={cx('star-reviews')}>
                                         <div className={cx('star')}>
                                             <img src={images.star} alt="" />
-                                            <span>4.8</span>
+                                            <span>{averageRating}</span>
                                         </div>
                                         <div className={cx('previews')}>
                                             <img src={images.reviews} alt="" />
-                                            <span>67 Reviews</span>
+                                            <span>{reviews.length} Reviews</span>
                                         </div>
                                         <div className={cx('heart')}>
                                             <img src={images.heart} alt="" />
@@ -388,7 +414,45 @@ function Product() {
                             </>
                         ) : (
                             <>
-                                <div></div>
+                                {reviews && reviews.length > 0 ? (
+                                    <>
+                                        <div className={cx('review-total')}>
+                                            <div className={cx('left-review-total')}>
+                                                <div className={cx('average-wrapper')}>
+                                                    <p className={cx('average-title')}>
+                                                        Employee Reviews
+                                                    </p>
+                                                    <p className={cx('average-number')}>
+                                                        {averageRating.toFixed(1)}
+                                                    </p>
+                                                    <AverageStar
+                                                        stars={averageRating.toFixed(1)}
+                                                        reviews={reviews}
+                                                    />
+                                                    <p>({reviews.length} Reviews)</p>
+                                                </div>
+                                            </div>
+                                            <div className={cx('right-review-total')}>
+                                                {Array.from({ length: 5 }, (_, i) => (
+                                                    <RatingBar
+                                                        key={i + 1}
+                                                        stars={5 - i}
+                                                        ratingPercent={sortedRatingPercentages[i]}
+                                                        reviews={reviews}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div className={cx('reviews-wrapper')}>
+                                            <Review reviews={reviews} />
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className={cx('notification')}>
+                                        {/* <h1>Xin chao</h1> */}
+                                        <p>Chưa có reviews nào về sản phẩm này</p>
+                                    </div>
+                                )}
                             </>
                         )}
 
@@ -405,3 +469,62 @@ function Product() {
 }
 
 export default Product;
+
+function Review({ reviews }) {
+    return (
+        <>
+            <div className={cx('reviews-sort-wrapper')}></div>
+            <div className={cx('reviews')}>
+                {reviews.map((review, index) => {
+                    console.log(review);
+                    return (
+                        <div className={cx('review')}>
+                            <p className={cx('review-date-create')}>
+                                {expectedDate(review.createdAt)}
+                            </p>
+                            <AverageStar stars={review.rating} />
+                            <div className={cx('review-infor')}>
+                                <AvatarAuto nameU={review?.User?.fullname} />
+                                <p>{review?.User?.fullname}</p>
+                            </div>
+                            {/* <div className={}></div> */}
+                            {/* <p className={cx('review-size')}>Size: {review.product.size}</p> */}
+                            <p className={cx('review-comment')}>{review.content}</p>
+                        </div>
+                    );
+                })}
+            </div>
+        </>
+    );
+}
+
+function RatingBar({ stars, ratingPercent, reviews }) {
+    let quantity = reviews.filter((review) => review.rating === stars).length;
+    return (
+        <div className={cx('rating-bar')}>
+            <label>{stars} stars</label>
+            <progress className={cx('progress')} value={ratingPercent} max="100">
+                {ratingPercent}%
+            </progress>
+            <label>{quantity}</label>
+        </div>
+    );
+}
+
+function AverageStar({ stars }) {
+    const ratingStar = Array.from({ length: 5 }, (elem, index) => {
+        let number = index + 0.5;
+        return (
+            <span key={index}>
+                {stars >= index + 1 ? (
+                    <FaStar size={30} className={cx('star-click')} color="#E7B66B" />
+                ) : stars >= number ? (
+                    <FaStarHalfAlt className={cx('star-click')} color="#E7B66B" size={30} />
+                ) : (
+                    <AiOutlineStar className={cx('star-click')} size={34} />
+                )}
+            </span>
+        );
+    });
+    return <div className={cx('rating-left-star')}>{ratingStar}</div>;
+}

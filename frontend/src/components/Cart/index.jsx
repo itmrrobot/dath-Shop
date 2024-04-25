@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import ModalComp from '../Modal';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import moment from 'moment';
 import * as yup from 'yup';
 const cx = classNames.bind(styles);
 
@@ -25,6 +26,7 @@ function Cart() {
     const [showModal, setShowModal] = useState(false);
     const [shipment, setShipment] = useState('save');
     const [city, setCity] = useState('');
+    const [noted, setNoted] = useState('');
     const navigate = useNavigate();
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
@@ -51,24 +53,38 @@ function Cart() {
         resolver: yupResolver(schema),
     });
     // console.log(product);
-    const handlePay = async (data) => {
+    const handleCreateOrder = async (data) => {
+        let futureDate = moment().add(30, 'days').format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
         let productArr = state?.cart?.value
             .filter((prod) => prod.isChecked === true)
-            .map((prod) => prod.id_product);
-        // console.log(productArr);
+            .map((prod) => {
+                return {
+                    id_product: prod?.id_product,
+                    quantity: prod?.quantity,
+                    size: prod?.size,
+                    rating: 0,
+                };
+            });
         const dataPost = {
-            ...data,
             name: address.name,
-            address: address.address,
+            address: address.address + ', ' + data.select,
             phone: address.phoneNumber,
-            note: 'Cẩn thận',
+            note: noted,
             status: 1,
+            payed: 0,
             total: shipment === 'save' ? totalSum : totalSum + 50000,
             id_user: state?.cuser?.value?.id,
-            ids_product: productArr,
+            returnDate: futureDate,
+            products: productArr,
         };
+        let prodTicked = state?.cart?.value?.filter((prod) => prod.isChecked === true);
+        let dataDelete = JSON.stringify(prodTicked.map((prod) => prod.id));
+        console.log(dataPost);
         try {
-            const reponse = await axios.post(`${url}/order/create`, dataPost);
+            await axios.post(`${url}/order/create`, dataPost);
+            await axios.post(`${url}/cart/delete/product/${state?.cuser?.value?.id}`, {
+                listIds: dataDelete,
+            });
             toast.success(`thành công!`, {
                 position: 'top-right',
                 autoClose: 5000,
@@ -79,6 +95,8 @@ function Cart() {
                 progress: undefined,
                 theme: 'light',
             });
+            state?.render?.setRender((prev) => !prev);
+            handleClose();
         } catch (error) {
             console.log(error);
         }
@@ -143,7 +161,7 @@ function Cart() {
     };
     const handleRemoveProdTicked = () => {
         let prodTicked = state?.cart?.value?.filter((prod) => prod.isChecked === true);
-        let dataDelete = JSON.stringify(prodTicked.map((prod) => prod.id_product));
+        let dataDelete = JSON.stringify(prodTicked.map((prod) => prod.id));
         axios
             .post(`${url}/cart/delete/product/${state?.cuser?.value?.id}`, {
                 listIds: dataDelete,
@@ -458,6 +476,17 @@ function Cart() {
                                     value={address?.address}
                                 />
                             </div>
+                            <div className={cx('input_product')}>
+                                <label style={{ display: 'block' }} className={cx('label-product')}>
+                                    Noted:{' '}
+                                </label>
+                                <textarea
+                                    className={cx('input_textarea')}
+                                    placeholder="Please Comment!"
+                                    onChange={(e) => setNoted(e.target.value)}
+                                    // {...register("description", { required: true })}
+                                ></textarea>
+                            </div>
                             {/* <button onClick={() => callAPI()}>Click me!</button> */}
                         </div>
                         <p className={cx('modal-title')}>Shipment Method</p>
@@ -501,7 +530,7 @@ function Cart() {
                                         alert('Hãy đăng nhập để mua hàng');
                                         navigate('/login');
                                     } else {
-                                        handleSubmit(handlePay)(e);
+                                        handleSubmit(handleCreateOrder)(e);
                                     }
                                 }}
                                 primary

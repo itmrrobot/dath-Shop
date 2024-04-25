@@ -18,6 +18,12 @@ import LoginGoogle from './pages/LoginGoogle';
 import ChangePasswordUser from './pages/ChangePasswordUser';
 import HasSidebar from './components/Layout/HasSidebar';
 import WishList from './pages/WishList';
+import UserOrder from './pages/UserOrder';
+import DetailOrder from './pages/DetailOrder';
+import Return from './pages/Return';
+import UserReturn from './pages/UserReturn';
+import DetailRefund from './pages/DetailRefund';
+
 function App() {
     const [chat, setChat] = useState(false);
     const state = useContext(UseContextUser);
@@ -78,6 +84,20 @@ function App() {
                                     }
                                 />
                                 <Route
+                                    path="/user/order"
+                                    element={
+                                        <DefaultLayout>
+                                            <LayoutUserInfor
+                                                path={'Order'}
+                                                title={'My Orders'}
+                                                order={true}
+                                            >
+                                                <UserOrder></UserOrder>
+                                            </LayoutUserInfor>
+                                        </DefaultLayout>
+                                    }
+                                />
+                                <Route
                                     path="/user/wishlist/:id"
                                     element={
                                         <DefaultLayout>
@@ -87,6 +107,56 @@ function App() {
                                                 wishlist={true}
                                             >
                                                 <WishList></WishList>
+                                            </LayoutUserInfor>
+                                        </DefaultLayout>
+                                    }
+                                />
+                                <Route
+                                    path="/user/order/detail/:id"
+                                    element={
+                                        <DefaultLayout>
+                                            <LayoutUserInfor
+                                                path={'My Orders'}
+                                                title={'My Orders'}
+                                                order={true}
+                                            >
+                                                <DetailOrder></DetailOrder>
+                                            </LayoutUserInfor>
+                                        </DefaultLayout>
+                                    }
+                                />
+                                <Route
+                                    path="/user/order/detail/return/:id"
+                                    element={
+                                        <DefaultLayout>
+                                            <Return></Return>
+                                        </DefaultLayout>
+                                    }
+                                />
+                                <Route
+                                    path="/user/return"
+                                    element={
+                                        <DefaultLayout>
+                                            <LayoutUserInfor
+                                                path={'Returns'}
+                                                title={'Returns'}
+                                                returnn={true}
+                                            >
+                                                <UserReturn></UserReturn>
+                                            </LayoutUserInfor>
+                                        </DefaultLayout>
+                                    }
+                                />
+                                <Route
+                                    path="/user/return/detail/:id"
+                                    element={
+                                        <DefaultLayout>
+                                            <LayoutUserInfor
+                                                path={'Returns'}
+                                                title={'Returns'}
+                                                returnn={true}
+                                            >
+                                                <DetailRefund></DetailRefund>
                                             </LayoutUserInfor>
                                         </DefaultLayout>
                                     }

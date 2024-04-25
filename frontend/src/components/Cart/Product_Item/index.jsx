@@ -13,6 +13,7 @@ import { url } from '../../../constants';
 import ModalComp from '../../Modal';
 const cx = classNames.bind(styles);
 function Product_Item({ item, index }) {
+    console.log(item);
     const [size, setSize] = useState(item?.size);
     const [quantity_Order, setQuantity_Order] = useState();
     const state = useContext(UseContextUser);
@@ -24,12 +25,16 @@ function Product_Item({ item, index }) {
     }, [quantity_Order]);
     const handleCheckboxChange = (e) => {
         let oldCart = [...state?.cart?.value];
-        let check_Prod = oldCart.find((prod) => item?.id_product === prod?.id_product);
+        // console.log(oldCart);
+        let check_Prod = oldCart.find((prod) => {
+            return item?.id === prod?.id;
+        });
+        // console.log(check_Prod);
         check_Prod = {
             ...check_Prod,
             isChecked: e.target.checked,
         };
-        let index = oldCart.findIndex((prod) => item?.id_product === prod?.id_product);
+        let index = oldCart.findIndex((prod) => item?.id === prod?.id);
         oldCart[index] = check_Prod;
         state?.cart?.setCart(oldCart);
     };
