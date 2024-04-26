@@ -28,6 +28,7 @@ const handleGetAllOrder = async(req,res) => {
         return res.status(200).send(orders);
     } catch(e) {
         res.status(500).send();
+        console.log(e);
     }
 }
 
