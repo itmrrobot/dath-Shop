@@ -47,6 +47,18 @@ const getOrderById = async (id) => {
   return newOrder;
 };
 
+const getAllOrders = async () => {
+  const orders = await Order.findAll({
+    include: {
+      model: OrderDetail,
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "id_order", "id_user"],
+      },
+    },
+  });
+  return orders;
+};
+
 const createNewOrder = async (data) => {
   try {
     const { products, ...orderData } = data;
@@ -88,6 +100,7 @@ const deleteOrder = async (id) => {
 module.exports = {
   getOrderList,
   getOrderById,
+  getAllOrders,
   createNewOrder,
   deleteOrder,
   updateOrder,
