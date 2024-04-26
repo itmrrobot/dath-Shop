@@ -22,6 +22,15 @@ const handleGetOrderById = async(req,res) => {
     }
 }
 
+const handleGetAllOrder = async(req,res) => {
+    try {
+        const orders = await orderService.getAllOrders();
+        return res.status(200).send(orders);
+    } catch(e) {
+        res.status(500).send();
+    }
+}
+
 const handleCreateNewOrder = async(req,res) => {
     try {
         const newOrder = await orderService.createNewOrder(req.body);
@@ -56,4 +65,4 @@ const handleDeleteOrder = async(req,res) => {
     }
 }
 
-module.exports = {handleGetOrderList,handleGetOrderById,handleCreateNewOrder,handleDeleteOrder,handleUpdateOrder};
+module.exports = {handleGetOrderList,handleGetOrderById,handleCreateNewOrder,handleDeleteOrder,handleUpdateOrder,handleGetAllOrder};
