@@ -58,7 +58,7 @@ passport.use(
     },
     async(accessToken,refreshToken,profile,done)=>{
         try {
-            let user = await User.findOne({where:{id:Number(profile.id.slice(0,5))}});
+            let user = await User.findOne({where:{email:profile.emails[0].value}});
             
             if(!user){
                 user = await User.create({

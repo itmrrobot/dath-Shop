@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createContext, useState, useEffect } from 'react';
-import { isAuthenticated } from "../service/AuthService";
+import { isAuthenticated } from '../service/AuthService';
 // import isAh
 import { url } from '../constants';
 // Khoi tao UserContext bang createContext
@@ -8,9 +8,11 @@ const UseContextUser = createContext();
 // Khoi tao Provider
 const UserProvider = ({ children }) => {
     // Khoi tao bien State de luu tru trang thai nguoi dung
-    const [cart, setCart] = useState([]);
-    const [render, setRender] = useState(false)
     const [currentUser, setCurrentUser] = useState(null);
+    const [cart, setCart] = useState([]);
+    const [wishlist, setWishlist] = useState([]);
+    const [render, setRender] = useState(false);
+
     // console.log(currentUser);
     console.log(currentUser);
     console.log(cart);
@@ -25,10 +27,14 @@ const UserProvider = ({ children }) => {
             value: currentUser,
             setCurrentUser,
         },
+        wishlist: {
+            value: wishlist,
+            setWishlist,
+        },
         render: {
             value: render,
-            setRender
-        }
+            setRender,
+        },
     };
     useEffect(() => {
         const checkedLogin = async () => {
@@ -56,22 +62,48 @@ const UserProvider = ({ children }) => {
             } else {
                 try {
                     const res = await axios.get(`${url}/cart/${currentUser?.id}`);
-                    // console.log(res.data);
+                    console.log(res.data);
                     let a = res?.data?.map((item) => {
                         // console.log(products);
                         // console.log(products?.find((i) => i.id == item.id_product));
                         return {
                             ...item,
-                            isChecked: false
+                            isChecked: false,
                         };
                     });
                     // console.log(a);
-                    setCart(a)
+                    setCart(a);
                 } catch (error) {
                     console.error('Error fetching cart data:', error);
                 }
             }
-        }
+        };
+        getData();
+    }, [currentUser, render]);
+    useEffect(() => {
+        const getData = async () => {
+            let cuser = isAuthenticated();
+            if (cuser === null) {
+                setWishlist([]);
+            } else {
+                try {
+                    const res = await axios.get(`${url}/wishlist/${currentUser?.id}`);
+                    // console.log(res.data);
+                    // let a = res?.data?.map((item) => {
+                    //     // console.log(products);
+                    //     // console.log(products?.find((i) => i.id == item.id_product));
+                    //     return {
+                    //         ...item,
+                    //         isChecked: false,
+                    //     };
+                    // });
+                    // // console.log(a);
+                    setWishlist(res.data);
+                } catch (error) {
+                    console.error('Error fetching cart data:', error);
+                }
+            }
+        };
         getData();
     }, [currentUser, render]);
     // useEffect(() => {
@@ -92,7 +124,7 @@ const UserProvider = ({ children }) => {
     //       fetchData();
     //     } else {
     //       setCart([])
-    //     }       
+    //     }
     // }, []);
     return (
         <UseContextUser.Provider value={state}>

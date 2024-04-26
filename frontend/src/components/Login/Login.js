@@ -43,10 +43,13 @@ function Login() {
                 theme: 'light',
             });
             // St ore the tokens in localStorage or secure cookie for later use
-            cookies.set('accessToken', access_token);
-            cookies.set('refreshToken', refresh_token);
+            // cookies.set('accessToken', access_token);
+            // cookies.set('refreshToken', refresh_token);
             // setUser(response.data.res)
             localStorage.setItem('user', JSON.stringify(response.data.res));
+            localStorage.setItem('accessToken', JSON.stringify(access_token));
+            localStorage.setItem('refreshToken', JSON.stringify(refresh_token));
+
             console.log(response);
             state.cuser.setCurrentUser(response.data.res);
             navigate('/');
@@ -62,6 +65,9 @@ function Login() {
             throw new Error(e);
         }
     };
+    // const loginwithgoogle = () => {
+    //     window.open('http://localhost:4000/auth/google/callback', '_self');
+    // };
     const getGoogleAuthUrl = () => {
         const url = `https://accounts.google.com/o/oauth2/v2/auth`;
         const query = {
@@ -70,13 +76,13 @@ function Login() {
             response_type: 'code',
             scope: [
                 'https://www.googleapis.com/auth/userinfo.email',
+                // ' ',
                 'https://www.googleapis.com/auth/userinfo.profile',
-            ].join(''),
+            ].join(' '),
             prompt: 'consent',
             access_type: 'offline',
         };
         const queryString = new URLSearchParams(query).toString();
-        console.log(queryString);
         return `${url}?${queryString}`;
     };
     const googleOAuth = getGoogleAuthUrl();

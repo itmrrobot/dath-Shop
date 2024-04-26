@@ -27,7 +27,8 @@ router
     }),
     function (req, res) {
       session.user = req.user;
-      res.redirect("http://localhost:3000");
+     res.redirect("http://localhost:3000/auth/oauth2/login");
+    //  console.log(res);
     }
   )
   .get("/login/success", authController.handleLoginSuccess)

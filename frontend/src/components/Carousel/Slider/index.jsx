@@ -123,10 +123,10 @@ function Slider({ param, brand_id, images }) {
                     })}
                 {brand_id &&
                     (brand.length > 0 ? (
-                        brand?.map((slide, i) => {
+                        brand?.map((slide, index) => {
                             // console.log(slide[0].name);
                             return (
-                                <div key={i}>
+                                <div key={index}>
                                     <SwiperSlide>
                                         <Link to={`http://localhost:3000/product/${slide.id}`}>
                                             <div className={cx('item-slider')}>

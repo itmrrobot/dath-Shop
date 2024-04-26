@@ -1,23 +1,7 @@
 import classNames from 'classnames/bind';
 import styles from './Product.module.scss';
-import share from '../../assets/img/share.png';
-import bookmark from '../../assets/img/book-mark.png';
-import love from '../../assets/img/love.png';
-import star from '../../assets/img/star.png';
-import message from '../../assets/img/message.png';
-import cart from '../../assets/img/icon-cart.png';
-import deliveryIcon from '../../assets/img/delivery.png';
-import returnIcon from '../../assets/img/return.png';
-import color1 from '../../assets/img/Group 5.png';
-import color2 from '../../assets/img/Group 6.png';
-import color3 from '../../assets/img/Group 7.png';
-import color4 from '../../assets/img/Group 8.png';
-import color5 from '../../assets/img/Group 9.png';
-import RelatedProduct from '../RelatedProduct';
-import prevIcon from '../../assets/img/prev.png';
-import nextIcon from '../../assets/img/Frame (8).png';
 import { useParams } from 'react-router-dom';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 import { url } from '../../constants';
 import { formatPrice, priceDiscount } from '../../common';
@@ -29,7 +13,10 @@ import Button from '../Button';
 import Slider from '../Carousel/Slider';
 import { toast } from 'react-toastify';
 import { UseContextUser } from '../../hooks/useContextUser';
-
+import AvatarAuto from '../AvatarAuto';
+import { expectedDate } from '../../utils';
+import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
+import { AiOutlineStar } from 'react-icons/ai';
 const cx = classNames.bind(styles);
 
 function Product() {
@@ -37,12 +24,14 @@ function Product() {
     const param = useParams();
     const [product, setProduct] = useState({});
     const [checked, setChecked] = useState();
-    const [size, setSize] = useState(['Small', 'Medium', 'Large', 'Extra Large', 'XXL']);
+    const [size, setSize] = useState([]);
     const [type, setType] = useState('Description');
     const [image, setImage] = useState([]);
-    console.log(image);
+    // console.log(image);
     const [quantity_Order, setQuantity_Order] = useState(1);
-    console.log(product);
+    const [reviews, setReviews] = useState([]);
+    console.log(reviews);
+    // console.log(product);
     const tabs = ['Description', 'Reviews'];
     const state = useContext(UseContextUser);
     const benefits = [
@@ -61,14 +50,26 @@ function Product() {
         'Colour Shown: Ale Brown/Black/Goldtone/Ale Brown',
         'Style: 805899-202',
     ];
-    // const [imgSelectedIndex,setImgSelectedIndex] = useState(0);
-    // const [count,setCount] = useState(1);
-    // const {cartState:{products,total,quantity,isCheckOut},cartDispatch,increment} = CartState();
-    // const {user} = AuthState();
-    // let prevCount =0;
-    // data.qty = count;
-    // //const [imgs,setImgs] = useState([]);
-    // let imgs = data.hinh_anh ? JSON.parse(data?.hinh_anh):[];
+    const size_quantity_select = product?.Inventories?.find(
+        (obj) => obj?.size === checked,
+    )?.quantity;
+    const ratingsCount = Array.from(
+        { length: 5 },
+        (_, i) => reviews.filter((review) => review.rating === i + 1).length,
+    );
+    const ratingPercentages = ratingsCount.map((count) => (count / reviews.length) * 100);
+    const sortedRatingPercentages = ratingPercentages.slice().reverse();
+    const averageRating = useMemo(() => {
+        let result = 0;
+        if (reviews.length > 0) {
+            result =
+                reviews.map((review) => review.rating).reduce((acc, curr) => acc + curr, 0) /
+                reviews.length;
+        }
+
+        return result;
+    }, [reviews]);
+    // console.log(product?.Inventories?.find((obj) => obj?.size === checked)?.quantity);
     useEffect(() => {
         const controller = new AbortController();
         const fetchData = async () => {
@@ -76,8 +77,13 @@ function Product() {
                 const respone = await axios.get(`${url}/products/${id}`, {
                     signal: controller.signal,
                 });
+                const reviews = await axios.get(`${url}/reviews/${id}`, {
+                    signal: controller.signal,
+                });
+                setReviews(reviews.data.reviews);
                 setProduct(respone.data);
-                console.log(respone.data);
+                setSize(respone.data.Inventories);
+                // console.log(respone.data);
                 // setImage(respone?.data?.hinh_anh);
                 // const cleanedString = respone?.data?.hinh_anh.slice(1, -1);
                 // // Tách chuỗi thành mảng sử dụng dấu phẩy làm dấu phân cách
@@ -94,38 +100,62 @@ function Product() {
             controller.abort();
         };
     }, [id]);
-    // console.log(imgs);
-    // const handleIncrease = () => {
-    //     setCount(count+1);
-    // }
 
-    // const handleDecrease =() => {
-    //     if(count>1) {
-    //         setCount(count-1);
-    //     }
-    // }
-    // console.log(count)
     const handleAddToCart = async () => {
-        try {
-            // console.log(state?.cuser?.value);
-            // console.log(product);
-            // await axios.post(url+"/cart/create",{id_user:user.id,id_product:Number(id),so_luong:count,nameProduct:data?.ten_san_pham,priceProduct:data?.gia_khuyen_mai,img:`${url}/img/${imgs?.[0]}`})
-            let data = {
-                id_user: state?.cuser?.value?.id,
-                id_product: Number(id),
-                quantity: quantity_Order,
-                nameProduct: product?.name,
-                priceProduct: product?.discount_price,
-                img: `${url}/img/${image[0]}`,
-            };
-            await axios.post(url + '/cart/create', data);
-            state?.render?.setRender((prev) => !prev);
-            // console.log(duma)
-        } catch (e) {
-            console.log(e);
+        let sizeToString = JSON.stringify([checked]);
+        // const wishlistObj = state?.cart?.value.find((item) => item.id_product === id);
+        let indexProd = state?.cart?.value?.findIndex((i) => {
+            return i.id_product + i.size === Number(id) + JSON.stringify([checked]);
+        });
+        if (indexProd !== -1) {
+            if (state?.cart?.value[indexProd].quantity + quantity_Order > size_quantity_select) {
+                toast.info('Sản phẩm này đã vượt quá số lượng cho phép đặt', {
+                    // autoClose: 2000,
+                    theme: 'colored',
+                    position: 'top-right',
+                    autoClose: 3000,
+                });
+                // newCart = [...product_list];
+                // state.cart.setCart(newCart);
+            } else {
+                try {
+                    let data = {
+                        id_user: state?.cuser?.value?.id,
+                        id_product: Number(id),
+                        quantity: quantity_Order,
+                        nameProduct: product?.name,
+                        priceProduct: product?.discount_price,
+                        size: sizeToString,
+                        img: `${url}/img/${image[0]}`,
+                    };
+                    // console.log(data);
+                    const response = await axios.post(url + '/cart/create', data);
+                    console.log(response);
+                    state?.render?.setRender((prev) => !prev);
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        } else {
+            try {
+                let data = {
+                    id_user: state?.cuser?.value?.id,
+                    id_product: Number(id),
+                    quantity: quantity_Order,
+                    nameProduct: product?.name,
+                    priceProduct: product?.discount_price,
+                    size: sizeToString,
+                    img: `${url}/img/${image[0]}`,
+                };
+                // console.log(data);
+                const response = await axios.post(url + '/cart/create', data);
+                console.log(response);
+                state?.render?.setRender((prev) => !prev);
+            } catch (e) {
+                console.log(e);
+            }
         }
     };
-    //`${url}/img/${imgs.current?.[imgSelectedIndex]}`
     return (
         <>
             <div className={cx('wrapper')}>
@@ -169,11 +199,11 @@ function Product() {
                                     <div className={cx('star-reviews')}>
                                         <div className={cx('star')}>
                                             <img src={images.star} alt="" />
-                                            <span>4.8</span>
+                                            <span>{averageRating}</span>
                                         </div>
                                         <div className={cx('previews')}>
                                             <img src={images.reviews} alt="" />
-                                            <span>67 Reviews</span>
+                                            <span>{reviews.length} Reviews</span>
                                         </div>
                                         <div className={cx('heart')}>
                                             <img src={images.heart} alt="" />
@@ -192,17 +222,14 @@ function Product() {
                             <div className={cx('product-size-wrapper')}>
                                 <div className={cx('title-size')}>
                                     <p>Choose a Size</p>
-                                    {/* {checked &&
+                                    {checked &&
                                         (size_quantity_select && size_quantity_select > 0 ? (
-                                            <p className={cx('status')}>{size_quantity_select} products left</p>
+                                            <p className={cx('status')}>
+                                                {size_quantity_select} products left
+                                            </p>
                                         ) : (
                                             <p className={cx('sold-out')}>Sold out</p>
-                                        ))} */}
-                                    {/* {size_quantity_select && size_quantity_select > 0 ? (
-                                        <p className={cx('status')}>{size_quantity_select} products left</p>
-                                    ) : (
-                                        <p className={cx('sold-out')}>Sold out</p>
-                                    )} */}
+                                        ))}
                                 </div>
 
                                 {size.map((size, index) => {
@@ -213,10 +240,10 @@ function Product() {
                                                 name="radio"
                                                 // type="radio"
                                                 // value={}
-                                                checked={checked === size} //logic neu nhu checked === "size" thi no se check
-                                                onChange={() => setChecked(size)}
+                                                checked={checked === size.size} //logic neu nhu checked === "size" thi no se check
+                                                onChange={() => setChecked(size.size)}
                                             />
-                                            <span>{size}</span>
+                                            <span>{size.size}</span>
                                         </label>
                                     );
                                 })}
@@ -239,52 +266,39 @@ function Product() {
                                     className={cx('plus')}
                                     onClick={() =>
                                         setQuantity_Order((prev) => {
-                                            // if (prev + 1 > size_quantity_select) {
-                                            //     toast.info(`Vượt quá số lượng còn lại trong kho`, {
-                                            //         position: 'top-right',
-                                            //         autoClose: 5000,
-                                            //         hideProgressBar: false,
-                                            //         closeOnClick: true,
-                                            //         pauseOnHover: true,
-                                            //         draggable: true,
-                                            //         progress: undefined,
-                                            //         // theme: 'light',
-                                            //         theme: 'colored',
-                                            //     });
-                                            //     return prev;
-                                            // } else {
-                                            //     return prev + 1;
-                                            // }
-                                            return prev + 1;
+                                            if (prev + 1 > size_quantity_select) {
+                                                toast.info(`Vượt quá số lượng còn lại trong kho`, {
+                                                    position: 'top-right',
+                                                    autoClose: 5000,
+                                                    hideProgressBar: false,
+                                                    closeOnClick: true,
+                                                    pauseOnHover: true,
+                                                    draggable: true,
+                                                    progress: undefined,
+                                                    // theme: 'light',
+                                                    theme: 'colored',
+                                                });
+                                                return prev;
+                                            } else {
+                                                return prev + 1;
+                                            }
                                         })
                                     }
                                 >
                                     +
                                 </span>
                             </div>
-                            <Button
-                                primary
-                                rounded
-                                shopping
-                                leftIcon={
-                                    <img className={cx('shopping-img')} src={images.shopping} />
-                                }
-                                onClick={handleAddToCart}
-                                // onClick={() => {
-                                //     handleAddProductToCart(product?.id);
-                                // }}
-                            >
-                                Add to Cart!
-                            </Button>
-                            {/* {size_quantity_select > 0 && quantity_Order - 1 < size_quantity_select ? (
+
+                            {size_quantity_select > 0 &&
+                            quantity_Order - 1 < size_quantity_select ? (
                                 <Button
                                     primary
                                     rounded
                                     shopping
-                                    leftIcon={<img className={cx('shopping-img')} src={images.shopping} />}
-                                    onClick={() => {
-                                        handleAddProductToCart(product?.id);
-                                    }}
+                                    leftIcon={
+                                        <img className={cx('shopping-img')} src={images.shopping} />
+                                    }
+                                    onClick={handleAddToCart}
                                 >
                                     Add to Cart!
                                 </Button>
@@ -293,12 +307,14 @@ function Product() {
                                     primary
                                     rounded
                                     shopping
-                                    leftIcon={<img className={cx('shopping-img')} src={images.shopping} />}
+                                    leftIcon={
+                                        <img className={cx('shopping-img')} src={images.shopping} />
+                                    }
                                     disabled
                                 >
                                     Add to Cart!
                                 </Button>
-                            )} */}
+                            )}
 
                             {/* <img className={cx('cart-img')} src={images.cart} alt="logo-cart" /> */}
                             {/* <p className={cx("mess_quantity_prod")}>{size_quantiry_select < quantity_Order ? `Size của sản phẩm này không đủ số lượng mà bạn cần. Hiện có ${product?.inventory?.find(i => i.size === size_Order).quantity} sản phẩm` : ""}</p> */}
@@ -398,7 +414,45 @@ function Product() {
                             </>
                         ) : (
                             <>
-                                <div></div>
+                                {reviews && reviews.length > 0 ? (
+                                    <>
+                                        <div className={cx('review-total')}>
+                                            <div className={cx('left-review-total')}>
+                                                <div className={cx('average-wrapper')}>
+                                                    <p className={cx('average-title')}>
+                                                        Employee Reviews
+                                                    </p>
+                                                    <p className={cx('average-number')}>
+                                                        {averageRating.toFixed(1)}
+                                                    </p>
+                                                    <AverageStar
+                                                        stars={averageRating.toFixed(1)}
+                                                        reviews={reviews}
+                                                    />
+                                                    <p>({reviews.length} Reviews)</p>
+                                                </div>
+                                            </div>
+                                            <div className={cx('right-review-total')}>
+                                                {Array.from({ length: 5 }, (_, i) => (
+                                                    <RatingBar
+                                                        key={i + 1}
+                                                        stars={5 - i}
+                                                        ratingPercent={sortedRatingPercentages[i]}
+                                                        reviews={reviews}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div className={cx('reviews-wrapper')}>
+                                            <Review reviews={reviews} />
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className={cx('notification')}>
+                                        {/* <h1>Xin chao</h1> */}
+                                        <p>Chưa có reviews nào về sản phẩm này</p>
+                                    </div>
+                                )}
                             </>
                         )}
 
@@ -415,3 +469,62 @@ function Product() {
 }
 
 export default Product;
+
+function Review({ reviews }) {
+    return (
+        <>
+            <div className={cx('reviews-sort-wrapper')}></div>
+            <div className={cx('reviews')}>
+                {reviews.map((review, index) => {
+                    console.log(review);
+                    return (
+                        <div className={cx('review')}>
+                            <p className={cx('review-date-create')}>
+                                {expectedDate(review.createdAt)}
+                            </p>
+                            <AverageStar stars={review.rating} />
+                            <div className={cx('review-infor')}>
+                                <AvatarAuto nameU={review?.User?.fullname} />
+                                <p>{review?.User?.fullname}</p>
+                            </div>
+                            {/* <div className={}></div> */}
+                            {/* <p className={cx('review-size')}>Size: {review.product.size}</p> */}
+                            <p className={cx('review-comment')}>{review.content}</p>
+                        </div>
+                    );
+                })}
+            </div>
+        </>
+    );
+}
+
+function RatingBar({ stars, ratingPercent, reviews }) {
+    let quantity = reviews.filter((review) => review.rating === stars).length;
+    return (
+        <div className={cx('rating-bar')}>
+            <label>{stars} stars</label>
+            <progress className={cx('progress')} value={ratingPercent} max="100">
+                {ratingPercent}%
+            </progress>
+            <label>{quantity}</label>
+        </div>
+    );
+}
+
+function AverageStar({ stars }) {
+    const ratingStar = Array.from({ length: 5 }, (elem, index) => {
+        let number = index + 0.5;
+        return (
+            <span key={index}>
+                {stars >= index + 1 ? (
+                    <FaStar size={30} className={cx('star-click')} color="#E7B66B" />
+                ) : stars >= number ? (
+                    <FaStarHalfAlt className={cx('star-click')} color="#E7B66B" size={30} />
+                ) : (
+                    <AiOutlineStar className={cx('star-click')} size={34} />
+                )}
+            </span>
+        );
+    });
+    return <div className={cx('rating-left-star')}>{ratingStar}</div>;
+}

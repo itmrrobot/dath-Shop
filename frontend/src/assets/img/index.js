@@ -1,10 +1,10 @@
 const images = {
     // cart: require('./cart.svg').default,
     search: require('./search.svg').default,
-    thumbnail1: require("./catalogue_vest.png"),
-    catalogue_hoodie: require("./catalogue_hoodie.png"),
-    catalogue_thun: require("./catalogue_thun.jpg"),
-    catalogue_family: require("./catalogue_family.jpg"),
+    thumbnail1: require('./catalogue_vest.png'),
+    catalogue_hoodie: require('./catalogue_hoodie.png'),
+    catalogue_thun: require('./catalogue_thun.jpg'),
+    catalogue_family: require('./catalogue_family.jpg'),
     unheart: require('./unheart.svg').default,
     star: require('./star.svg').default,
     reviews: require('./reviews.svg').default,
@@ -19,11 +19,14 @@ const images = {
     location_active: require('./location_active.svg').default,
     location_title: require('./location_title.svg').default,
     active_chat: require('./active_chat.svg').default,
-    avatar_test: require("./avatar-test.png"),
+    avatar_test: require('./avatar-test.png'),
     bot: require('./Bot.svg').default,
-
+    google: require('./google.svg').default,
+    checkmark: require('./checkmark.svg').default,
+    eye: require('./eye.svg').default,
+    eye_slash: require('./eye_slash.svg').default,
+    heart_wishlist: require('./heart_wishlist.svg').default,
     // thumbnail2: require('./thumbnail_2.png'),
-    
 };
 
 export default images;
