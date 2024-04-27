@@ -20,6 +20,15 @@ const handleGetReturnsById = async(req,res) => {
     }
 }
 
+const handleGetAllReturns = async(req,res) => {
+    try {
+        const returns = await returnsService.getAllReturns();
+        return res.status(200).send(returns);
+    } catch(e) {
+        res.status(500).send();
+    }
+}
+
 const handleCreateReturns = async(req,res) => {
     try {
         const returns = await returnsService.createReturns(req.body,req.files);
@@ -30,4 +39,4 @@ const handleCreateReturns = async(req,res) => {
     }
 }
 
-module.exports = {handleGetReturnsList,handleGetReturnsById,handleCreateReturns};
+module.exports = {handleGetReturnsList,handleGetReturnsById,handleCreateReturns,handleGetAllReturns};
