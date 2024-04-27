@@ -26,6 +26,28 @@ const getReturnsList = async (id) => {
   return returnsList;
 };
 
+const getAllReturns = async () => {
+  const returns = await Returns.findAll({
+    include: [
+      {
+        model: Order,
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
+        include: [
+          {
+            model: OrderDetail,
+            attributes: {
+              exclude: ["createdAt", "updatedAt"],
+            },
+          },
+        ],
+      },
+    ],
+  });
+  return returns;
+};
+
 const getReturnsById = async (id) => {
   const returnsData = await Returns.findOne({
     where: { id },
@@ -104,4 +126,9 @@ const createReturns = async (data, files) => {
   return newReturns;
 };
 
-module.exports = { getReturnsList, createReturns, getReturnsById };
+module.exports = {
+  getReturnsList,
+  createReturns,
+  getReturnsById,
+  getAllReturns,
+};
