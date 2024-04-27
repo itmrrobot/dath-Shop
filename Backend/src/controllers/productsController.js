@@ -6,8 +6,9 @@ const fs = require("fs");
 const handleGetProductList = async (req, res) => {
   try {
     const querys = req.query;
-    let products = await productsService.getProductList(querys);
-    return res.send({ products });
+    const {combinedProductsArray,totalCount} = await productsService.getProductList(querys);
+    res.header('x-total-count', totalCount);
+    return res.send({ products:combinedProductsArray });
   } catch (e) {
     console.log(e);
     res.status(500).send();

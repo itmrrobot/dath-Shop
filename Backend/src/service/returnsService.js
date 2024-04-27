@@ -126,9 +126,15 @@ const createReturns = async (data, files) => {
   return newReturns;
 };
 
+const updateReturns = async(id,data) => {
+  await Returns.update({...data},{where:{id}});
+  return await Returns.findOne({where:{id}})
+}
+
 module.exports = {
   getReturnsList,
   createReturns,
   getReturnsById,
   getAllReturns,
+  updateReturns
 };
