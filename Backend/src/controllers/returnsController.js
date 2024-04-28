@@ -41,7 +41,7 @@ const handleCreateReturns = async(req,res) => {
 
 const handleUpdateReturns = async(req,res) => {
     try {
-        const returns = await returnsService.updateReturns(req.body,req.params.id);
+        const returns = await returnsService.updateReturns(req.params.id,req.body);
         return res.status(200).send(returns);
     } catch(e) {
         console.log(e);
