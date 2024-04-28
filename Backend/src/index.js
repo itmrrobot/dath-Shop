@@ -34,9 +34,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 const corsOptions ={
-    origin:'*', 
+    origin:'http://localhost:3000', 
     credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200
+    optionSuccessStatus:200,
+    exposedHeaders: "X-Total-Count"
 }
 app.use(cors(corsOptions));
 
