@@ -83,7 +83,7 @@ const getProductList = async (querys) => {
   } else if (order?.toUpperCase() === "DESC") {
     return combinedProductsArray.sort((a, b) => b.price - a.price);
   }
-  const totalCount = combinedProductsArray.length;
+  const totalCount = await Product.count({where:whereClause});
   return {combinedProductsArray,totalCount};
 };
 
