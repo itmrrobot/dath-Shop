@@ -9,50 +9,20 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.createTable('Product', {
+    await queryInterface.createTable('Brand', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      brand_name: {
         type: Sequelize.TEXT
-      },
-      slug_product: {
-        type: Sequelize.TEXT
-      },
-      import_quatity: {
-        type: Sequelize.INTEGER
-      },
-      sell_quantity: {
-        type: Sequelize.INTEGER
-      },
-      id_partner: {
-        type: Sequelize.INTEGER
       },
       img: {
-        type: Sequelize.JSON
+        type: Sequelize.TEXT
       },
       status: {
-        type: Sequelize.INTEGER
-      },
-      short_description: {
-        type: Sequelize.TEXT
-      },
-      detail_description: {
-        type: Sequelize.TEXT
-      },
-      price: {
-        type: Sequelize.INTEGER
-      },
-      discount_price: {
-        type: Sequelize.INTEGER
-      },
-      CategoryId: {
-        type: Sequelize.INTEGER
-      },
-      BrandId: {
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -76,6 +46,5 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.dropTable('Product');
   }
 };

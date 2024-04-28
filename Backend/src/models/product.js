@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         as: "wishList"
       });
       Product.belongsTo(models.Category);
+      Product.belongsTo(models.Brand);
       Product.hasMany(models.Reviews,{foreignKey:"id_product"});
       Product.hasMany(models.Inventory,{foreignKey:"id_product"});
     }
@@ -36,7 +37,8 @@ module.exports = (sequelize, DataTypes) => {
     detail_description: DataTypes.TEXT,
     price: DataTypes.INTEGER,
     discount_price: DataTypes.INTEGER,
-    CategoryId: DataTypes.INTEGER
+    CategoryId: DataTypes.INTEGER,
+    BrandId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Product',

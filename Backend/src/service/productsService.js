@@ -2,6 +2,7 @@ const {
   Product,
   Category,
   Inventory,
+  Brand,
   ProductInventory,
 } = require("../models/index");
 const Sequelize = require("sequelize");
@@ -10,7 +11,7 @@ const fs = require("fs");
 
 const getProductList = async (querys) => {
   //let products = []
-  const { page, limit, categoryId, sort, order, price_gte, price_lte } = querys;
+  const { page, limit, categoryId, sort, order, price_gte, price_lte,brandId } = querys;
   console.log(page, limit, order, sort, typeof sort === "string");
   const pages = page || 1;
   const pageSize = limit || 10;
@@ -26,6 +27,9 @@ const getProductList = async (querys) => {
   console.log(orderOption);
   if (categoryId) {
     whereClause.CategoryId = categoryId;
+  }
+  if (brandId) {
+    whereClause.BrandId = brandId;
   }
   if (minPrice !== undefined && maxPrice !== undefined) {
     // Specify the price range condition
@@ -129,13 +133,16 @@ const createNewProduct = async (data, files) => {
 
     const listInventory = data.listInventory;
     let array = eval(listInventory);
-    console.log(data.img,array, data.category_name);
-    const category = await Category.create({
-      category_name: data.category_name,
-    });
+    // const category = await Category.create({
+    //   category_name: data.category_name,
+    // });
+    // const brand = await Brand.create({
+    //   brand_name: data.brand_name,
+    // });
     const newProduct = await Product.create({
       ...data,
-      categoryId: category.id,
+      categoryId: data.CategoryId,
+      brandId: data.BrandId
     });
     if (listInventory?.length !== 0) {
       for (const list of array) {
