@@ -39,4 +39,14 @@ const handleCreateReturns = async(req,res) => {
     }
 }
 
-module.exports = {handleGetReturnsList,handleGetReturnsById,handleCreateReturns,handleGetAllReturns};
+const handleUpdateReturns = async(req,res) => {
+    try {
+        const returns = await returnsService.updateReturns(req.body,req.params.id);
+        return res.status(200).send(returns);
+    } catch(e) {
+        console.log(e);
+        res.status(400).send();
+    }
+}
+
+module.exports = {handleGetReturnsList,handleGetReturnsById,handleCreateReturns,handleGetAllReturns,handleUpdateReturns};

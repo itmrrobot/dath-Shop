@@ -9,5 +9,6 @@ router.get('/list/returns/:id',returnsController.handleGetReturnsList)
 .get('/returns/:id',returnsController.handleGetReturnsById)
 .get('/returns',verifyToken,isAdmin,returnsController.handleGetAllReturns)
 .post('/create/returns/',uploadImgVideo.array('imgVideo',5),returnsController.handleCreateReturns)
+.put('/returns/update/:id',verifyToken,isAdmin,returnsController.handleUpdateReturns)
 
 module.exports = router;
