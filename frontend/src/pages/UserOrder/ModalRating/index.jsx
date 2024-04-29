@@ -226,6 +226,10 @@ function Rating({ product, key, order, render, prodToRating, orderId }) {
             fetchDataToOrder();
             fetchDataToReviews();
             toast.success('Thành công');
+            setImg([]);
+            setComment('');
+            setVideoFile(null);
+            setRating(5);
         } catch (error) {
             console.log(error);
         }

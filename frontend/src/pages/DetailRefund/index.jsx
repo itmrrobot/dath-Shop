@@ -80,6 +80,7 @@ function DetailRefund() {
                                 <p>Refund sent within a week after we get the items</p>
                             )}
                             {returnOrder?.status === 5 && <p>Completed</p>}
+                            {returnOrder?.status === 5 && <p>Cancel your Return by Admin</p>}
                         </div>
                     </div>
                     <div className={cx('process-information')}>
@@ -461,6 +462,73 @@ function DetailRefund() {
                                         </div>
                                     </>
                                 )}
+                                {returnOrder?.status === 6 && (
+                                    <>
+                                        <div
+                                            className={cx('pixelplus-steps-step', 'active')}
+                                            data-id="1"
+                                        >
+                                            <div
+                                                className={cx('pixelplus-steps-step__number')}
+                                            ></div>
+                                            <div className={cx('pixelplus-steps-step__text')}>
+                                                <div className={cx('pixelplus-steps-step__title')}>
+                                                    <strong>
+                                                        Wating for your Returns confirmation
+                                                    </strong>
+                                                </div>
+                                                <div
+                                                    className={cx('pixelplus-steps-step__excerpt')}
+                                                    style={{ display: 'block' }}
+                                                >
+                                                    <p>Not valid</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            className={cx('pixelplus-steps-step', 'active')}
+                                            data-id="2"
+                                        >
+                                            <div
+                                                className={cx('pixelplus-steps-step__number')}
+                                            ></div>
+                                            <div className={cx('pixelplus-steps-step__text')}>
+                                                <div className={cx('pixelplus-steps-step__title')}>
+                                                    <strong>Cancel Return</strong>
+                                                </div>
+                                                <div
+                                                    className={cx('pixelplus-steps-step__excerpt')}
+                                                    style={{ display: 'block' }}
+                                                >
+                                                    <p>
+                                                        Your Returns is invalid, due to other
+                                                        problems with images, videos or the Returns
+                                                        you sent to the shop different with your
+                                                        Orders
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                            <div className={cx('name')}>
+                                <div className={cx('first-name')}>
+                                    <p className={cx('label')}>Description:</p>
+                                    <p>{JSON.parse(returnOrder?.description)}</p>
+                                </div>
+                            </div>
+                            <div className={cx('name')}>
+                                <div className={cx('first-name')}>
+                                    <p className={cx('label')}>Phone Number:</p>
+                                    <p>{returnOrder?.phone.replace(/[\[\]"]+/g, '')}</p>
+                                </div>
+                            </div>
+                            <div className={cx('name')}>
+                                <div className={cx('first-name')}>
+                                    <p className={cx('label')}>Address:</p>
+                                    <p>{returnOrder?.address.replace(/[\[\]"]+/g, '')}</p>
+                                </div>
                             </div>
                             <div className={cx('name')}>
                                 <div className={cx('first-name')}>

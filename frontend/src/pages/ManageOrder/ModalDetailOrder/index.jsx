@@ -1,72 +1,15 @@
 import classNames from 'classnames/bind';
-import styles from './DetailOrder.module.scss';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState, useMemo, useContext } from 'react';
-import { formatPrice, priceDiscount } from '../../common';
-import { toast } from 'react-toastify';
+import styles from './ModalDetailOrder.module.scss';
+import { formatPrice, priceDiscount } from '../../../common';
+import { useState, useContext, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Button, Modal } from 'antd';
-import { url } from '../../constants';
-import moment from 'moment';
+import Modal from 'react-modal';
+import { url } from '../../../constants';
 const cx = classNames.bind(styles);
-function DetailOrder() {
-    const param = useParams();
-    const [order, setOrder] = useState();
+function ModalDetailOrder({ show, handleClose, order, handleReRender }) {
     console.log(order);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
-    const checkReturnDate = () => {
-        var targetDate = moment(order?.returnDate);
-        var today = moment();
-        if (today.isAfter(targetDate)) {
-            return true;
-        } else {
-            return false;
-        }
-    };
-    const handleOk = async () => {
-        let cancel = {
-            ...order,
-            status: 4,
-        };
-        // console.log(cancel);
-        setIsModalOpen(false);
-        const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-        // .then((res) => console.log(res));
-        try {
-            // console.log(dataPost);
-            // console.log(state?.cuser?.value);
-            await delay(2000); // Chờ 2 giây
-            const res = await axios.put(`${url}/order/update/${param.id}`, cancel);
-            let dataUpdate = {
-                ...res,
-            };
-            setOrder(dataUpdate);
-            toast.success('Huỷ đơn hàng thành công', {
-                // autoClose: 2000,
-                theme: 'colored',
-                position: 'top-right',
-                autoClose: 3000,
-            });
-        } catch (error) {
-            // Xử lý lỗi nếu có
-            toast.error('Huỷ đơn hàng thất bại!', {
-                // autoClose: 2000,
-                theme: 'colored',
-                position: 'top-right',
-                autoClose: 3000,
-            });
-        } finally {
-            navigator('/user/order');
-        }
-    };
 
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
-    const navigator = useNavigate();
     const date = (d) => {
         const currentDate = new Date(d);
         const monthNames = [
@@ -90,7 +33,6 @@ function DetailOrder() {
         let year = currentDate.getFullYear();
         return `${date} ${monthAbbreviation}, ${year}`;
     };
-
     const expectedDate = (day, shipment) => {
         // const splitD = d.split('/');
         // const D = 1706322872160;
@@ -134,23 +76,40 @@ function DetailOrder() {
 
         // return `${expecDay[1]}/${expecDay[0]}/${expecDay[2]}`;
     };
-    const handleReturn = () => {
-        navigator(`/user/order/detail/return/${param.id}`);
-    };
-    // console.log(param.id);
-    useEffect(() => {
-        axios.get(`${url}/order/${param.id}`).then((res) => {
-            console.log(res.data);
-            // console.log(res.data.createdAt);
-            // let order = [...res.data]
-            // order[createAt] =
-            setOrder(res.data);
-            // console.log(res.data);
-        });
-    }, [param]);
-    // console.log(order?.status);
     return (
-        <>
+        <Modal
+            isOpen={show}
+            onRequestClose={handleClose}
+            style={{
+                overlay: {
+                    // backgroundColor: 'red',
+                    zIndex: '10',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                },
+                content: {
+                    position: 'absolute',
+                    // top: '40px',
+                    // transform: 'translateY(-50%)',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    right: '40px',
+                    bottom: '40px',
+                    border: '1px solid #ccc',
+                    // background: 'red',
+                    width: '60%',
+                    height: '70%',
+                    overflow: 'auto',
+                    WebkitOverflowScrolling: 'touch',
+                    borderRadius: '4px',
+                    outline: 'none',
+                    padding: '60px',
+                },
+            }}
+            ariaHideApp={false}
+        >
             <div className={cx('wrapper')}>
                 <ul className={cx('path')}>
                     <li>
@@ -159,7 +118,7 @@ function DetailOrder() {
                         </Link>
                     </li>
                     <span> &#62; </span>
-                    <li>#2024{param.id}</li>
+                    <li>#2024{order?.id}</li>
                 </ul>
                 <div className={cx('content')}>
                     <div className={cx('message-status')}>
@@ -173,55 +132,6 @@ function DetailOrder() {
                             )}
                             {order?.status === 3 && <p>Delivered</p>}
                             {order?.status === 4 && <p>Cancellation requested</p>}
-                        </div>
-                        <div className={cx('handle-btn')}>
-                            {order?.status === 1 && (
-                                <button className={cx('cancel')} onClick={showModal}>
-                                    Cancel Order
-                                </button>
-                            )}
-                            {order?.status === 2 &&
-                                (order?.payed === 2 ? (
-                                    <button
-                                        className={cx('cancel')}
-                                        onClick={() => {
-                                            axios
-                                                .put(`${url}/order/update/${order?.id}`, {
-                                                    payed: 1,
-                                                    status: 3,
-                                                })
-                                                .then((res) => {
-                                                    console.log(res);
-                                                    // setCheckChange((prev) => !prev);
-                                                    toast.success(
-                                                        'Đã hoàn tất thanh toán đầy đủ. Cảm ơn quý khách!!',
-                                                    );
-                                                    navigator('/user/order');
-                                                })
-                                                .catch((err) => console.log(err));
-                                        }}
-                                    >
-                                        Xác nhận thanh toán
-                                    </button>
-                                ) : (
-                                    <button className={cx('cancel')} onClick={showModal}>
-                                        Cancel Order
-                                    </button>
-                                ))}
-                            {order?.status === 3 &&
-                                (order?.payed === 2 ? (
-                                    <button className={cx('return')} onClick={showModal}>
-                                        Cancel Order
-                                    </button>
-                                ) : (
-                                    checkReturnDate() === false &&
-                                    order?.id_returns === null && (
-                                        <button className={cx('return')} onClick={handleReturn}>
-                                            Return Product
-                                        </button>
-                                    )
-                                ))}
-                            {/* {order?.status === 1 && <button className={cx('cancel')}>Cancel Order</button>} */}
                         </div>
                     </div>
                     <div className={cx('process-information')}>
@@ -514,30 +424,18 @@ function DetailOrder() {
                             </div>
                             <div className={cx('name')}>
                                 <div className={cx('first-name')}>
-                                    <p className={cx('label')}>Name:</p>
-                                    <p>{order?.name}</p>
+                                    <p className={cx('label')}>Full name:</p>
+                                    <p>
+                                        {order?.name} {order?.lastname}
+                                    </p>
                                 </div>
                             </div>
                             <div className={cx('address')}>
                                 <p className={cx('label')}>Shipping Address: </p>
-                                <p>{order?.address}</p>
-                            </div>
-                            <div className={cx('ship-method')}>
-                                <p className={cx('label')}>Note: </p>
-                                <p>{order?.note ? order?.note : 'None of note'}</p>
-                            </div>
-                            {/* <div className={cx('ship-method')}>
-                                <p className={cx('label')}>Ship Method: </p>
                                 <p>
-                                    {order?.shipment === 'save'
-                                        ? 'Vận chuyển tiết kiệm'
-                                        : 'Vận chuyển nhanh'}
+                                    {order?.address}, {order?.city}
                                 </p>
-                            </div> */}
-                            {/* <div className={cx('payment-method')}>
-                                <p className={cx('label')}>Payment Method: </p>
-                                <p>{order?.payment === 'cod' ? 'COD - Cash On Delivery' : ''}</p>
-                            </div> */}
+                            </div>
                             {/* <div className={cx('order-date')}>
                                 <p className={cx('label')}>Order Date: </p>
                                 <p>{date(order?.createdAt)}</p>
@@ -552,22 +450,6 @@ function DetailOrder() {
                                     <Order_Item product={order?.OrderDetails}></Order_Item>
                                 </div>
                                 <div className={cx('payment-wrapper-modal')}>
-                                    {/* <div className={cx('payment-display-modal')}>
-                                        <p className={cx('label-modal')}>Subtotal</p>
-                                        <p className={cx('price-modal')}>{formatPrice(subtotal)}</p>
-                                    </div>
-                                    <div className={cx('payment-display-modal')}>
-                                        <p className={cx('label-modal')}>Discount</p>
-                                        <p className={cx('discount-price-modal')}>
-                                            - {formatPrice(discount)}
-                                        </p>
-                                    </div>
-                                    <div className={cx('payment-display-modal')}>
-                                        <p className={cx('label-modal')}>Shipping Costs</p>
-                                        <p className={cx('discount-price-modal')}>
-                                            + {formatPrice(50000)}
-                                        </p>
-                                    </div> */}
                                     <div className={cx('payment-display-modal', 'total-wrapper')}>
                                         <p className={cx('label-modal', 'total')}>Total</p>
                                         <p className={cx('discount-price-modal')}>
@@ -580,14 +462,11 @@ function DetailOrder() {
                     </div>
                 </div>
             </div>
-            <Modal title="Thông báo" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <p>Bạn có muốn huỷ đơn hàng này không?</p>
-            </Modal>
-        </>
+        </Modal>
     );
 }
 
-export default DetailOrder;
+export default ModalDetailOrder;
 
 function Order_Item({ product }) {
     const [prod, setProd] = useState();

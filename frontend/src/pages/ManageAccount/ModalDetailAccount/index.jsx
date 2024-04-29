@@ -1,39 +1,121 @@
 import classNames from 'classnames/bind';
-import styles from './UserOrder.module.scss';
-import { useContext, useEffect, useState } from 'react';
-// import { UserContext } from '~/hooks/UserContext';
-import { UseContextUser } from '../../hooks/useContextUser';
+import styles from './ModalDetailAccount.module.scss';
+import { useState, useContext, useEffect } from 'react';
+import { UseContextUser } from '../../../hooks/useContextUser';
 import axios from 'axios';
-import { formatPrice, priceDiscount } from '../../common';
+import Modal from 'react-modal';
+import { formatPrice, priceDiscount } from '../../../common';
 import { useNavigate } from 'react-router-dom';
-import Button from '../../components/Button';
-import { toast } from 'react-toastify';
-import ModalRating from './ModalRating';
-import { url } from '../../constants';
+import images from '../../../assets/img';
+import { url } from '../../../constants';
+// import '/ModalDetailAccount.css';
 const cx = classNames.bind(styles);
+function ModalDetailAccount({ show, handleClose, accInfor }) {
+    console.log(accInfor);
+    const handleCreateAt = (data) => {
+        // console.log(data);
+        let dateObject = new Date(data);
+        let day = dateObject.getDate();
+        let month = dateObject.getMonth() + 1;
+        // Lấy năm
+        let year = dateObject.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+    return (
+        <Modal
+            isOpen={show}
+            onRequestClose={handleClose}
+            style={{
+                overlay: {
+                    // backgroundColor: 'red',
+                    zIndex: '10',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                },
+                content: {
+                    position: 'absolute',
+                    // top: '40px',
+                    // transform: 'translateY(-50%)',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    right: '40px',
+                    bottom: '40px',
+                    border: '1px solid #ccc',
+                    // background: 'red',
+                    width: '60%',
+                    height: '70%',
+                    overflow: 'auto',
+                    WebkitOverflowScrolling: 'touch',
+                    borderRadius: '4px',
+                    outline: 'none',
+                    padding: '60px',
+                },
+            }}
+            ariaHideApp={false}
+        >
+            <div className={cx('wrapper')}>
+                <p className={cx('title')}>ACCOUNT INFORMATION</p>
 
-function UserOrder() {
+                <div className={cx('body_modal')}>
+                    <div className={cx('user_info')}>
+                        <p>
+                            <span>Role</span>:{' '}
+                            {accInfor.roleId === 3 || accInfor.roleId === 4 ? 'User' : 'Admin'}
+                        </p>
+                        <p>
+                            <span>Account Name</span>: {accInfor.name}
+                        </p>
+                        <p>
+                            <span>Email</span>: {accInfor.email}
+                        </p>
+                        <p>
+                            <span>Customer Name</span>: {accInfor.fullname}
+                        </p>
+                        <p>
+                            <span>Phone Number</span>: {accInfor.phone}
+                        </p>
+                        <p>
+                            <span>Register Account Date</span>: {handleCreateAt(accInfor.createdAt)}
+                        </p>
+                    </div>
+                    <UserOrder userID={accInfor.id} />
+                </div>
+                <button onClick={handleClose} className={cx('close_btn')}>
+                    &times;
+                </button>
+            </div>
+        </Modal>
+    );
+}
+
+export default ModalDetailAccount;
+
+function UserOrder(userID) {
+    console.log(userID);
     const pagName = ['All', 'Confirmating', 'Delivering', 'Completed', 'Canceled'];
     const [pagCurr, setPagCurr] = useState(0);
     const state = useContext(UseContextUser);
     const [orders, setOrders] = useState([]);
-    console.log(orders);
+    // console.log();
     let [deliAmount, setDeliAmount] = useState();
-
     useEffect(() => {
-        axios.get(url + `/orders/${state?.cuser?.value?.id}`).then((res) => {
+        // Get ra được tất cả những dữ liệu đơn hàng
+        axios.get(`${url}` + `/orders/${userID.userID}`).then((res) => {
+            console.log(res);
+            // Sau đó đảo lộn response từ dưới đầu lên trên
             let orderUser = [...res.data].reverse();
+            // Kiểm tra trang hiện tại là ở đâu
+            // Nếu là ở trang 1 - Tất cả
+            // => Lọc ra toàn bộ những phần tử con mà có status đơn hàng là 1
             if (pagCurr === 1) {
-                // orderUser = res.data.filter(i => i.id_client === user._id)
                 orderUser = orderUser.filter((i) => i.status === 1);
             } else if (pagCurr === 2) {
-                // orderUser = res.data.filter(i => i.id_client === user._id)
                 orderUser = orderUser.filter((i) => i.status === 2);
             } else if (pagCurr === 3) {
-                // orderUser = res.data.filter(i => i.id_client === user._id)
                 orderUser = orderUser.filter((i) => i.status === 3);
             } else if (pagCurr === 4) {
-                // orderUser = res.data.filter(i => i.id_client === user._id)
                 orderUser = orderUser.filter((i) => i.status === 4);
             }
             setOrders(orderUser);
@@ -41,48 +123,43 @@ function UserOrder() {
         });
     }, [pagCurr]);
     return (
-        <>
-            <div className={cx('wrapper')}>
-                <ul className={cx('navigate')}>
-                    {pagName.map((item, index) => (
-                        <li
-                            key={item}
-                            className={cx({ li_active: index === pagCurr })}
-                            onClick={() => {
-                                setPagCurr(index);
-                            }}
-                        >
-                            {item} {index === 2 && <span>({deliAmount})</span>}
-                        </li>
-                    ))}
-                </ul>
-                <div className={cx('table')}>
-                    <Orders orders={orders} userID={state?.cuser?.value?.id} />
-                </div>
+        <div className={cx('wrapper-order')}>
+            <ul className={cx('navigate')}>
+                {pagName.map((item, index) => (
+                    <li
+                        key={item}
+                        className={cx({ li_active: index === pagCurr })}
+                        onClick={() => {
+                            setPagCurr(index);
+                        }}
+                    >
+                        {item} {index === 2 && <span>({deliAmount})</span>}
+                    </li>
+                ))}
+            </ul>
+            <div className={cx('table')}>
+                {orders.length === 0 ? (
+                    <div className={cx('order-empty')}>
+                        <img src={images.emptyCart} />
+                        <p>Tài khoản này chưa có sản phẩm nào!!!</p>
+                    </div>
+                ) : (
+                    <Orders orders={orders} userID={userID} />
+                )}
             </div>
-        </>
+        </div>
     );
 }
 
-export default UserOrder;
-
 function Orders({ orders, userID }) {
-    console.log(orders);
-    // console.log(orders?.products);
     const navigator = useNavigate();
-    const [render, setRender] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    const [orderId, setOrderId] = useState();
-    // Modal Detail
-    const handleClose = () => setShowModal(false);
-    const handleShow = () => setShowModal(true);
-    const handleReRender = () => {
-        setRender((prev) => !prev);
-    };
     const handleChangePage = (id) => {
         navigator(`/user/order/detail/${id}`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+    const state = useContext(UseContextUser);
+    // console.log();
+    // console.log();
     const expectedDate = (day, shipment) => {
         // const splitD = d.split('/');
         // const D = 1706322872160;
@@ -130,6 +207,8 @@ function Orders({ orders, userID }) {
     return (
         <>
             {orders.map((order, i) => {
+                console.log(order);
+
                 return (
                     order.status !== 5 && (
                         <div className={cx('order')} key={i}>
@@ -153,12 +232,18 @@ function Orders({ orders, userID }) {
                                     <li>
                                         <div className={cx('total')}>
                                             <p className={cx('row-title')}>Total</p>
-                                            <p>{formatPrice(order.total)}</p>
+                                            <p>{formatPrice(order.amount)}</p>
                                         </div>
                                     </li>
                                     <li>
                                         <div className={cx('detail')}>
-                                            <button onClick={() => handleChangePage(order.id)}>
+                                            <button
+                                                onClick={() => {
+                                                    if (state?.cuser?.value?.id === userID.userID) {
+                                                        handleChangePage(order.id);
+                                                    }
+                                                }}
+                                            >
                                                 See Detail
                                             </button>
                                         </div>
@@ -178,80 +263,11 @@ function Orders({ orders, userID }) {
                                     {order.status === 4 && <p>Cancellation requested</p>}
                                 </div>
                                 <Order_Item product={order?.OrderDetails}></Order_Item>
-                                <div className={cx('received')}>
-                                    {order?.status === 2 &&
-                                        (order?.payed === 2 ? (
-                                            <Button
-                                                primary
-                                                onClick={() => {
-                                                    axios
-                                                        .put(`${url}/order/update/${order?.id}`, {
-                                                            payed: 1,
-                                                            status: 3,
-                                                        })
-                                                        .then((res) => {
-                                                            console.log(res);
-                                                            // setCheckChange((prev) => !prev);
-                                                            toast.success(
-                                                                'Đã hoàn tất thanh toán đầy đủ. Cảm ơn quý khách!!',
-                                                            );
-                                                            navigator('/user/order');
-                                                        })
-                                                        .catch((err) => console.log(err));
-                                                }}
-                                            >
-                                                Received
-                                            </Button>
-                                        ) : (
-                                            <Button primary disabled>
-                                                Received
-                                            </Button>
-                                        ))}
-                                    {/* Rating */}
-                                    {/* {order?.status === 3 && order?.isPay === 1 && order?.rating === 0 ? (
-                                    <Button
-                                        primary
-                                        onClick={() => {
-                                            console.log('Hello');
-                                        }}
-                                    >
-                                        Rating your Order!
-                                    </Button>
-                                ) : (
-                                    <Button primary disabled>
-                                        Rated!
-                                    </Button>
-                                )} */}
-                                    {order?.status === 3 &&
-                                        order?.payed === 1 &&
-                                        (order?.OrderDetails?.some((prod) => prod.rating === 0) ? (
-                                            <Button
-                                                primary
-                                                onClick={() => {
-                                                    setOrderId(order?.id);
-                                                    handleShow();
-                                                }}
-                                            >
-                                                Rating your Order!
-                                            </Button>
-                                        ) : (
-                                            <Button primary disabled>
-                                                Rated!
-                                            </Button>
-                                        ))}
-                                </div>
                             </div>
                         </div>
                     )
                 );
-                // console.log();
             })}
-            <ModalRating
-                show={showModal}
-                handleClose={handleClose}
-                handleReRender={handleReRender}
-                orderId={orderId}
-            ></ModalRating>
         </>
     );
 }
@@ -259,7 +275,7 @@ function Orders({ orders, userID }) {
 function Order_Item({ product }) {
     const [prod, setProd] = useState();
     useEffect(() => {
-        let product_id = product.map((i) => i.id_product);
+        let product_id = product?.map((i) => i.id_product);
         const fetchProducts = async () => {
             try {
                 const requests = product_id?.map((id) => axios.get(`${url}/products/${id}`));

@@ -103,9 +103,9 @@
     display: flex;
     align-items: center;
     padding: 28px 0;
-    border-bottom: 1px solid grey;
 
     &:not(:last-child) {
+        border-bottom: 1px solid grey;
     }
 }
 
@@ -168,8 +168,10 @@
         display: flex;
         justify-content: space-between;
         &.total-wrapper {
-            padding: 10px 0;
+            padding: 20px 0;
             margin: 10px 0;
+            border-top: 1px solid;
+            border-bottom: 1px solid;
         }
         .label-modal {
             font-size: 1.6rem;
@@ -186,6 +188,7 @@
 .pixelplus-steps-step {
     display: grid;
     grid-template-columns: 58px auto;
+    align-items: center;
     // margin: 20px;
     // grid-gap: 15px;
     position: relative;
@@ -198,7 +201,7 @@
         width: 2px;
         height: 100%;
         left: 7px;
-        top: 14px;
+        top: 20px;
     }
     &.active .pixelplus-steps-step__number {
         background: darken(#ab8a37, 20%);
@@ -229,4 +232,12 @@
     font-size: 1.6rem;
 
     // margin-top: 30px;
+}
+
+.broken-img-video {
+    .broken-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        padding-bottom: 10px;
+    }
 }

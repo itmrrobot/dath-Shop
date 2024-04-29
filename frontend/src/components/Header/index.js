@@ -169,7 +169,7 @@ function Header() {
                                 >
                                     Store
                                 </Button> */}
-                        <Link className={cx('nav-link')} to="/products?page=1&limit=15">
+                        <Link className={cx('nav-link')} to="/products?page=1&limit=9">
                             Store
                         </Link>
                     </Tippy>
