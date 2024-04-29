@@ -8,6 +8,7 @@ const {
 const Sequelize = require("sequelize");
 const cloudinary = require("../common/cloudinary-config");
 const fs = require("fs");
+const {getPublicIdFromUrl} = require('../utils/util');
 
 const getProductList = async (querys) => {
   //let products = []
@@ -172,6 +173,23 @@ const updateProduct = async (id, data) => {
 
 const deleteProduct = async (id) => {
   console.log(id);
+  const product = await getProductById(id);
+  if(!product) {
+    return null;
+  }
+  const httpsExist = product?.img.every(url => url.startsWith("https://"));
+  const publicIds = httpsExist ? product?.img.map((url)=> {
+    const id = getPublicIdFromUrl(url);
+    return id;
+  }):[];
+  console.log(httpsExist,publicIds);
+  publicIds?.length!==0&& publicIds?.forEach(async (publicId) => {
+    try {
+      await cloudinary.uploader.destroy(`shop_imgs/${publicId}`);
+    } catch (error) {
+      console.error(`Error deleting image with public ID ${publicId}:`, error);
+    }
+  });
   await Product.destroy({ where: { id } });
 };
 

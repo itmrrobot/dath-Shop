@@ -52,11 +52,9 @@ const handleUpdateProduct = async (req, res) => {
 
 const handleDeleteProduct = async (req, res) => {
   let id = req.params.id;
-  console.log(id);
   try {
-    const product = await productsService.getProductById(id);
-    if (product === null) return res.status(404).send();
-    await productsService.deleteProduct(id);
+    const product = await productsService.deleteProduct(id);
+    if(product===null) return res.status(404).send();
     res.send({ msg: "Delete success" });
   } catch (e) {
     console.log(e);
