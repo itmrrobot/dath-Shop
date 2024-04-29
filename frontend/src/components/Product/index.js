@@ -17,6 +17,7 @@ import AvatarAuto from '../AvatarAuto';
 import { expectedDate } from '../../utils';
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { AiOutlineStar } from 'react-icons/ai';
+import SliderImageReponsive from '../SliderImageReponsive';
 const cx = classNames.bind(styles);
 
 function Product() {
@@ -83,13 +84,6 @@ function Product() {
                 setReviews(reviews.data.reviews);
                 setProduct(respone.data);
                 setSize(respone.data.Inventories);
-                // console.log(respone.data);
-                // setImage(respone?.data?.hinh_anh);
-                // const cleanedString = respone?.data?.hinh_anh.slice(1, -1);
-                // // Tách chuỗi thành mảng sử dụng dấu phẩy làm dấu phân cách
-                // const arrayWithoutQuotes = cleanedString.split(',');
-                // // Xóa dấu ngoặc kép và khoảng trắng ở đầu và cuối mỗi phần tử trong mảng
-                // const finalArray = arrayWithoutQuotes.map(item => item.replace(/"/g, '').trim());
                 setImage(respone?.data?.img);
             } catch (e) {
                 console.log(e);
@@ -149,7 +143,6 @@ function Product() {
                 };
                 // console.log(data);
                 const response = await axios.post(url + '/cart/create', data);
-                console.log(response);
                 state?.render?.setRender((prev) => !prev);
             } catch (e) {
                 console.log(e);
@@ -408,8 +401,6 @@ function Product() {
                                             );
                                         })}
                                     </ul>
-
-                                    {/* <p>{product.description}</p> */}
                                 </div>
                             </>
                         ) : (
@@ -483,12 +474,20 @@ function Review({ reviews }) {
                                 {expectedDate(review.createdAt)}
                             </p>
                             <AverageStar stars={review.rating} />
+                            <div className={cx('review-performace')}>
+                                {/* <SliderImageReponsive
+                                    images={review?.img}
+                                ></SliderImageReponsive> */}
+                            </div>
                             <div className={cx('review-infor')}>
                                 <AvatarAuto nameU={review?.User?.fullname} />
                                 <p>{review?.User?.fullname}</p>
                             </div>
-                            {/* <div className={}></div> */}
-                            {/* <p className={cx('review-size')}>Size: {review.product.size}</p> */}
+                            <SliderImageReponsive
+                                reviews
+                                images={review?.img}
+                                video={review?.video}
+                            ></SliderImageReponsive>
                             <p className={cx('review-comment')}>{review.content}</p>
                         </div>
                     );
