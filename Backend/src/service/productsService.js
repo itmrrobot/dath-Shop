@@ -171,6 +171,7 @@ const updateProduct = async (id, data) => {
 };
 
 const deleteProduct = async (id) => {
+  console.log(id);
   await Product.destroy({ where: { id } });
 };
 

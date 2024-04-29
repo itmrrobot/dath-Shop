@@ -52,15 +52,11 @@ const handleUpdateProduct = async (req, res) => {
 
 const handleDeleteProduct = async (req, res) => {
   let id = req.params.id;
-  let imgs = [];
+  console.log(id);
   try {
     const product = await productsService.getProductById(id);
     if (product === null) return res.status(404).send();
-    imgs = JSON.parse(product.img);
     await productsService.deleteProduct(id);
-    imgs.forEach((img, index) => {
-      fs.unlinkSync(imgPath + img);
-    });
     res.send({ msg: "Delete success" });
   } catch (e) {
     console.log(e);
