@@ -59,4 +59,11 @@ function generateRandomPassword(length) {
   return password;
 }
 
-module.exports = { mergeEntries, generateRandomPassword, combineArray };
+function getPublicIdFromUrl(url) {
+  // Extract the public ID from the Cloudinary URL
+  const startIndex = url.lastIndexOf("/") + 1;
+  const endIndex = url.lastIndexOf(".");
+  return url.substring(startIndex, endIndex);
+}
+
+module.exports = { mergeEntries, generateRandomPassword, combineArray,getPublicIdFromUrl };
