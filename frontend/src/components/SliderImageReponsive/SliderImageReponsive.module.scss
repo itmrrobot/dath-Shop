@@ -1,6 +1,4 @@
 .wrapper {
-    width: 50%;
-    display: flex;
     margin-bottom: 10px;
     .img-responsive {
         width: 25%;
@@ -19,6 +17,9 @@
     }
     &.reviews {
         align-items: center;
+        width: 50%;
+        display: flex;
+
         .img-responsive {
             background-color: #eceff1;
             border: 2px solid #e7e4e4;
@@ -43,6 +44,9 @@
             height: 100px;
             object-fit: cover;
         }
+    }
+    .video {
+        margin-top: 20px;
     }
 }
 

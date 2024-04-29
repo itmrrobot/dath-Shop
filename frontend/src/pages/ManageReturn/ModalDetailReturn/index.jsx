@@ -661,7 +661,7 @@ function ModalDetailReturn({ show, handleClose, returnOrder, handleReRender }) {
                                 <div className={cx('name')}>
                                     <div className={cx('first-name')}>
                                         <p className={cx('label')}>Description:</p>
-                                        <p>{JSON.parse(returnOrder?.description)}</p>
+                                        <p>{returnOrder?.description}</p>
                                     </div>
                                 </div>
                                 <div className={cx('name')}>

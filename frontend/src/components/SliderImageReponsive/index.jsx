@@ -60,13 +60,17 @@ function SliderImageReponsive({ images = [], video = [], reviews = false }) {
                                     // <a href={img}>
 
                                     // </a>
-                                    <img className={cx('img-responsive')} src={`${img}`} />
+                                    <img
+                                        className={cx('img-responsive')}
+                                        src={`${img}`}
+                                        style={{ width: `calc(100% / ${imgs.length})` }}
+                                    />
                                 );
                             })}
                     </LightGallery>
 
                     {videoFile !== undefined && videoFile.length > 0 && (
-                        <div>
+                        <div className={cx('video')}>
                             <video controls style={{ width: '100%' }}>
                                 <source src={videoFile[0]} type={videoFile[0].type} />
                             </video>
