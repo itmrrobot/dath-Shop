@@ -22,10 +22,10 @@ const createNewCategory = async (data) => {
 
 const updateCategory = async (id, data, file) => {
   try {
-    const folderName = 'shop_imgs'; // Specify the folder name on Cloudinary
-
-    const result = await cloudinary.uploader.upload(file.path, {
-        folder: folderName
+    const folderName = "shop_imgs"; // Specify the folder name on Cloudinary
+    if (file) {
+      const result = await cloudinary.uploader.upload(file.path, {
+        folder: folderName,
       });
       // Delete uploaded file from local storage
       fs.unlink(file.path, (unlinkErr) => {
@@ -35,7 +35,8 @@ const updateCategory = async (id, data, file) => {
           console.log(`File deleted: ${file.path}`);
         }
       });
-    data.img = JSON.stringify(result.url);
+      data.img = JSON.stringify(result.url);
+    }
     await Category.update({ ...data }, { where: { id }, raw: true });
     //console.log(Category)
     return await getCategoryById(id);
