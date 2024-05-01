@@ -53,7 +53,7 @@ const handleUpdateCategory = async(req,res) => {
     try {
         const category = await categoryService.getCategoryById(id);
         if(category===null) return res.status(404).send();
-        const updateCategory = await categoryService.updateCategory(id,req.body);
+        const updateCategory = await categoryService.updateCategory(id,req.body,req.file);
         res.send(updateCategory);
     } catch(e) {
         console.log(e);

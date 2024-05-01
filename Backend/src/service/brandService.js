@@ -1,4 +1,6 @@
 const { Brand } = require("../models/index");
+const fs = require('fs');
+const cloudinary = require('../common/cloudinary-config');
 
 const getBrandList = async () => {
   let brand = [];
@@ -20,8 +22,25 @@ const createNewBrand = async (data) => {
   }
 };
 
-const updateBrand = async (id, data) => {
+const updateBrand = async (id, data,file) => {
   try {
+    const folderName = 'shop_imgs'; // Specify the folder name on Cloudinary
+    if(file) {
+
+      const result = await cloudinary.uploader.upload(file.path, {
+          folder: folderName
+        });
+        // Delete uploaded file from local storage
+        fs.unlink(file.path, (unlinkErr) => {
+          if (unlinkErr) {
+            console.error(`Error deleting file: ${file.path}`, unlinkErr);
+          } else {
+            console.log(`File deleted: ${file.path}`);
+          }
+        });
+      data.img = JSON.stringify(result.url);
+    }
+
     await Brand.update({ ...data }, { where: { id }, raw: true });
     //console.log(Brand)
     return await getBrandById(id);
