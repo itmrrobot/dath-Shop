@@ -53,7 +53,7 @@ const handleUpdateBrand = async(req,res) => {
     try {
         const brand = await brandService.getBrandById(id);
         if(brand===null) return res.status(404).send();
-        const updateBrand = await brandService.updateBrand(id,req.body);
+        const updateBrand = await brandService.updateBrand(id,req.body,req.file);
         res.send(updateBrand);
     } catch(e) {
         console.log(e);

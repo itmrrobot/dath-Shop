@@ -6,7 +6,7 @@ const {upload} = require('../common/upload');
 router.get('/brand',brandController.handleGetBrandList)
 .get('/brand/:id',brandController.handleGetBrandById)
 .post('/brand/create',upload.single('img'),brandController.handleCreateNewBrand)
-.put('/brand/update/:id',brandController.handleUpdateBrand)
+.put('/brand/update/:id',upload.single('img'),brandController.handleUpdateBrand)
 .delete('/brand/delete/:id',brandController.handleDeleteBrand)
 
 module.exports = router;
