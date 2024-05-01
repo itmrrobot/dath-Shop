@@ -1,6 +1,7 @@
 const { Brand } = require("../models/index");
-const fs = require('fs');
-const cloudinary = require('../common/cloudinary-config');
+const fs = require("fs");
+const cloudinary = require("../common/cloudinary-config");
+const { getPublicIdFromUrl } = require("../utils/util");
 
 const getBrandList = async () => {
   let brand = [];
@@ -22,22 +23,21 @@ const createNewBrand = async (data) => {
   }
 };
 
-const updateBrand = async (id, data,file) => {
+const updateBrand = async (id, data, file) => {
   try {
-    const folderName = 'shop_imgs'; // Specify the folder name on Cloudinary
-    if(file) {
-
+    const folderName = "shop_imgs"; // Specify the folder name on Cloudinary
+    if (file) {
       const result = await cloudinary.uploader.upload(file.path, {
-          folder: folderName
-        });
-        // Delete uploaded file from local storage
-        fs.unlink(file.path, (unlinkErr) => {
-          if (unlinkErr) {
-            console.error(`Error deleting file: ${file.path}`, unlinkErr);
-          } else {
-            console.log(`File deleted: ${file.path}`);
-          }
-        });
+        folder: folderName,
+      });
+      // Delete uploaded file from local storage
+      fs.unlink(file.path, (unlinkErr) => {
+        if (unlinkErr) {
+          console.error(`Error deleting file: ${file.path}`, unlinkErr);
+        } else {
+          console.log(`File deleted: ${file.path}`);
+        }
+      });
       data.img = JSON.stringify(result.url);
     }
 
@@ -54,6 +54,15 @@ const deleteBrand = async (id) => {
   if (!brand) {
     return null;
   }
+  const imageUrl = brand.img;
+  const publicId = getPublicIdFromUrl(imageUrl);
+  console.log(imageUrl, publicId);
+  try {
+    await cloudinary.uploader.destroy(`shop_imgs/${publicId}`);
+  } catch (error) {
+    console.error(`Error deleting image with public ID ${publicId}:`, error);
+  }
+
   await Brand.destroy({ where: { id } });
 };
 
