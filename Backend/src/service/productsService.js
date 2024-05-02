@@ -192,10 +192,10 @@ const updateProduct = async (id, data, files) => {
       });
     }
     if (data.imgsSelectedEdit&&files) {
-      JSON.parse(data.imgsSelectedEdit).forEach((index) => {
+      JSON.parse(data.imgsSelectedEdit).forEach((value,index) => {
         const newValue = uploadedImagesUrls[index];
         if (index >= 0 && index < arrayImgs.length) {
-          arrayImgs[index] = newValue;
+          arrayImgs[value] = newValue;
         }
       });
     }
