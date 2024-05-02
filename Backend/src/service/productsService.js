@@ -191,7 +191,7 @@ const updateProduct = async (id, data, files) => {
         });
       });
     }
-    if (data.imgsSelectedEdit&&data.img) {
+    if (data.imgsSelectedEdit&&files) {
       JSON.parse(data.imgsSelectedEdit).forEach((index) => {
         const newValue = uploadedImagesUrls[index];
         if (index >= 0 && index < arrayImgs.length) {
