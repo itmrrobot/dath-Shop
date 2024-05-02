@@ -1,4 +1,6 @@
 const { Category } = require("../models/index");
+const fs = require("fs");
+const cloudinary = require("../common/cloudinary-config");
 
 const getCategoryList = async () => {
   let category = [];
