@@ -191,9 +191,16 @@ const updateProduct = async (id, data, files) => {
         });
       });
     }
-    if (data.imgsSelectedEdit&&files) {
-      JSON.parse(data.imgsSelectedEdit).forEach((value,index) => {
+    if (
+      data.imgsSelectedEdit &&
+      files.length === JSON.parse(data.imgsSelectedEdit).length &&
+      files
+    ) {
+      JSON.parse(data.imgsSelectedEdit).forEach((value, index) => {
         const newValue = uploadedImagesUrls[index];
+        if(value>3) {
+          return;
+        }
         if (index >= 0 && index < arrayImgs.length) {
           arrayImgs[value] = newValue;
         }
@@ -214,13 +221,11 @@ const deleteProduct = async (id) => {
   if (!product) {
     return null;
   }
-  const httpsExist = product?.img.every((url) => url.startsWith("https://"));
-  const publicIds = httpsExist
-    ? product?.img.map((url) => {
+  //const httpsExist = product?.img.every((url) => url.startsWith("https://"));
+  const publicIds =product?.img.map((url) => {
         const id = getPublicIdFromUrl(url);
         return id;
       })
-    : [];
   console.log(httpsExist, publicIds);
   publicIds?.length !== 0 &&
     publicIds?.forEach(async (publicId) => {
