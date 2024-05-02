@@ -62,7 +62,7 @@ function generateRandomPassword(length) {
 function getPublicIdFromUrl(url) {
   // Extract the public ID from the Cloudinary URL
   const startIndex = url.lastIndexOf("/") + 1;
-  const endIndex = url.lastIndexOf(".");
+  const endIndex = url?.lastIndexOf(".");
   return url.substring(startIndex, endIndex);
 }
 
