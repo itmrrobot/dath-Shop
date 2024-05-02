@@ -198,7 +198,7 @@ const updateProduct = async (id, data, files) => {
     ) {
       JSON.parse(data.imgsSelectedEdit).forEach((value, index) => {
         const newValue = uploadedImagesUrls[index];
-        if(value>3) {
+        if (value > 3) {
           return;
         }
         if (index >= 0 && index < arrayImgs.length) {
@@ -222,11 +222,10 @@ const deleteProduct = async (id) => {
     return null;
   }
   //const httpsExist = product?.img.every((url) => url.startsWith("https://"));
-  const publicIds =product?.img.map((url) => {
-        const id = getPublicIdFromUrl(url);
-        return id;
-      })
-  console.log(httpsExist, publicIds);
+  const publicIds = product?.img.map((url) => {
+    const id = getPublicIdFromUrl(url);
+    return id;
+  });
   publicIds?.length !== 0 &&
     publicIds?.forEach(async (publicId) => {
       try {
