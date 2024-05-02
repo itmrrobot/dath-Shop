@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
   Product.init({
     name: DataTypes.TEXT,
     slug_product: DataTypes.TEXT,
-    import_quatity: DataTypes.INTEGER,
+    import_quantity: DataTypes.INTEGER,
     sell_quantity: DataTypes.INTEGER,
     id_partner: DataTypes.INTEGER,
     img: DataTypes.TEXT,

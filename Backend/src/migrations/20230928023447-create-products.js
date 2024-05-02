@@ -22,7 +22,7 @@ module.exports = {
       slug_product: {
         type: Sequelize.TEXT
       },
-      import_quatity: {
+      import_quantity: {
         type: Sequelize.INTEGER
       },
       sell_quantity: {
