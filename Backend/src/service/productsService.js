@@ -58,7 +58,7 @@ const getProductList = async (querys) => {
           exclude: ["createdAt", "updatedAt", "id_product"],
         },
       },
-      {model: Brand}
+      { model: Brand },
     ],
     where: whereClause,
     nest: true,
@@ -114,7 +114,7 @@ const getProductById = async (id) => {
           exclude: ["createdAt", "updatedAt", "id_product"],
         },
       },
-      {model: Brand}
+      { model: Brand },
     ],
   });
   return product;
@@ -152,7 +152,7 @@ const createNewProduct = async (data, files) => {
   // });
   //data.import_quantity = Number(data.import_quantity)
   console.log(data);
-  const newProduct = await Product.create({...data});
+  const newProduct = await Product.create({ ...data });
   console.log(newProduct);
   if (listInventory?.length !== 0) {
     for (const list of array) {
@@ -166,8 +166,40 @@ const createNewProduct = async (data, files) => {
   return newProduct;
 };
 
-const updateProduct = async (id, data) => {
+const updateProduct = async (id, data, files) => {
   try {
+    const product = await getProductById(id);
+    const arrayImgs = product.img;
+    let uploadedImagesUrls;
+    const folderName = "shop_imgs"; // Specify the folder name on Cloudinary
+    if (files) {
+      const promises = files.map(async (file) => {
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: folderName,
+        });
+        return result.secure_url;
+      });
+
+      uploadedImagesUrls = await Promise.all(promises);
+      files.forEach((file) => {
+        fs.unlink(file.path, (err) => {
+          if (err) {
+            console.error(`Error deleting file: ${file.path}`, err);
+          } else {
+            console.log(`File deleted: ${file.path}`);
+          }
+        });
+      });
+    }
+    if (data.imgsSelectedEdit&&data.img) {
+      JSON.parse(data.imgsSelectedEdit).forEach((index) => {
+        const newValue = uploadedImagesUrls[index];
+        if (index >= 0 && index < arrayImgs.length) {
+          arrayImgs[index] = newValue;
+        }
+      });
+    }
+    data.img = JSON.stringify(arrayImgs);
     await Product.update({ ...data }, { where: { id }, raw: true });
     //console.log(product)
     return await getProductById(id);

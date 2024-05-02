@@ -42,7 +42,7 @@ const handleUpdateProduct = async (req, res) => {
   try {
     const product = await productsService.getProductById(id);
     if (product === null) return res.status(404).send();
-    const updateProduct = await productsService.updateProduct(id, req.body);
+    const updateProduct = await productsService.updateProduct(id, req.body,req.files);
     res.send(updateProduct);
   } catch (e) {
     console.log(e);
