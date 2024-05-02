@@ -58,6 +58,7 @@ const getProductList = async (querys) => {
           exclude: ["createdAt", "updatedAt", "id_product"],
         },
       },
+      {model: Brand}
     ],
     where: whereClause,
     nest: true,
@@ -113,6 +114,7 @@ const getProductById = async (id) => {
           exclude: ["createdAt", "updatedAt", "id_product"],
         },
       },
+      {model: Brand}
     ],
   });
   return product;
