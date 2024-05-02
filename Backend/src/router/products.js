@@ -26,7 +26,7 @@ const {upload} = require('../common/upload');
 router.get('/products',productsController.handleGetProductList)
 .get('/products/:id',productsController.handleGetProductById)
 .post('/products/create',upload.array('img',4),productsController.handleCreateNewProduct)
-.put('/products/update/:id',productsController.handleUpdateProduct)
+.put('/products/update/:id',upload.array('img',4),productsController.handleUpdateProduct)
 .delete('/products/delete/:id',productsController.handleDeleteProduct)
 
 module.exports = router;
