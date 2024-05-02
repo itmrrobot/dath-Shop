@@ -221,13 +221,11 @@ const deleteProduct = async (id) => {
   if (!product) {
     return null;
   }
-  const httpsExist = product?.img.every((url) => url.startsWith("https://"));
-  const publicIds = httpsExist
-    ? product?.img.map((url) => {
+  //const httpsExist = product?.img.every((url) => url.startsWith("https://"));
+  const publicIds =product?.img.map((url) => {
         const id = getPublicIdFromUrl(url);
         return id;
       })
-    : [];
   console.log(httpsExist, publicIds);
   publicIds?.length !== 0 &&
     publicIds?.forEach(async (publicId) => {
