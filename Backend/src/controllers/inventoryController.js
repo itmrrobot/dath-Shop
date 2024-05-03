@@ -34,9 +34,9 @@ const handleCreateNewInventory = async(req,res) => {
 const handleUpdateInventory = async(req,res) => {
     let id = req.params.id;
     try {
-        const inventory = await inventoryService.getOrderById(id);
-        if(inventory===null) return res.status(404).send();
-        const updateOrder = await inventoryService.updateOrder(id,req.body);
+        //const inventory = await inventoryService.getOrderById(id);
+        //if(inventory===null) return res.status(404).send();
+        const updateOrder = await inventoryService.updateInventory(id,req.body);
         res.send(updateOrder);
     } catch(e) {
         console.log(e);
