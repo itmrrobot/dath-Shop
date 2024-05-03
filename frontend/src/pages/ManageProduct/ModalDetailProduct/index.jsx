@@ -192,7 +192,7 @@ function ModalDetailProduct({ show, handleClose, prodID, handleReRender }) {
             import_quantity: inventory_sum,
             // BC_color: 'color_4',
         };
-        console.log(infor);
+        console.log(JSON.stringify(infor));
         // try {
         //     await delay(2000); // Chờ 2 giây
         //     const res = await axios.put(`http://localhost:3000/product/${product?.id}`, infor);

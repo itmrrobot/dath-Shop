@@ -107,16 +107,14 @@ function Search() {
                                     suggest.map((sug, index) => {
                                         return (
                                             <Tippy delay={[0, 50]} content={sug} placement="bottom">
-                                                {/* <Button
-                                                        text
-                                                        onClick={() => {
-                                                            navigator('/product?_page=1&_limit=9');
-                                                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                                                        }}
-                                                    >
-                                                        Store
-                                                    </Button> */}
-                                                <p className={cx('recommend-content')}>{sug}</p>
+                                                <p
+                                                    className={cx('recommend-content')}
+                                                    onClick={() => {
+                                                        setSearchValue(sug);
+                                                    }}
+                                                >
+                                                    {sug}
+                                                </p>
                                             </Tippy>
                                         );
                                     })}

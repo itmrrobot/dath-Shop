@@ -102,18 +102,27 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 4 cột với chiều rộng bằng nhau */
     grid-gap: 10px; /* Khoảng cách giữa các ô */
+    padding: 0 12px;
+    padding-bottom: 12px;
     .recommend-content {
         cursor: pointer;
-        color: var(--primary-950, #171212);
+        color: white;
         font-size: 12px;
         font-weight: 400;
         line-height: 150%;
         // width: 100px;
-        margin: 17px 0px 4px 16px;
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 1;
         line-clamp: 1;
         -webkit-box-orient: vertical;
+        border: 2px solid white;
+        border-radius: 8px;
+        background-color: lighten(#ab8a37, 20%);
+        padding: 2px 4px;
+        &:hover {
+            background-color: #ab8a37;
+            font-weight: 600;
+        }
     }
 }
