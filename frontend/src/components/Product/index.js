@@ -125,6 +125,17 @@ function Product() {
                     };
                     // console.log(data);
                     const response = await axios.post(url + '/cart/create', data);
+                    toast.success(`Add product to cart success`, {
+                        position: 'top-right',
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        // theme: 'light',
+                        theme: 'colored',
+                    });
                     state?.render?.setRender((prev) => !prev);
                 } catch (e) {
                     console.log(e);
@@ -143,6 +154,17 @@ function Product() {
                 };
                 // console.log(data);
                 const response = await axios.post(url + '/cart/create', data);
+                toast.success(`Add product to cart success`, {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    // theme: 'light',
+                    theme: 'colored',
+                });
                 state?.render?.setRender((prev) => !prev);
             } catch (e) {
                 console.log(e);

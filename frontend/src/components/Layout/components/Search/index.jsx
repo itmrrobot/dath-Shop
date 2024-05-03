@@ -17,6 +17,7 @@ function Search() {
     // const [searchResult, setSearchResult] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [searchResult, setSearchResult] = useState([]);
+    console.log(searchResult);
     const [products, setProducts] = useState([]);
     const [showResults, setShowResults] = useState(true);
     const [suggest, setSuggest] = useState([]);
@@ -120,23 +121,34 @@ function Search() {
                                     })}
                             </div>
 
-                            {searchResult.map((result) => (
-                                <Link
-                                    key={result.id}
-                                    to={'/product/' + result.id}
-                                    onClick={() => handleClear()}
-                                >
-                                    {/* <ProductItem data={result} /> */}
-                                    <div className={cx('wrapper')}>
-                                        <img
-                                            className={cx('search-icon')}
-                                            src={images.search}
-                                            alt="search-btn"
-                                        />
-                                        <p className={cx('product')}>{result.name}</p>
-                                    </div>
-                                </Link>
-                            ))}
+                            {searchResult.length > 0 ? (
+                                searchResult.map((result) => (
+                                    <Link
+                                        key={result.id}
+                                        to={'/product/' + result.id}
+                                        onClick={() => handleClear()}
+                                    >
+                                        {/* <ProductItem data={result} /> */}
+                                        <div className={cx('wrapper')}>
+                                            <img
+                                                className={cx('search-icon')}
+                                                src={images.search}
+                                                alt="search-btn"
+                                            />
+                                            <p className={cx('product')}>{result.name}</p>
+                                        </div>
+                                    </Link>
+                                ))
+                            ) : (
+                                <div className={cx('wrapper')}>
+                                    {/* <img
+                                className={cx('search-icon')}
+                                src={images.search}
+                                alt="search-btn"
+                            /> */}
+                                    <p className={cx('product')}>Không tìm thấy sản phẩm nào!</p>
+                                </div>
+                            )}
                         </PopperWrapper>
                     </div>
                 );

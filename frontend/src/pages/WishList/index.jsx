@@ -45,9 +45,10 @@ function WishList() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('wrap-products')}>
-                <div className={cx('products-list')}>
-                    {products.length > 0 ? (
-                        products.map((product, index) => {
+                {products.length > 0 ? (
+                    <div className={cx('products-list')}>
+                        {products.map((product, index) => {
+                            console.log(product);
                             return (
                                 <div className={cx('product')} key={index}>
                                     <Link
@@ -106,11 +107,14 @@ function WishList() {
                                     </div>
                                 </div>
                             );
-                        })
-                    ) : (
-                        <p>Hello</p>
-                    )}
-                </div>
+                        })}
+                    </div>
+                ) : (
+                    <div className={cx('notification')}>
+                        {/* <h1>Xin chao</h1> */}
+                        <p>Chưa có wishlist</p>
+                    </div>
+                )}
             </div>
         </div>
     );

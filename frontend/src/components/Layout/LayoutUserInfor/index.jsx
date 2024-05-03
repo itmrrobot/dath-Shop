@@ -44,26 +44,37 @@ function LayoutUserInfor({
             <div className={cx('wrapper-content')}>
                 <div className={cx('side-bar-user')}>
                     <ul className={cx('list-user')}>
-                        <li className={cx(profile ? 'isActive' : '')}>
-                            <Link to="/user/profile">Personal Information</Link>
-                            <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
-                        </li>
-                        <li className={cx(password ? 'isActive' : '')}>
-                            <Link to="/user/password">Password</Link>
-                            <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
-                        </li>
-                        <li className={cx(order ? 'isActive' : '')}>
-                            <Link to="/user/order">My Orders</Link>
-                            <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
-                        </li>
-                        <li className={cx(returnn ? 'isActive' : '')}>
-                            <Link to="/user/return">Returns</Link>
-                            <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
-                        </li>
-                        <li className={cx(wishlist ? 'isActive' : '')}>
-                            <Link to={`/user/wishlist/${state?.cuser?.value?.id}`}>Wish list</Link>
-                            <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
-                        </li>
+                        <Link to="/user/profile">
+                            <li className={cx(profile ? 'isActive' : '')}>
+                                Personal Information
+                                <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
+                            </li>
+                        </Link>
+                        <Link to="/user/password">
+                            <li className={cx(password ? 'isActive' : '')}>
+                                Password
+                                <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
+                            </li>
+                        </Link>
+                        <Link to="/user/order">
+                            <li className={cx(order ? 'isActive' : '')}>
+                                My Orders
+                                <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
+                            </li>
+                        </Link>
+                        <Link to="/user/return">
+                            <li className={cx(returnn ? 'isActive' : '')}>
+                                Returns
+                                <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
+                            </li>
+                        </Link>
+
+                        <Link to={`/user/wishlist/${state?.cuser?.value?.id}`}>
+                            <li className={cx(wishlist ? 'isActive' : '')}>
+                                Wish list
+                                <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
+                            </li>
+                        </Link>
                     </ul>
                 </div>
                 <div className={cx('content')}>{children}</div>

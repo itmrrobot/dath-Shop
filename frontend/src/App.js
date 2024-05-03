@@ -29,6 +29,7 @@ import ManageProduct from './pages/ManageProduct';
 import ManageOrder from './pages/ManageOrder';
 import ManageReturn from './pages/ManageReturn';
 import AddProducts from './pages/AddProducts';
+import LoginSignUp from './components/Layout/LoginSignup/LoginSignup';
 
 function App() {
     const [chat, setChat] = useState(false);
@@ -331,7 +332,7 @@ function App() {
                             </>
                         )}
                         {publicAccountRoutes.map((route, index) => {
-                            const Layout = AccountLayout;
+                            const Layout = LoginSignUp;
                             const Page = route.component;
                             return (
                                 <Route

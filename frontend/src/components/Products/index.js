@@ -4,7 +4,7 @@ import arrowDown from '../../assets/img/Vector 9.png';
 import SideBarFilter from '../SideBarFilter';
 import Rectangle53 from '../../assets/img/Rectangle53.png';
 import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { url } from '../../constants';
 import { Link } from 'react-router-dom';
 import images from '../../assets/img';
@@ -44,7 +44,6 @@ function Products() {
     const categoryId = searchParams.get('categoryId');
     const sort = searchParams.get('sort');
     const state = useContext(UseContextUser);
-    console.log(state?.wishlist?.value);
     // const brand = searchParams.get('brand_id');
     // const type = searchParams.get('type');
     // const price_gte = searchParams.get('price_gte');
@@ -91,6 +90,7 @@ function Products() {
             await fetchData();
         }, 0);
     }, [page, price_gte, price_lte, filter, categoryId]);
+
     const handleDropItem = (select, path = '') => {
         if (selected !== select) {
             setSelected(select);
@@ -135,7 +135,7 @@ function Products() {
             id_product: payload.id,
             nameProduct: payload.name,
             priceProduct: payload.discount_price,
-            img: `${url}/img/${payload.img[0]}`,
+            img: `${payload.img[0]}`,
         };
         const fetchData = async () => {
             try {
@@ -165,6 +165,11 @@ function Products() {
         navigate(`/products?${searchParams.toString()}`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+    const handleClickOut = function (event) {
+        setDisplay(false);
+    };
+
+    window.addEventListener('click', handleClickOut);
     return (
         <div className={cx('wrap')}>
             <div className={cx('quantity-filter-wrapper')}>
@@ -177,7 +182,10 @@ function Products() {
                 <div className={cx('dropdown')}>
                     <div
                         className={cx('dropdown-btn', display ? 'active' : '')}
-                        onClick={() => setDisplay((prev) => !prev)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setDisplay((prev) => !prev);
+                        }}
                     >
                         {display ? (
                             <FontAwesomeIcon icon={faChevronUp} />

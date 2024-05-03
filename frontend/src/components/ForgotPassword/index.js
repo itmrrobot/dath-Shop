@@ -18,7 +18,11 @@ function ForgotPassword() {
     const schema = yup
         .object()
         .shape({
-            email: yup.string().required('Bạn cần nhập trường này').email('Email không hợp lệ'),
+            email: yup
+                .string()
+                .required('Bạn cần nhập trường này')
+                .email('Email không hợp lệ')
+                .matches(/@gmail\.com$/, 'Email phải kết thúc bằng @gmail.com'),
         })
         .required();
     const {
@@ -55,29 +59,80 @@ function ForgotPassword() {
         }
     };
     return (
-        <div className={cx('wrap-login')}>
-            <div className={cx('wrapper')}>
-                <h4 className={cx('logo')}>Luxury</h4>
-                <h1 className={cx('title')}>Forgot Password</h1>
-                <p className={cx('desc')}>
-                    Enter the email address
-                    <br />
-                    associated with your account
-                </p>
-                <div className={cx('alert-error')}>
+        // <div className={cx('wrap-login')}>
+        //     <div className={cx('wrapper')}>
+        //         <h4 className={cx('logo')}>Luxury</h4>
+        //         <h1 className={cx('title')}>Forgot Password</h1>
+        //         <p className={cx('desc')}>
+        //             Enter the email address
+        //             <br />
+        //             associated with your account
+        //         </p>
+        //         <div className={cx('alert-error')}>
+        //             {errorDisplay && (
+        //                 <div className="alert alert-danger" role="alert">
+        //                     <h4 className="alert-heading">Error: {`${errorMes}`}</h4>
+        //                     <p>{`Tên tài khoản (email) không tồn tại`}</p>
+
+        //                     <p className="mb-0">Vui lòng nhập lại!!</p>
+        //                 </div>
+        //             )}
+        //         </div>
+        //         <div className={cx('input_product')}>
+        //             <input placeholder="Enter Email Address" {...register('email')} />
+        //             {errors.email && <p className={cx('form-message')}>{errors.email.message}</p>}
+        //         </div>
+        //         <Button
+        //             primary
+        //             rounded
+        //             onClick={(e) => {
+        //                 handleSubmit(onSubmit)(e);
+        //             }}
+        //         >
+        //             Next
+        //         </Button>
+        //     </div>
+        // </div>
+        <div className={cx('wrapper')}>
+            <div className={cx('form')}>
+                <div className={cx('title')}>
+                    <p>Luxury</p>
+                    <p>Forgot Password</p>
+                </div>
+                <div className={cx('fill-in-form')}>
+                    {/* <div className={cx('error-message')}>
+                    <FontAwesomeIcon icon={faExclamation} />
+                    <h4>Error:</h4>
+                    <span>{errorMes}</span>
+                </div> */}
                     {errorDisplay && (
                         <div className="alert alert-danger" role="alert">
                             <h4 className="alert-heading">Error: {`${errorMes}`}</h4>
-                            <p>{`Tên tài khoản (email) không tồn tại`}</p>
+                            <p>{`Tên email không tồn tại`}</p>
 
                             <p className="mb-0">Vui lòng nhập lại!!</p>
                         </div>
                     )}
+
+                    <div className={cx('inputField')}>
+                        <label htmlFor="email" className="form-label">
+                            Enter the email address
+                            <br />
+                            associated with your account
+                        </label>
+                        <input
+                            id="email"
+                            name="avatar"
+                            type="email"
+                            className="form-control"
+                            {...register('email')}
+                        />
+                        {errors.email && (
+                            <span className="form-message">{errors.email.message}</span>
+                        )}
+                    </div>
                 </div>
-                <div className={cx('input_product')}>
-                    <input placeholder="Enter Email Address" {...register('email')} />
-                    {errors.email && <p className={cx('form-message')}>{errors.email.message}</p>}
-                </div>
+
                 <Button
                     primary
                     rounded
@@ -87,6 +142,15 @@ function ForgotPassword() {
                 >
                     Next
                 </Button>
+                {/* <Button
+                    // primary
+                    rounded
+                    // onClick={(e) => {
+                    //     handleSubmit(onSubmit)(e);
+                    // }}
+                >
+                    Cancel
+                </Button> */}
             </div>
         </div>
     );
