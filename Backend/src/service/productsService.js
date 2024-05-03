@@ -115,10 +115,13 @@ const getProductById = async (id) => {
         attributes: {
           exclude: ["createdAt", "updatedAt", "id_product"],
         },
+        order: [['id', 'DESC']]
       },
-      { model: Brand },
+      { model: Brand
+       },
     ],
   });
+  product.Inventories = product.Inventories.sort((a, b) => a.id - b.id);
   return product;
 };
 
