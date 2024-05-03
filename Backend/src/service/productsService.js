@@ -93,13 +93,15 @@ const getProductList = async (querys) => {
 
   // Convert the combined products object to an array
   const combinedProductsArray = Object.values(combinedProducts);
+  let productsArray = combinedProductsArray;
   if (order?.toUpperCase() === "ASC") {
-    return combinedProductsArray.sort((a, b) => a.price - b.price);
+    productsArray = productsArray.sort((a, b) => a.price - b.price);
   } else if (order?.toUpperCase() === "DESC") {
-    return combinedProductsArray.sort((a, b) => b.price - a.price);
+    productsArray = productsArray.sort((a, b) => b.price - a.price);
   }
+  console.log("Array:",productsArray)
   const totalCount = await Product.count({ where: whereClause });
-  return { combinedProductsArray, totalCount };
+  return { productsArray, totalCount };
 };
 
 const getProductById = async (id) => {
