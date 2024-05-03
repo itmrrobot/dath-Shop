@@ -239,7 +239,7 @@ function Rating({ product, key, order, render, prodToRating, orderId }) {
             <div className={cx('product')} key={key}>
                 <div className={cx('product-img')}>
                     <div className={cx('product-img-wrapper')}>
-                        <img src={`${url}/img/${imgs[0]}`} />
+                        <img src={`${imgs[0]}`} />
                     </div>
                 </div>
                 <div className={cx('cart-item-infor')}>

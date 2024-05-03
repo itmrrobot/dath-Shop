@@ -94,7 +94,7 @@ function Products() {
     const handleDropItem = (select, path = '') => {
         if (selected !== select) {
             setSelected(select);
-            var redirectToURL = `/products?page=1&limit=15`;
+            var redirectToURL = `/products?page=1&limit=9`;
             if (type) {
                 redirectToURL += `&type=${type}`;
             }
@@ -105,7 +105,7 @@ function Products() {
                 redirectToURL += `&categoryId=${categoryId}`;
             }
             if (price_gte && price_lte) {
-                redirectToURL += `&&price_gte=${price_gte}&price_lte=${price_lte}`;
+                redirectToURL += `&price_gte=${price_gte}&price_lte=${price_lte}`;
             }
 
             if (path === '') {
@@ -215,6 +215,7 @@ function Products() {
                     <div className={cx('products-list')}>
                         {productsPerPage?.map((product, index) => {
                             let imgs = product?.img;
+                            console.log(imgs);
                             // console.log(product.id);
                             return (
                                 product !== null && (
@@ -226,12 +227,12 @@ function Products() {
                                             <div className={cx('product-img')}>
                                                 <div className={cx('product-img-wrapper')}>
                                                     <img
-                                                        src={`${url}/img/${imgs[0]}`}
+                                                        src={`${imgs[0]}`}
                                                         alt="product"
                                                         className={cx('img')}
                                                     />
                                                     <img
-                                                        src={`${url}/img/${imgs[1]}`}
+                                                        src={`${imgs[1]}`}
                                                         alt="rear product image"
                                                         className={cx('rear-img')}
                                                     />

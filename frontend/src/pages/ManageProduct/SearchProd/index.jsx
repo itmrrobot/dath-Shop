@@ -7,13 +7,14 @@ import { SearchIcon } from '../../../components/Icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './SearchProd.module.scss';
 import classNames from 'classnames/bind';
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef, useContext, useMemo } from 'react';
 // import { useDebounce } from "~/hooks";
 import useDebounce from '../../../hooks/useDebounce';
 import axios from 'axios';
 import ModalDetailProduct from '../ModalDetailProduct';
 import { Modal } from 'antd';
 import { toast } from 'react-toastify';
+import { url } from '../../../constants';
 
 const cx = classNames.bind(styles);
 function SearchProd() {
@@ -21,7 +22,7 @@ function SearchProd() {
     const [searchResult, setSearchResult] = useState([]);
     const [prodInfor, setProdInfor] = useState({});
     const [itemId, setItemId] = useState();
-
+    const [products, setProducts] = useState([]);
     // console.log(!!searchValue);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [showResults, setShowResults] = useState(true);
@@ -68,35 +69,29 @@ function SearchProd() {
         // Cấu trúc URL:
         // + https:// -> là giao thức http
         // + //tiktok (subdomain): Tên miền con của tên miền chính
-        // .fullstack (second-level domain): tên của website mà người dùng đặt cho nó
-        // .edu()
-        // .api/users/search: đường dẫn (path)
-        // ? : ngăn cách giữa path và Query parameter
-        // q=hoaa : Query parameter
-        // & Kết hợp nhiều query
-        // Kiểm tra khoảng trắng
-        if (!debounce.trim()) {
-            setSearchResult([]);
-            return;
-        }
-        const fetchApi = async () => {
-            setLoading(true);
-            const result = await axios.get(`http://localhost:3000/product/`, {
-                params: {
-                    name_like: debounce,
-                    // _limit: 6,
-                },
-            });
-            // setSearchResult(result);
-            setSearchResult(result.data);
-            setLoading(false);
-        };
-        fetchApi();
+        axios.get(`${url}/products`).then((res) => {
+            // Trả về 1 mảng [sản phẩm]
+            setProducts(res.data.products);
+        });
+    }, []);
+    const filterSearch = useMemo(() => {
+        const productFilter = products.filter((product) => {
+            if (!debounce.trim()) {
+                setSearchResult([]);
+                return;
+            }
+            // console.log(product.name);
+            if (product.name !== null) {
+                let indexItem = product.name.toLowerCase().includes(debounce.toLowerCase());
+                return indexItem;
+            }
+        });
 
-        // searchValue constraints: Bởi vì sau mỗi lần nhập (thay đổi state), nó sẽ cho ra những kết quả tìm kiếm khác nhau
-        // => render ra được kqtk
+        return productFilter;
     }, [debounce]);
-
+    useEffect(() => {
+        setSearchResult(filterSearch);
+    }, [filterSearch]);
     const handleClear = () => {
         setSearchValue('');
         setSearchResult([]);
@@ -131,48 +126,49 @@ function SearchProd() {
                                 Search Results: {searchResult.length} result
                             </h4>
                             <div className={cx('search-result-wrapper')}>
-                                {searchResult?.map((result) => (
-                                    <div className={cx('result')}>
-                                        {/* <img
+                                {searchResult?.map((result) => {
+                                    // console.log(result);
+                                    return (
+                                        <div className={cx('result')}>
+                                            {/* <img
                                     className={cx('avatar')}
                                     src={`https://shoesshop-6n6z.onrender.com/imgs/${result?.img}`}
                                     alt={result?.name}
                                 /> */}
-                                        <div className={cx('product-img')}>
-                                            <div className={cx('product-img-wrapper')}>
-                                                <img
-                                                    src={`https://shoesshop-6n6z.onrender.com/imgs/${result?.img}`}
-                                                />
+                                            <div className={cx('product-img')}>
+                                                <div className={cx('product-img-wrapper')}>
+                                                    <img src={`${result?.img[0]}`} />
+                                                </div>
+                                            </div>
+                                            <div className={cx('info')}>
+                                                <h4
+                                                    className={cx('name')}
+                                                    onClick={() => {
+                                                        handleClear();
+                                                        handleShow();
+                                                        setProdInfor(result);
+                                                    }}
+                                                >
+                                                    <span>{result?.name}</span>
+                                                </h4>
+                                                <span className={cx('prod-id')}>
+                                                    Product ID: {result?.id}
+                                                </span>
+                                                <div
+                                                    className={cx('remove-btn')}
+                                                    data-label="Remove"
+                                                    onClick={() => {
+                                                        showModalDelete();
+                                                        handleHideResult();
+                                                        setItemId(result?.id);
+                                                    }}
+                                                >
+                                                    Remove
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className={cx('info')}>
-                                            <h4
-                                                className={cx('name')}
-                                                onClick={() => {
-                                                    handleClear();
-                                                    handleShow();
-                                                    setProdInfor(result);
-                                                }}
-                                            >
-                                                <span>{result?.name}</span>
-                                            </h4>
-                                            <span className={cx('prod-id')}>
-                                                Product ID: {result.id}
-                                            </span>
-                                            <div
-                                                className={cx('remove-btn')}
-                                                data-label="Remove"
-                                                onClick={() => {
-                                                    showModalDelete();
-                                                    handleHideResult();
-                                                    setItemId(result?.id);
-                                                }}
-                                            >
-                                                Remove
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         </PopperWrapper>
                     </div>

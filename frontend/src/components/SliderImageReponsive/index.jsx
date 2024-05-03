@@ -70,7 +70,7 @@ function SliderImageReponsive({ images = [], video = [], reviews = false }) {
                     </LightGallery>
 
                     {videoFile !== undefined && videoFile.length > 0 && (
-                        <div className={cx('video')}>
+                        <div className={cx('videos')}>
                             <video controls style={{ width: '100%' }}>
                                 <source src={videoFile[0]} type={videoFile[0].type} />
                             </video>

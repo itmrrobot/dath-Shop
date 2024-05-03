@@ -30,7 +30,6 @@
     margin-left: 12px;
 }
 
-
 .search {
     border-bottom: 1px solid rgba(22, 24, 35, 0.2);
     height: 26px;
@@ -97,4 +96,24 @@
     padding: 6px 16px;
     color: var(--gray);
     font-size: 1.4rem;
+}
+
+.recommendation-child {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 4 cột với chiều rộng bằng nhau */
+    grid-gap: 10px; /* Khoảng cách giữa các ô */
+    .recommend-content {
+        cursor: pointer;
+        color: var(--primary-950, #171212);
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 150%;
+        // width: 100px;
+        margin: 17px 0px 4px 16px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
 }

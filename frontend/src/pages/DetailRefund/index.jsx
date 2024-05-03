@@ -515,19 +515,19 @@ function DetailRefund() {
                             <div className={cx('name')}>
                                 <div className={cx('first-name')}>
                                     <p className={cx('label')}>Description:</p>
-                                    <p>{JSON.parse(returnOrder?.description)}</p>
+                                    <p>{returnOrder?.description}</p>
                                 </div>
                             </div>
                             <div className={cx('name')}>
                                 <div className={cx('first-name')}>
                                     <p className={cx('label')}>Phone Number:</p>
-                                    <p>{returnOrder?.phone.replace(/[\[\]"]+/g, '')}</p>
+                                    <p>{returnOrder?.phone?.replace(/[\[\]"]+/g, '')}</p>
                                 </div>
                             </div>
                             <div className={cx('name')}>
                                 <div className={cx('first-name')}>
                                     <p className={cx('label')}>Address:</p>
-                                    <p>{returnOrder?.address.replace(/[\[\]"]+/g, '')}</p>
+                                    <p>{returnOrder?.address?.replace(/[\[\]"]+/g, '')}</p>
                                 </div>
                             </div>
                             <div className={cx('name')}>
@@ -606,7 +606,7 @@ function Order_Item({ product }) {
                     <div className={cx('product')}>
                         <div className={cx('product-img')}>
                             <div className={cx('product-img-wrapper')}>
-                                <img src={`${url}/img/${imgs[0]}`} />
+                                <img src={`${imgs[0]}`} />
                             </div>
                         </div>
                         <div className={cx('cart-item-infor')}>

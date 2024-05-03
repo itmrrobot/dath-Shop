@@ -31,8 +31,9 @@ function Product() {
     // console.log(image);
     const [quantity_Order, setQuantity_Order] = useState(1);
     const [reviews, setReviews] = useState([]);
-    console.log(reviews);
-    // console.log(product);
+
+    console.log(product);
+    console.log(image[0]);
     const tabs = ['Description', 'Reviews'];
     const state = useContext(UseContextUser);
     const benefits = [
@@ -120,11 +121,10 @@ function Product() {
                         nameProduct: product?.name,
                         priceProduct: product?.discount_price,
                         size: sizeToString,
-                        img: `${url}/img/${image[0]}`,
+                        img: `${image[0]}`,
                     };
                     // console.log(data);
                     const response = await axios.post(url + '/cart/create', data);
-                    console.log(response);
                     state?.render?.setRender((prev) => !prev);
                 } catch (e) {
                     console.log(e);
@@ -139,7 +139,7 @@ function Product() {
                     nameProduct: product?.name,
                     priceProduct: product?.discount_price,
                     size: sizeToString,
-                    img: `${url}/img/${image[0]}`,
+                    img: `${image[0]}`,
                 };
                 // console.log(data);
                 const response = await axios.post(url + '/cart/create', data);
@@ -165,7 +165,11 @@ function Product() {
                             </li>
                             <span> &#62; </span>
                             <li>
-                                <Link to="#">{product?.type}</Link>
+                                <Link to="#">{product?.Brand?.brand_name}</Link>
+                            </li>
+                            <span> &#62; </span>
+                            <li>
+                                <Link to="#">{product?.Category?.category_name}</Link>
                             </li>
                             <span> &#62; </span>
                             <li>
@@ -198,16 +202,16 @@ function Product() {
                                             <img src={images.reviews} alt="" />
                                             <span>{reviews.length} Reviews</span>
                                         </div>
-                                        <div className={cx('heart')}>
+                                        {/* <div className={cx('heart')}>
                                             <img src={images.heart} alt="" />
                                             <span>109</span>
-                                        </div>
+                                        </div> */}
                                     </div>
-                                    <div className={cx('ratio-wrapper')}>
+                                    {/* <div className={cx('ratio-wrapper')}>
                                         <p>
                                             <span>93%</span> of buyers have recommended this
                                         </p>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -368,7 +372,7 @@ function Product() {
                             <>
                                 <div id="desc" className={cx('infor-container-description')}>
                                     <h1>Product Description</h1>
-                                    <p>{product.description}</p>
+                                    <p>{product.detail_description}</p>
                                 </div>
                                 <div className={cx('infor-container-description')}>
                                     <h1>Benefits</h1>

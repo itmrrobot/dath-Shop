@@ -25,6 +25,7 @@ function ManageProduct() {
     const handlePageChange = ({ selected }) => {
         setCurrentPage(selected);
     };
+    console.log('Render');
     const offset = currentPage * 5;
     // const currentPageData = product.slice(offset, offset + 5);
     // console.log();
@@ -100,14 +101,15 @@ function ManageProduct() {
                         <div className={cx('col', 'col-6')}></div>
                         <div className={cx('col', 'col-7')}></div>
                     </li>
-                    {product.map((item, index) => {
+                    {product?.map((item, index) => {
                         let imgs = item.img;
+                        console.log(item);
                         return (
                             <li key={index} className={cx('table-row')}>
                                 <div className={cx('col', 'col-1', 'name')} data-label="Picture">
                                     <div className={cx('product-img')}>
                                         <div className={cx('product-img-wrapper')}>
-                                            <img src={`${url}/img/${imgs[0]}`} />
+                                            <img src={`${imgs[0]}`} />
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +127,7 @@ function ManageProduct() {
                                     {formatPrice(item?.price)}
                                 </div>
                                 <div className={cx('col', 'col-5', 'name')} data-label="Discount">
-                                    {item?.discount_id}%
+                                    {formatPrice(item?.discount_price)}
                                 </div>
                                 <div
                                     className={cx('col', 'col-6', 'name', 'btn-hover')}
@@ -149,56 +151,6 @@ function ManageProduct() {
                                     <FontAwesomeIcon icon={faPenNib}></FontAwesomeIcon>
                                     Modify
                                 </div>
-                                {/* <div className={cx('col', 'col-5', 'name')} data-label="Phone">
-                    {item.phone}
-                </div>
-                <div className={cx('col', 'col-6')} data-label="Role">
-                    {item.roleId === 1 ? (
-                        <span className={cx(['role', 'i'])}>Admin</span>
-                    ) : (
-                        <span className={cx(['role', 'ii'])}>Client</span>
-                    )}
-                </div>
-                <div
-                    className={cx('col', 'col-7', 'btn-detail')}
-                    data-label="Detail"
-                    onClick={() => {
-                        handleShow();
-                        setAccInfor(item);
-                    }}
-                >
-                    <FontAwesomeIcon icon={faPenToSquare} />
-                    Detail
-                </div>
-                <div className={cx('col', 'col-8')} data-label="Payment Status">
-                    {item.roleId === 3 || item.roleId === 4 ? (
-                        item.roleId !== 4 ? (
-                            <button
-                                className={cx(['status_btn', 'lock'])}
-                                onClick={() => handleLockAcc(item.id, 4)}
-                            >
-                                <FontAwesomeIcon icon={faLock} />
-                                <span>Khóa</span>
-                            </button>
-                        ) : (
-                            <button
-                                className={cx(['status_btn', 'unlock'])}
-                                onClick={() => handleLockAcc(item.id, 3)}
-                            >
-                                <FontAwesomeIcon icon={faUnlock} />
-                                <span>Mở</span>
-                            </button>
-                        )
-                    ) : (
-                        <div
-                            className={cx(['status_btn_admin', 'unlock'])}
-                            // onClick={() => handleLockAcc(item.id, 3)}
-                        >
-                            <FontAwesomeIcon icon={faUserTie} />
-                            <span>Admin</span>
-                        </div>
-                    )}
-                </div> */}
                             </li>
                         );
                     })}
