@@ -25,11 +25,11 @@ const updateInventory = async (id, data) => {
     console.log(data.listInventory, typeof data.listInventory);
     data.listInventory.forEach(async (item) => {
       await Inventory.update(
-        item,
-        { where: { id_product: id,id:item.id}, raw: true }
+        {size:item.size,quantity:item.quantity},
+        { where: {id:item.id}, raw: true }
       );
     });
-    return await Inventory.findAll({ where: { id_product: id } });
+    return {msg:"Update success!"}
   } catch (e) {
     console.log(e);
   }
