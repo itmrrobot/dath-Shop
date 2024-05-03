@@ -9,8 +9,7 @@ const getRecommendListProduct = async (data) => {
   const products = await Product.findAll({});
   const categorys = await Category.findAll({});
   const productListByName = products.map((p) => p.name).filter(p => p!==null);
-  const categoryListByName = categorys.map((c) => c.category_name).filter(c => c!==null);
-  const documents = [...productListByName, ...categoryListByName];
+  const documents = [...productListByName];
   // Preprocess data
   const processedDocs = documents.map((doc) =>
     tokenizer.tokenize(doc.toLowerCase())
