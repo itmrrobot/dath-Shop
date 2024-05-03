@@ -12,6 +12,7 @@ const cx = classNames.bind(styles);
 function DetailOrder() {
     const param = useParams();
     const [order, setOrder] = useState();
+    console.log(order);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
         setIsModalOpen(true);
@@ -185,13 +186,10 @@ function DetailOrder() {
                                         className={cx('cancel')}
                                         onClick={() => {
                                             axios
-                                                .patch(
-                                                    `http://localhost:3000/orders/${order?.id}`,
-                                                    {
-                                                        payed: 1,
-                                                        status: '3',
-                                                    },
-                                                )
+                                                .put(`${url}/order/update/${order?.id}`, {
+                                                    payed: 1,
+                                                    status: 3,
+                                                })
                                                 .then((res) => {
                                                     console.log(res);
                                                     // setCheckChange((prev) => !prev);
@@ -216,7 +214,8 @@ function DetailOrder() {
                                         Cancel Order
                                     </button>
                                 ) : (
-                                    checkReturnDate() === false && (
+                                    checkReturnDate() === false &&
+                                    order?.id_returns === null && (
                                         <button className={cx('return')} onClick={handleReturn}>
                                             Return Product
                                         </button>
@@ -621,7 +620,7 @@ function Order_Item({ product }) {
                     <div className={cx('product')}>
                         <div className={cx('product-img')}>
                             <div className={cx('product-img-wrapper')}>
-                                <img src={`${url}/img/${imgs[0]}`} />
+                                <img src={`${imgs[0]}`} />
                             </div>
                         </div>
                         <div className={cx('cart-item-infor')}>

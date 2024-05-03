@@ -1,18 +1,18 @@
 import { Box, Button, IconButton, Typography, useTheme } from '@mui/material';
-import { tokens } from '~/theme';
+import { tokens } from '../../theme';
 import { mockTransactions } from '../../data/mockData';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 import EmailIcon from '@mui/icons-material/Email';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import TrafficIcon from '@mui/icons-material/Traffic';
-import Header from '~/chartComp/Header';
-import LineChart from '~/chartComp/LineChart';
+import Header from '../../chartComp/Header';
+import LineChart from '../../chartComp/LineChart';
 // import GeographyChart from '~/chartComp/LineChart';
-import BarChart from '~/chartComp/BarChart';
-import StatBox from '~/chartComp/StatBox';
+import BarChart from '../../chartComp/BarChart';
+import StatBox from '../../chartComp/StatBox';
 // import ProgressCircle from '~/chartComp/ProgressCircle';
-import ProgressCircle from '~/chartComp/ProgressCircle';
+import ProgressCircle from '../../chartComp/ProgressCircle';
 
 const Admin = () => {
     const theme = useTheme();
@@ -45,7 +45,12 @@ const Admin = () => {
             </Box>
 
             {/* GRID & CHARTS */}
-            <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gridAutoRows="140px" gap="20px">
+            <Box
+                display="grid"
+                gridTemplateColumns="repeat(12, 1fr)"
+                gridAutoRows="140px"
+                gap="20px"
+            >
                 {/* ROW 1 */}
                 <Box
                     gridColumn="span 3"
@@ -74,7 +79,9 @@ const Admin = () => {
                         subtitle="Sales Obtained"
                         progress="0.50"
                         increase="+21%"
-                        icon={<PointOfSaleIcon sx={{ color: 'var(--primary)', fontSize: '26px' }} />}
+                        icon={
+                            <PointOfSaleIcon sx={{ color: 'var(--primary)', fontSize: '26px' }} />
+                        }
                     />
                 </Box>
                 <Box
@@ -110,18 +117,30 @@ const Admin = () => {
 
                 {/* ROW 2 */}
                 <Box gridColumn="span 8" gridRow="span 2" backgroundColor={colors.primary[400]}>
-                    <Box mt="25px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
+                    <Box
+                        mt="25px"
+                        p="0 30px"
+                        display="flex "
+                        justifyContent="space-between"
+                        alignItems="center"
+                    >
                         <Box>
                             <Typography variant="h5" fontWeight="600" color={colors.grey[100]}>
                                 Revenue Generated
                             </Typography>
-                            <Typography variant="h3" fontWeight="bold" color={colors.greenAccent[500]}>
+                            <Typography
+                                variant="h3"
+                                fontWeight="bold"
+                                color={colors.greenAccent[500]}
+                            >
                                 $59,342.32
                             </Typography>
                         </Box>
                         <Box>
                             <IconButton>
-                                <DownloadOutlinedIcon sx={{ fontSize: '26px', color: colors.greenAccent[500] }} />
+                                <DownloadOutlinedIcon
+                                    sx={{ fontSize: '26px', color: colors.greenAccent[500] }}
+                                />
                             </IconButton>
                         </Box>
                     </Box>
@@ -129,7 +148,12 @@ const Admin = () => {
                         <LineChart isDashboard={true} />
                     </Box>
                 </Box>
-                <Box gridColumn="span 4" gridRow="span 2" backgroundColor={colors.primary[400]} overflow="auto">
+                <Box
+                    gridColumn="span 4"
+                    gridRow="span 2"
+                    backgroundColor={colors.primary[400]}
+                    overflow="auto"
+                >
                     <Box
                         display="flex"
                         justifyContent="space-between"
@@ -152,13 +176,21 @@ const Admin = () => {
                             p="15px"
                         >
                             <Box>
-                                <Typography color={colors.greenAccent[500]} variant="h5" fontWeight="600">
+                                <Typography
+                                    color={colors.greenAccent[500]}
+                                    variant="h5"
+                                    fontWeight="600"
+                                >
                                     {transaction.txId}
                                 </Typography>
                                 <Typography color={colors.grey[100]}>{transaction.user}</Typography>
                             </Box>
                             <Box color={colors.grey[100]}>{transaction.date}</Box>
-                            <Box backgroundColor={colors.greenAccent[500]} p="5px 10px" borderRadius="4px">
+                            <Box
+                                backgroundColor={colors.greenAccent[500]}
+                                p="5px 10px"
+                                borderRadius="4px"
+                            >
                                 ${transaction.cost}
                             </Box>
                         </Box>
@@ -166,13 +198,22 @@ const Admin = () => {
                 </Box>
 
                 {/* ROW 3 */}
-                <Box gridColumn="span 4" gridRow="span 2" backgroundColor={colors.primary[400]} p="30px">
+                <Box
+                    gridColumn="span 4"
+                    gridRow="span 2"
+                    backgroundColor={colors.primary[400]}
+                    p="30px"
+                >
                     <Typography variant="h5" fontWeight="600">
                         Campaign
                     </Typography>
                     <Box display="flex" flexDirection="column" alignItems="center" mt="25px">
                         <ProgressCircle size="125" />
-                        <Typography variant="h5" color={colors.greenAccent[500]} sx={{ mt: '15px' }}>
+                        <Typography
+                            variant="h5"
+                            color={colors.greenAccent[500]}
+                            sx={{ mt: '15px' }}
+                        >
                             $48,352 revenue generated
                         </Typography>
                         <Typography>Includes extra misc expenditures and costs</Typography>

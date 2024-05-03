@@ -69,7 +69,7 @@ export default function Carousel({ images, product, reset = false }) {
                                 style={{ display: index + 1 === slideIndex ? 'flex' : 'none' }}
                             >
                                 <img
-                                    src={`${url}/img/${images[selectedImg - 1]}`}
+                                    src={`${images[selectedImg - 1]}`}
                                     // src={'https://shoesshop-6n6z.onrender.com/imgs/' + images[selectedImg - 1]}
                                     alt=""
                                 />
@@ -94,7 +94,7 @@ export default function Carousel({ images, product, reset = false }) {
                                 onClick={() => checkSlideShow(index)}
                             >
                                 <img
-                                    src={`${url}/img/${img}`}
+                                    src={`${img}`}
                                     // src={'https://shoesshop-6n6z.onrender.com/imgs/' + img}
                                     alt=""
                                 />

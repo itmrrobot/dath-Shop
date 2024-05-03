@@ -15,7 +15,7 @@ function UserReturn() {
     const state = useContext(UseContextUser);
     const [response, setResponse] = useState();
     const [pagCurr, setPagCurr] = useState(0);
-    const pagName = ['All', 'Confirmating', 'Picking up', 'Received', 'Refund', 'Returned'];
+    const pagName = ['All', 'Confirmating', 'Pick up', 'Received', 'Refund', 'Returned', 'Cancel'];
 
     useEffect(() => {
         axios.get(`${url}/list/returns/${state?.cuser?.value?.id}`).then((res) => {
@@ -34,6 +34,8 @@ function UserReturn() {
                 returnOrder = returnOrder.filter((i) => i.status === 4);
             } else if (pagCurr === 5) {
                 returnOrder = returnOrder.filter((i) => i.status === 5);
+            } else if (pagCurr === 6) {
+                returnOrder = returnOrder.filter((i) => i.status === 6);
             }
             // setOrders(orderUser);
             setResponse(returnOrder);
@@ -112,6 +114,7 @@ function Return({ response, userID }) {
                                         {res.status === 3 && <p>Returning</p>}
                                         {res.status === 4 && <p>Refund</p>}
                                         {res.status === 5 && <p>Returned</p>}
+                                        {res.status === 6 && <p>Cancel</p>}
                                     </div>
                                 </li>
                                 <li>
@@ -153,6 +156,7 @@ function Return({ response, userID }) {
                                     <p>Refund sent within a week after we get the items</p>
                                 )}
                                 {res.status === 5 && <p>Completed</p>}
+                                {res.status === 6 && <p>Cancelation</p>}
                             </div>
                             <Order_Item product={res?.Orders[0]?.OrderDetails}></Order_Item>
                             {/* <div className={cx('received')}>
@@ -219,7 +223,7 @@ function Order_Item({ product }) {
                     <div className={cx('product')}>
                         <div className={cx('product-img')}>
                             <div className={cx('product-img-wrapper')}>
-                                <img src={`${url}/img/${imgs[0]}`} />
+                                <img src={`${imgs[0]}`} />
                             </div>
                         </div>
                         <div className={cx('cart-item-infor')}>

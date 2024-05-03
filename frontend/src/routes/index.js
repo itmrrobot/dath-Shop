@@ -11,7 +11,6 @@ import Products from '../components/Products';
 import Profile from '../components/Profile';
 import PurchaseOrder from '../components/PurchaseOrder';
 import Register from '../components/Register';
-import AddNewProduct from '../pages/AddNewProduct';
 import Home from '../pages/Home';
 
 export const publicAccountRoutes = [

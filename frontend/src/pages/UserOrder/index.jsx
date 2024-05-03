@@ -185,13 +185,10 @@ function Orders({ orders, userID }) {
                                                 primary
                                                 onClick={() => {
                                                     axios
-                                                        .patch(
-                                                            `http://localhost:3000/orders/${order?.id}`,
-                                                            {
-                                                                payed: 1,
-                                                                status: 3,
-                                                            },
-                                                        )
+                                                        .put(`${url}/order/update/${order?.id}`, {
+                                                            payed: 1,
+                                                            status: 3,
+                                                        })
                                                         .then((res) => {
                                                             console.log(res);
                                                             // setCheckChange((prev) => !prev);
@@ -289,7 +286,7 @@ function Order_Item({ product }) {
                     <div className={cx('product')}>
                         <div className={cx('product-img')}>
                             <div className={cx('product-img-wrapper')}>
-                                <img src={`${url}/img/${imgs[0]}`} />
+                                <img src={`${imgs[0]}`} />
                             </div>
                         </div>
                         <div className={cx('cart-item-infor')}>

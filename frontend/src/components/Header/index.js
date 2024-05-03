@@ -89,74 +89,6 @@ function Header() {
                 </Link>
                 <div className={cx('search')}>
                     <Search />
-                    {/* <HeadlessTippy
-            // Cho phep duoc active thanh phan trong Tippy
-            interactive
-            //
-            appendTo={() => document.body}
-            //
-            visible={showResults && searchResult.length > 0}
-            // visible
-            // trigger="click"
-            // placement="bottom-end"
-            // Attribute cho phep render ra popup voi dieu kien la
-            // visible
-            render={(attrs) => {
-                return (
-                    <div className={cx('search-result')} tabIndex="-1" {...attrs}>
-                        <PopperWrapper overflow>
-                            <p className={cx('title-search-result')}>Gợi ý sản phẩm</p>
-                            {searchResult.map((result) => (
-                                <Link key={result.id} to={'/product/' + result.id} onClick={() => handleClear()}>
-                                    <div className={cx('wrapper-result')}>
-                                        <img className={cx('search-icon')} src={images.search} alt="search-btn" />
-                                        <p className={cx('product')}>{result.ten_san_pham}</p>
-                                    </div>
-                                </Link>
-                            ))}
-                        </PopperWrapper>
-                    </div>
-                );
-            }}
-            onClickOutside={handleHideResult}
-        >
-            <div className={cx('search')}>
-                <button className={cx('search-btn')}>
-                    <img className={cx('search-logo')} src={images.search} alt="search" />
-                </button>
-
-                <input
-                    ref={inputRef}
-                    value={searchValue}
-                    onChange={(e) => {
-                        e.target.value = e.target.value.trimStart();
-                        setSearchValue(e.target.value);
-                    }}
-                    
-                    placeholder="Search for an Item..."
-                    onFocus={() => setShowResults(true)}
-                />
-                {!!searchValue && (
-                    <button className={cx('clear')} onClick={handleClear}>
-                        Cài đặt thư viện fontawesome 
-                            Với mỗi icon sẽ bao gồm chuẩn fa+tên icon
-                       
-                        <FontAwesomeIcon icon={faCircleXmark} />
-                    </button>
-                )}
-                {loading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />}
-            </div>
-        </HeadlessTippy> */}
-                    {/* <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 17 17" fill="none">
-                        <path d="M7.83333 13.1667C10.7789 13.1667 13.1667 10.7789 13.1667 7.83333C13.1667 4.88781 10.7789 2.5 7.83333 2.5C4.88781 2.5 2.5 4.88781 2.5 7.83333C2.5 10.7789 4.88781 13.1667 7.83333 13.1667Z" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M14.5 14.5L11.6 11.6" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <input type="text" className={cx("input")} placeholder="Search for an item..." onKeyDown={handleSearch} onChange={(e) => {
-                        e.target.value = e.target.value.trimStart();
-                        setSearchValue(e.target.value);
-                    }}
-                    onFocus={() => setShowResults(true)}
-                    /> */}
                 </div>
                 <div className={cx('navbar-nav')}>
                     <Tippy delay={[0, 50]} content="Visit Shop!" placement="bottom">
@@ -169,7 +101,7 @@ function Header() {
                                 >
                                     Store
                                 </Button> */}
-                        <Link className={cx('nav-link')} to="/products?page=1&limit=15">
+                        <Link className={cx('nav-link')} to="/products?page=1&limit=9">
                             Store
                         </Link>
                     </Tippy>
