@@ -17,6 +17,7 @@ import AvatarAuto from '../AvatarAuto';
 import { expectedDate } from '../../utils';
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { AiOutlineStar } from 'react-icons/ai';
+import SliderImageReponsive from '../SliderImageReponsive';
 const cx = classNames.bind(styles);
 
 function Product() {
@@ -30,8 +31,9 @@ function Product() {
     // console.log(image);
     const [quantity_Order, setQuantity_Order] = useState(1);
     const [reviews, setReviews] = useState([]);
-    console.log(reviews);
-    // console.log(product);
+
+    console.log(product);
+    console.log(image[0]);
     const tabs = ['Description', 'Reviews'];
     const state = useContext(UseContextUser);
     const benefits = [
@@ -83,13 +85,6 @@ function Product() {
                 setReviews(reviews.data.reviews);
                 setProduct(respone.data);
                 setSize(respone.data.Inventories);
-                // console.log(respone.data);
-                // setImage(respone?.data?.hinh_anh);
-                // const cleanedString = respone?.data?.hinh_anh.slice(1, -1);
-                // // Tách chuỗi thành mảng sử dụng dấu phẩy làm dấu phân cách
-                // const arrayWithoutQuotes = cleanedString.split(',');
-                // // Xóa dấu ngoặc kép và khoảng trắng ở đầu và cuối mỗi phần tử trong mảng
-                // const finalArray = arrayWithoutQuotes.map(item => item.replace(/"/g, '').trim());
                 setImage(respone?.data?.img);
             } catch (e) {
                 console.log(e);
@@ -126,11 +121,10 @@ function Product() {
                         nameProduct: product?.name,
                         priceProduct: product?.discount_price,
                         size: sizeToString,
-                        img: `${url}/img/${image[0]}`,
+                        img: `${image[0]}`,
                     };
                     // console.log(data);
                     const response = await axios.post(url + '/cart/create', data);
-                    console.log(response);
                     state?.render?.setRender((prev) => !prev);
                 } catch (e) {
                     console.log(e);
@@ -145,11 +139,10 @@ function Product() {
                     nameProduct: product?.name,
                     priceProduct: product?.discount_price,
                     size: sizeToString,
-                    img: `${url}/img/${image[0]}`,
+                    img: `${image[0]}`,
                 };
                 // console.log(data);
                 const response = await axios.post(url + '/cart/create', data);
-                console.log(response);
                 state?.render?.setRender((prev) => !prev);
             } catch (e) {
                 console.log(e);
@@ -172,7 +165,11 @@ function Product() {
                             </li>
                             <span> &#62; </span>
                             <li>
-                                <Link to="#">{product?.type}</Link>
+                                <Link to="#">{product?.Brand?.brand_name}</Link>
+                            </li>
+                            <span> &#62; </span>
+                            <li>
+                                <Link to="#">{product?.Category?.category_name}</Link>
                             </li>
                             <span> &#62; </span>
                             <li>
@@ -205,16 +202,16 @@ function Product() {
                                             <img src={images.reviews} alt="" />
                                             <span>{reviews.length} Reviews</span>
                                         </div>
-                                        <div className={cx('heart')}>
+                                        {/* <div className={cx('heart')}>
                                             <img src={images.heart} alt="" />
                                             <span>109</span>
-                                        </div>
+                                        </div> */}
                                     </div>
-                                    <div className={cx('ratio-wrapper')}>
+                                    {/* <div className={cx('ratio-wrapper')}>
                                         <p>
                                             <span>93%</span> of buyers have recommended this
                                         </p>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -375,7 +372,7 @@ function Product() {
                             <>
                                 <div id="desc" className={cx('infor-container-description')}>
                                     <h1>Product Description</h1>
-                                    <p>{product.description}</p>
+                                    <p>{product.detail_description}</p>
                                 </div>
                                 <div className={cx('infor-container-description')}>
                                     <h1>Benefits</h1>
@@ -408,8 +405,6 @@ function Product() {
                                             );
                                         })}
                                     </ul>
-
-                                    {/* <p>{product.description}</p> */}
                                 </div>
                             </>
                         ) : (
@@ -483,12 +478,20 @@ function Review({ reviews }) {
                                 {expectedDate(review.createdAt)}
                             </p>
                             <AverageStar stars={review.rating} />
+                            <div className={cx('review-performace')}>
+                                {/* <SliderImageReponsive
+                                    images={review?.img}
+                                ></SliderImageReponsive> */}
+                            </div>
                             <div className={cx('review-infor')}>
                                 <AvatarAuto nameU={review?.User?.fullname} />
                                 <p>{review?.User?.fullname}</p>
                             </div>
-                            {/* <div className={}></div> */}
-                            {/* <p className={cx('review-size')}>Size: {review.product.size}</p> */}
+                            <SliderImageReponsive
+                                reviews
+                                images={review?.img}
+                                video={review?.video}
+                            ></SliderImageReponsive>
                             <p className={cx('review-comment')}>{review.content}</p>
                         </div>
                     );

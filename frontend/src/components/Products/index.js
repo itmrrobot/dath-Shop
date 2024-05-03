@@ -19,7 +19,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { UseContextUser } from '../../hooks/useContextUser';
 import { toast } from 'react-toastify';
-
+import ReactPaginate from 'react-paginate';
+import './pagination.css';
 const cx = classNames.bind(styles);
 
 function Products() {
@@ -28,6 +29,8 @@ function Products() {
     // const [isLoading, dispatch] = useContext(StoreContext);
     const [selected, setSelected] = useState('All');
     const [productsPerPage, setProductPerPage] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState();
     const [wishlist, setWishlist] = useState([]);
     const [display, setDisplay] = useState(false);
     const searchParams = new URLSearchParams(location.search);
@@ -48,10 +51,14 @@ function Products() {
     // const price_lte = searchParams.get('price_lte');
     // const filter = searchParams.get('_order');
     // const sort = searchParams.get('_sort');
+    const numPages = (n) => {
+        const arrPage = Math.ceil(+n / 9);
+        return arrPage;
+    };
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:4000/products`, {
+                const response = await axios.get(`${url}/products`, {
                     params: {
                         page: page,
                         limit: limit,
@@ -66,9 +73,8 @@ function Products() {
                 });
                 // console.log('re-render');
                 // response.headers('X-Total-Count', )
-                // const xTotalCount = response.headers['x-total-count'];
-                // console.log(response);
-                // setTotalPages(numPages(Number(+xTotalCount)));
+                const xTotalCount = response.headers['x-total-count'];
+                setTotalPages(numPages(Number(+xTotalCount)));
                 setProductPerPage(response.data.products);
                 setDisplay(false);
                 {
@@ -88,7 +94,7 @@ function Products() {
     const handleDropItem = (select, path = '') => {
         if (selected !== select) {
             setSelected(select);
-            var redirectToURL = `/products?page=1&limit=15`;
+            var redirectToURL = `/products?page=1&limit=9`;
             if (type) {
                 redirectToURL += `&type=${type}`;
             }
@@ -99,7 +105,7 @@ function Products() {
                 redirectToURL += `&categoryId=${categoryId}`;
             }
             if (price_gte && price_lte) {
-                redirectToURL += `&&price_gte=${price_gte}&price_lte=${price_lte}`;
+                redirectToURL += `&price_gte=${price_gte}&price_lte=${price_lte}`;
             }
 
             if (path === '') {
@@ -152,6 +158,13 @@ function Products() {
         };
         fetchData();
     };
+    const handlePageClick = (e) => {
+        setCurrentPage(+e.selected + 1);
+        searchParams.set('page', +e.selected + 1);
+        searchParams.set('limit', '9');
+        navigate(`/products?${searchParams.toString()}`);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
     return (
         <div className={cx('wrap')}>
             <div className={cx('quantity-filter-wrapper')}>
@@ -202,6 +215,7 @@ function Products() {
                     <div className={cx('products-list')}>
                         {productsPerPage?.map((product, index) => {
                             let imgs = product?.img;
+                            console.log(imgs);
                             // console.log(product.id);
                             return (
                                 product !== null && (
@@ -213,12 +227,12 @@ function Products() {
                                             <div className={cx('product-img')}>
                                                 <div className={cx('product-img-wrapper')}>
                                                     <img
-                                                        src={`${url}/img/${imgs[0]}`}
+                                                        src={`${imgs[0]}`}
                                                         alt="product"
                                                         className={cx('img')}
                                                     />
                                                     <img
-                                                        src={`${url}/img/${imgs[1]}`}
+                                                        src={`${imgs[1]}`}
                                                         alt="rear product image"
                                                         className={cx('rear-img')}
                                                     />
@@ -277,6 +291,28 @@ function Products() {
                         })}
                     </div>
                 </div>
+            </div>
+            <div className={cx('pagination')}>
+                {/* {console.log('Hello')} */}
+                <ReactPaginate
+                    breakLabel="..."
+                    nextLabel=">"
+                    onPageChange={handlePageClick}
+                    // pageRangeDisplayed={10}
+                    pageCount={totalPages}
+                    previousLabel="<"
+                    renderOnZeroPageCount={null}
+                    pageClassName={cx('page-item')}
+                    pageLinkClassName="page-link"
+                    previousClassName="page-item"
+                    previousLinkClassName="page-link"
+                    nextClassName="page-item"
+                    nextLinkClassName="page-link"
+                    breakClassName="page-item"
+                    breakLinkClassName="page-link"
+                    containerClassName="pagination"
+                    activeClassName="active"
+                />
             </div>
         </div>
     );

@@ -216,6 +216,7 @@ function Cart() {
                     </div>
                     <div className={cx('product')}>
                         {product?.map((item, i) => {
+                            console.log(item);
                             return <Product_Item item={item} key={i} index={i}></Product_Item>;
                         })}
                     </div>

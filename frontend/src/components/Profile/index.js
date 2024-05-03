@@ -64,6 +64,7 @@ const Profile = () => {
         address: watch('address', defaultValues.address),
         // Lấy giá trị của các trường input khác và gán vào đây
     };
+    console.log(currentValues);
     useEffect(() => {
         const isDirty = Object.keys(dirtyFields).some(
             (fieldName) => currentValues[fieldName] !== defaultValues[fieldName],
