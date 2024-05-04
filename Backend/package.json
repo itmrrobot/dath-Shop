@@ -16,11 +16,13 @@
     "cloudinary": "^2.0.3",
     "config": "^3.3.9",
     "cors": "^2.8.5",
+    "csv-writer": "^1.6.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-session": "^1.18.0",
     "googleapis": "^134.0.0",
     "jade": "^1.11.0",
+    "joi": "^17.13.1",
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.29.4",
     "multer": "^1.4.5-lts.1",
@@ -36,7 +38,8 @@
     "qs": "^6.11.2",
     "sequelize": "^6.33.0",
     "sequelize-cli": "^6.6.1",
-    "sha256": "^0.2.0"
+    "sha256": "^0.2.0",
+    "synaptic": "^1.1.4"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

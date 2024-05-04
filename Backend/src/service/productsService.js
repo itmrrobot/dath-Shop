@@ -3,7 +3,6 @@ const {
   Category,
   Inventory,
   Brand,
-  ProductInventory,
 } = require("../models/index");
 const Sequelize = require("sequelize");
 const cloudinary = require("../common/cloudinary-config");
@@ -156,9 +155,7 @@ const createNewProduct = async (data, files) => {
   //   brand_name: data.brand_name,
   // });
   //data.import_quantity = Number(data.import_quantity)
-  console.log(data);
   const newProduct = await Product.create({ ...data });
-  console.log(newProduct);
   if (listInventory?.length !== 0) {
     for (const list of array) {
       await Inventory.create({
@@ -226,7 +223,6 @@ const deleteProduct = async (id) => {
   if (!product) {
     return null;
   }
-  //const httpsExist = product?.img.every((url) => url.startsWith("https://"));
   const publicIds = product?.img.map((url) => {
     const id = getPublicIdFromUrl(url);
     return id;
