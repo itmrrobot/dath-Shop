@@ -39,7 +39,7 @@ function Products() {
     const price_gte = searchParams.get('price_gte');
     const price_lte = searchParams.get('price_lte');
     const type = searchParams.get('type');
-    const brand = searchParams.get('brand');
+    const brandId = searchParams.get('brandId');
     const filter = searchParams.get('order');
     const categoryId = searchParams.get('categoryId');
     const sort = searchParams.get('sort');
@@ -61,7 +61,7 @@ function Products() {
                     params: {
                         page: page,
                         limit: limit,
-                        // brand_id: brand,
+                        brandId: brandId,
                         // type: type,
                         price_gte: price_gte,
                         price_lte: price_lte,
@@ -89,7 +89,7 @@ function Products() {
         setTimeout(async () => {
             await fetchData();
         }, 0);
-    }, [page, price_gte, price_lte, filter, categoryId]);
+    }, [page, price_gte, price_lte, filter, categoryId, brandId]);
 
     const handleDropItem = (select, path = '') => {
         if (selected !== select) {
@@ -98,8 +98,8 @@ function Products() {
             if (type) {
                 redirectToURL += `&type=${type}`;
             }
-            if (brand) {
-                redirectToURL += `&brand=${brand}`;
+            if (brandId) {
+                redirectToURL += `&brandId=${brandId}`;
             }
             if (categoryId) {
                 redirectToURL += `&categoryId=${categoryId}`;
@@ -114,6 +114,7 @@ function Products() {
                 navigate(redirectToURL + `&sort=price&order=${path}`);
             }
         }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setDisplay(false);
     };
     const handleRemoveWishList = (id) => {

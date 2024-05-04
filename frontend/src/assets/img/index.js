@@ -26,6 +26,10 @@ const images = {
     eye: require('./eye.svg').default,
     eye_slash: require('./eye_slash.svg').default,
     heart_wishlist: require('./heart_wishlist.svg').default,
+    youtube: require('./youtube.svg').default,
+    facebook: require('./facebook.svg').default,
+    instagram: require('./instagram.svg').default,
+
     // thumbnail2: require('./thumbnail_2.png'),
 };
 
