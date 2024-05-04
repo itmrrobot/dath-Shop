@@ -36,8 +36,6 @@ function Cart() {
     const setAddressToParent = (data) => {
         setAddress(data);
     };
-    const phoneRegExp =
-        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
     const schema = yup
         .object()
         .shape({
@@ -79,7 +77,6 @@ function Cart() {
         };
         let prodTicked = state?.cart?.value?.filter((prod) => prod.isChecked === true);
         let dataDelete = JSON.stringify(prodTicked.map((prod) => prod.id));
-        console.log(dataPost);
         try {
             await axios.post(`${url}/order/create`, dataPost);
             await axios.post(`${url}/cart/delete/product/${state?.cuser?.value?.id}`, {
@@ -101,12 +98,6 @@ function Cart() {
             console.log(error);
         }
     };
-    const totalProduct = useMemo(() => {
-        return product.reduce((acc, cur) => {
-            // console.log(cur.quantity);
-            return acc + Number(cur?.quantity);
-        }, 0);
-    }, [product]);
     const subtotal = useMemo(() => {
         let check = state?.cart?.value?.filter((prod) => {
             // console.log(prod);
@@ -120,17 +111,21 @@ function Cart() {
     }, [product, state?.cart?.value]);
     // console.log(subtotal);
     const tax = useMemo(() => {
-        return (subtotal * 6.5) / 100;
+        let productArr = state?.cart?.value.filter((prod) => prod.isChecked === true);
+        let result_tax = productArr.reduce((current, value) => {
+            return current + value.priceProduct * 0.065;
+        }, 0);
+        return result_tax;
         // return total;
     }, [product, subtotal]);
     const totalSum = useMemo(() => {
-        return subtotal + tax - ((subtotal + tax) * 20) / 100;
+        return subtotal + tax;
     }, [product, subtotal]);
     useEffect(() => {
         let product_id = state.cart.value.map((i) => i.id_product);
         const fetchProducts = async () => {
             try {
-                const baseUrl = 'http://localhost:4000/products';
+                const baseUrl = `${url}/products`;
                 const requests = product_id?.map((id) => axios.get(`${baseUrl}/${id}`));
                 const responses = await Promise.all(requests);
                 const products = responses.map((response) => response.data);
@@ -160,28 +155,31 @@ function Cart() {
         state?.cart?.setCart(newCart);
     };
     const handleRemoveProdTicked = () => {
+        console.log('Hello');
         let prodTicked = state?.cart?.value?.filter((prod) => prod.isChecked === true);
-        let dataDelete = JSON.stringify(prodTicked.map((prod) => prod.id));
-        axios
-            .post(`${url}/cart/delete/product/${state?.cuser?.value?.id}`, {
-                listIds: dataDelete,
-            })
-            .then((res) => {
-                toast.success(`${res.data.msg}!`, {
-                    position: 'top-right',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: 'light',
+        if (prodTicked.length > 0) {
+            let dataDelete = JSON.stringify(prodTicked.map((prod) => prod.id));
+            axios
+                .post(`${url}/cart/delete/product/${state?.cuser?.value?.id}`, {
+                    listIds: dataDelete,
+                })
+                .then((res) => {
+                    toast.success(`${res.data.msg}!`, {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'light',
+                    });
+                    state?.render?.setRender((prev) => !prev);
+                })
+                .catch((error) => {
+                    console.log(error);
                 });
-                state?.render?.setRender((prev) => !prev);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        }
     };
     return (
         <>
@@ -235,10 +233,6 @@ function Cart() {
                             <p className={cx('price')}>{formatPrice(tax)}</p>
                         </div>
                         <div className={cx('payment-display')}>
-                            <p className={cx('label')}>Voucher</p>
-                            <p className={cx('discount-price')}>-20%</p>
-                        </div>
-                        <div className={cx('payment-display')}>
                             <p className={cx('label')}>Shipping Fee</p>
                             <p className={cx('discount-price')}>Free</p>
                         </div>
@@ -270,17 +264,12 @@ function Cart() {
                                 Checkout
                             </Button>
                         ) : (
-                            <Button
-                                // className={cx('btn_payment')}
-                                // onClick={() => handleShow()}
-                                payment
-                                disabled
-                            >
+                            <Button payment disabled>
                                 Checkout
                             </Button>
                         )}
 
-                        <Link to={`/product?_page=1&_limit=9`}>
+                        <Link to={`/products?page=1&limit=9`}>
                             <button className={cx('btn_continue_shopping')}>
                                 Continue Shopping
                             </button>
@@ -457,6 +446,17 @@ function Cart() {
                                     <option value="Đà Nẵng">Đà Nẵng</option>
                                     <option value="Quảng Nam">Quảng Nam</option>
                                     <option value="Huế">Huế</option>
+                                    <option value="Hà Nội">Hà Nội</option>
+                                    <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                                    <option value="Hải Phòng">Hải Phòng</option>
+                                    <option value="Cần Thơ">Cần Thơ</option>
+                                    <option value="Đà Lạt">Đà Lạt</option>
+                                    <option value="Nha Trang">Nha Trang</option>
+                                    <option value="Vũng Tàu">Vũng Tàu</option>
+                                    <option value="Phan Thiết">Phan Thiết</option>
+                                    <option value="Đà Nẵng">Đà Nẵng</option>
+                                    <option value="Quy Nhơn">Quy Nhơn</option>
+                                    <option value="Pleiku">Pleiku</option>
                                 </select>
                                 {errors.select && (
                                     <span className={cx('form-message')}>

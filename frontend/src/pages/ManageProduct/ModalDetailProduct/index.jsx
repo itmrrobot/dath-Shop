@@ -183,38 +183,43 @@ function ModalDetailProduct({ show, handleClose, prodID, handleReRender }) {
         const infor = {
             name: data.name,
             BrandId: +data.brand,
-            CategoryId: +data.type,
+            CategoryId: +data.category,
             discount_price: +data.discount_price,
             price: +data.price,
-            description: data.description,
+            detail_description: data.description,
             short_description: data.short_description,
-            listInventory: updateInventory,
             import_quantity: inventory_sum,
-            // BC_color: 'color_4',
         };
-        console.log(infor);
-        // try {
-        //     await delay(2000); // Chờ 2 giây
-        //     const res = await axios.put(`http://localhost:3000/product/${product?.id}`, infor);
-        //     handleReRender();
-        //     setRender((prev) => !prev);
-        //     toast.success('Chỉnh sửa thông tin thành công', {
-        //         // autoClose: 2000,
-        //         theme: 'colored',
-        //         position: 'top-right',
-        //         autoClose: 3000,
-        //     });
-        //     // console.log(res);
-        // } catch (error) {
-        //     console.log(error);
-        //     toast.error('Chỉnh sửa thông tin thất bại', {
-        //         // autoClose: 2000,
-        //         theme: 'colored',
-        //         position: 'top-right',
-        //         autoClose: 3000,
-        //     });
-        // } finally {
-        // }
+
+        const updateInventorys = {
+            listInventory: updateInventory,
+        };
+        // console.log(updateInventorys);
+        try {
+            await delay(2000); // Chờ 2 giây
+            const productUpdate = await axios.put(`${url}/products/update/${product?.id}`, infor);
+            const invetoryUpdate = await axios.put(
+                `${url}/inventory/update/${product?.id}`,
+                updateInventorys,
+            );
+
+            handleReRender();
+            setRender((prev) => !prev);
+            toast.success('Chỉnh sửa thông tin thành công', {
+                // autoClose: 2000,
+                theme: 'colored',
+                position: 'top-right',
+                autoClose: 3000,
+            });
+        } catch (error) {
+            console.log(error);
+            toast.error('Chỉnh sửa thông tin thất bại', {
+                // autoClose: 2000,
+                theme: 'colored',
+                position: 'top-right',
+                autoClose: 3000,
+            });
+        }
         // console.log(infor);
     };
     return (

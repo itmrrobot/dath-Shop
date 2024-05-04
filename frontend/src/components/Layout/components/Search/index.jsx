@@ -17,6 +17,7 @@ function Search() {
     // const [searchResult, setSearchResult] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [searchResult, setSearchResult] = useState([]);
+    console.log(searchResult);
     const [products, setProducts] = useState([]);
     const [showResults, setShowResults] = useState(true);
     const [suggest, setSuggest] = useState([]);
@@ -107,38 +108,47 @@ function Search() {
                                     suggest.map((sug, index) => {
                                         return (
                                             <Tippy delay={[0, 50]} content={sug} placement="bottom">
-                                                {/* <Button
-                                                        text
-                                                        onClick={() => {
-                                                            navigator('/product?_page=1&_limit=9');
-                                                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                                                        }}
-                                                    >
-                                                        Store
-                                                    </Button> */}
-                                                <p className={cx('recommend-content')}>{sug}</p>
+                                                <p
+                                                    className={cx('recommend-content')}
+                                                    onClick={() => {
+                                                        setSearchValue(sug);
+                                                    }}
+                                                >
+                                                    {sug}
+                                                </p>
                                             </Tippy>
                                         );
                                     })}
                             </div>
 
-                            {searchResult.map((result) => (
-                                <Link
-                                    key={result.id}
-                                    to={'/product/' + result.id}
-                                    onClick={() => handleClear()}
-                                >
-                                    {/* <ProductItem data={result} /> */}
-                                    <div className={cx('wrapper')}>
-                                        <img
-                                            className={cx('search-icon')}
-                                            src={images.search}
-                                            alt="search-btn"
-                                        />
-                                        <p className={cx('product')}>{result.name}</p>
-                                    </div>
-                                </Link>
-                            ))}
+                            {searchResult.length > 0 ? (
+                                searchResult.map((result) => (
+                                    <Link
+                                        key={result.id}
+                                        to={'/product/' + result.id}
+                                        onClick={() => handleClear()}
+                                    >
+                                        {/* <ProductItem data={result} /> */}
+                                        <div className={cx('wrapper')}>
+                                            <img
+                                                className={cx('search-icon')}
+                                                src={images.search}
+                                                alt="search-btn"
+                                            />
+                                            <p className={cx('product')}>{result.name}</p>
+                                        </div>
+                                    </Link>
+                                ))
+                            ) : (
+                                <div className={cx('wrapper')}>
+                                    {/* <img
+                                className={cx('search-icon')}
+                                src={images.search}
+                                alt="search-btn"
+                            /> */}
+                                    <p className={cx('product')}>Không tìm thấy sản phẩm nào!</p>
+                                </div>
+                            )}
                         </PopperWrapper>
                     </div>
                 );

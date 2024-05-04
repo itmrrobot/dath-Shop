@@ -29,6 +29,7 @@ import ManageProduct from './pages/ManageProduct';
 import ManageOrder from './pages/ManageOrder';
 import ManageReturn from './pages/ManageReturn';
 import AddProducts from './pages/AddProducts';
+import LoginSignUp from './components/Layout/LoginSignup/LoginSignup';
 
 function App() {
     const [chat, setChat] = useState(false);
@@ -169,169 +170,169 @@ function App() {
                                 />
                             </>
                         )} */}
-                        {state?.cuser?.value?.Role?.id === 1 ||
-                            (state?.cuser?.value?.Role?.id === 3 && (
+                        {(state?.cuser?.value?.Role?.id === 1 ||
+                            state?.cuser?.value?.Role?.id === 3) && (
+                            <>
                                 <>
-                                    <>
-                                        <Route
-                                            path="/user/profile"
-                                            element={
-                                                <DefaultLayout>
-                                                    <LayoutUserInfor
-                                                        path={'User Profile'}
-                                                        title={'Personal Information'}
-                                                        profile={true}
-                                                    >
-                                                        <Profile></Profile>
-                                                    </LayoutUserInfor>
-                                                </DefaultLayout>
-                                            }
-                                        />
-                                        <Route
-                                            path="/user/password"
-                                            element={
-                                                <DefaultLayout>
-                                                    <LayoutUserInfor
-                                                        path={'Password'}
-                                                        title={'Password'}
-                                                        password={true}
-                                                    >
-                                                        <ChangePasswordUser></ChangePasswordUser>
-                                                    </LayoutUserInfor>
-                                                </DefaultLayout>
-                                            }
-                                        />
-                                        <Route
-                                            path="/user/order"
-                                            element={
-                                                <DefaultLayout>
-                                                    <LayoutUserInfor
-                                                        path={'Order'}
-                                                        title={'My Orders'}
-                                                        order={true}
-                                                    >
-                                                        <UserOrder></UserOrder>
-                                                    </LayoutUserInfor>
-                                                </DefaultLayout>
-                                            }
-                                        />
-                                        <Route
-                                            path="/user/wishlist/:id"
-                                            element={
-                                                <DefaultLayout>
-                                                    <LayoutUserInfor
-                                                        path={'Wish List'}
-                                                        title={'Wish List'}
-                                                        wishlist={true}
-                                                    >
-                                                        <WishList></WishList>
-                                                    </LayoutUserInfor>
-                                                </DefaultLayout>
-                                            }
-                                        />
-                                        <Route
-                                            path="/user/order/detail/:id"
-                                            element={
-                                                <DefaultLayout>
-                                                    <LayoutUserInfor
-                                                        path={'My Orders'}
-                                                        title={'My Orders'}
-                                                        order={true}
-                                                    >
-                                                        <DetailOrder></DetailOrder>
-                                                    </LayoutUserInfor>
-                                                </DefaultLayout>
-                                            }
-                                        />
-                                        <Route
-                                            path="/user/order/detail/return/:id"
-                                            element={
-                                                <DefaultLayout>
-                                                    <Return></Return>
-                                                </DefaultLayout>
-                                            }
-                                        />
-                                        <Route
-                                            path="/user/return"
-                                            element={
-                                                <DefaultLayout>
-                                                    <LayoutUserInfor
-                                                        path={'Returns'}
-                                                        title={'Returns'}
-                                                        returnn={true}
-                                                    >
-                                                        <UserReturn></UserReturn>
-                                                    </LayoutUserInfor>
-                                                </DefaultLayout>
-                                            }
-                                        />
-                                        <Route
-                                            path="/user/return/detail/:id"
-                                            element={
-                                                <DefaultLayout>
-                                                    <LayoutUserInfor
-                                                        path={'Returns'}
-                                                        title={'Returns'}
-                                                        returnn={true}
-                                                    >
-                                                        <DetailRefund></DetailRefund>
-                                                    </LayoutUserInfor>
-                                                </DefaultLayout>
-                                            }
-                                        />
-                                    </>
                                     <Route
-                                        path="/admin"
+                                        path="/user/profile"
                                         element={
-                                            <LayoutAdmin>
-                                                <Admin></Admin>
-                                            </LayoutAdmin>
+                                            <DefaultLayout>
+                                                <LayoutUserInfor
+                                                    path={'User Profile'}
+                                                    title={'Personal Information'}
+                                                    profile={true}
+                                                >
+                                                    <Profile></Profile>
+                                                </LayoutUserInfor>
+                                            </DefaultLayout>
                                         }
                                     />
                                     <Route
-                                        path="/admin/account"
+                                        path="/user/password"
                                         element={
-                                            <LayoutAdmin>
-                                                <Team></Team>
-                                            </LayoutAdmin>
+                                            <DefaultLayout>
+                                                <LayoutUserInfor
+                                                    path={'Password'}
+                                                    title={'Password'}
+                                                    password={true}
+                                                >
+                                                    <ChangePasswordUser></ChangePasswordUser>
+                                                </LayoutUserInfor>
+                                            </DefaultLayout>
                                         }
                                     />
                                     <Route
-                                        path="/admin/manageProduct"
+                                        path="/user/order"
                                         element={
-                                            <LayoutAdmin>
-                                                <ManageProduct></ManageProduct>
-                                            </LayoutAdmin>
+                                            <DefaultLayout>
+                                                <LayoutUserInfor
+                                                    path={'Order'}
+                                                    title={'My Orders'}
+                                                    order={true}
+                                                >
+                                                    <UserOrder></UserOrder>
+                                                </LayoutUserInfor>
+                                            </DefaultLayout>
                                         }
                                     />
                                     <Route
-                                        path="/admin/manageOrder"
+                                        path="/user/wishlist/:id"
                                         element={
-                                            <LayoutAdmin>
-                                                <ManageOrder></ManageOrder>
-                                            </LayoutAdmin>
+                                            <DefaultLayout>
+                                                <LayoutUserInfor
+                                                    path={'Wish List'}
+                                                    title={'Wish List'}
+                                                    wishlist={true}
+                                                >
+                                                    <WishList></WishList>
+                                                </LayoutUserInfor>
+                                            </DefaultLayout>
                                         }
                                     />
                                     <Route
-                                        path="/admin/manageReturn"
+                                        path="/user/order/detail/:id"
                                         element={
-                                            <LayoutAdmin>
-                                                <ManageReturn></ManageReturn>
-                                            </LayoutAdmin>
+                                            <DefaultLayout>
+                                                <LayoutUserInfor
+                                                    path={'My Orders'}
+                                                    title={'My Orders'}
+                                                    order={true}
+                                                >
+                                                    <DetailOrder></DetailOrder>
+                                                </LayoutUserInfor>
+                                            </DefaultLayout>
                                         }
                                     />
                                     <Route
-                                        path="/admin/addProduct"
+                                        path="/user/order/detail/return/:id"
                                         element={
-                                            <LayoutAdmin>
-                                                <AddProducts></AddProducts>
-                                            </LayoutAdmin>
+                                            <DefaultLayout>
+                                                <Return></Return>
+                                            </DefaultLayout>
+                                        }
+                                    />
+                                    <Route
+                                        path="/user/return"
+                                        element={
+                                            <DefaultLayout>
+                                                <LayoutUserInfor
+                                                    path={'Returns'}
+                                                    title={'Returns'}
+                                                    returnn={true}
+                                                >
+                                                    <UserReturn></UserReturn>
+                                                </LayoutUserInfor>
+                                            </DefaultLayout>
+                                        }
+                                    />
+                                    <Route
+                                        path="/user/return/detail/:id"
+                                        element={
+                                            <DefaultLayout>
+                                                <LayoutUserInfor
+                                                    path={'Returns'}
+                                                    title={'Returns'}
+                                                    returnn={true}
+                                                >
+                                                    <DetailRefund></DetailRefund>
+                                                </LayoutUserInfor>
+                                            </DefaultLayout>
                                         }
                                     />
                                 </>
-                            ))}
+                                <Route
+                                    path="/admin"
+                                    element={
+                                        <LayoutAdmin>
+                                            <Admin></Admin>
+                                        </LayoutAdmin>
+                                    }
+                                />
+                                <Route
+                                    path="/admin/account"
+                                    element={
+                                        <LayoutAdmin>
+                                            <Team></Team>
+                                        </LayoutAdmin>
+                                    }
+                                />
+                                <Route
+                                    path="/admin/manageProduct"
+                                    element={
+                                        <LayoutAdmin>
+                                            <ManageProduct></ManageProduct>
+                                        </LayoutAdmin>
+                                    }
+                                />
+                                <Route
+                                    path="/admin/manageOrder"
+                                    element={
+                                        <LayoutAdmin>
+                                            <ManageOrder></ManageOrder>
+                                        </LayoutAdmin>
+                                    }
+                                />
+                                <Route
+                                    path="/admin/manageReturn"
+                                    element={
+                                        <LayoutAdmin>
+                                            <ManageReturn></ManageReturn>
+                                        </LayoutAdmin>
+                                    }
+                                />
+                                <Route
+                                    path="/admin/addProduct"
+                                    element={
+                                        <LayoutAdmin>
+                                            <AddProducts></AddProducts>
+                                        </LayoutAdmin>
+                                    }
+                                />
+                            </>
+                        )}
                         {publicAccountRoutes.map((route, index) => {
-                            const Layout = AccountLayout;
+                            const Layout = LoginSignUp;
                             const Page = route.component;
                             return (
                                 <Route

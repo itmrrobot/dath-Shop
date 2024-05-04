@@ -169,11 +169,6 @@ function AddressPicker({ isAddress, setAddressToParent }) {
                         <Button
                             primary
                             onClick={(e) => {
-                                // if (datePicker === '' || datePicker === undefined) {
-                                //     setIsModalOpenFalse(true);
-                                // } else {
-                                //     handleSubmit(onSubmit)(e);
-                                // }
                                 handleSubmit(handleAddAddress)(e);
                             }}
                         >

@@ -10,7 +10,7 @@ import Product from '../components/Product';
 import Products from '../components/Products';
 import Profile from '../components/Profile';
 import PurchaseOrder from '../components/PurchaseOrder';
-import Register from '../components/Register';
+import Register from '../pages/Signup';
 import Home from '../pages/Home';
 
 export const publicAccountRoutes = [

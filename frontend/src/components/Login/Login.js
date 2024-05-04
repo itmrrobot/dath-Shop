@@ -10,6 +10,11 @@ import { validate } from '../../utils';
 // import {UserContext} from "../../hooks/useContextUser"
 import { UserProvider, UseContextUser } from '../../hooks/useContextUser';
 import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import Button from '../Button';
+import images from '../../assets/img';
 const cx = classNames.bind(styles);
 
 function Login() {
@@ -26,48 +31,73 @@ function Login() {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setFormErrors(validate(formValues));
-        try {
-            const response = await axios.post(url + '/auth/login', formValues);
-            const { access_token, refresh_token } = response.data;
-            toast.success(`Chào mừng ${response.data.res.fullname}`, {
-                position: 'top-right',
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: 'light',
-            });
-            // St ore the tokens in localStorage or secure cookie for later use
-            // cookies.set('accessToken', access_token);
-            // cookies.set('refreshToken', refresh_token);
-            // setUser(response.data.res)
-            localStorage.setItem('user', JSON.stringify(response.data.res));
-            localStorage.setItem('accessToken', JSON.stringify(access_token));
-            localStorage.setItem('refreshToken', JSON.stringify(refresh_token));
+    const navigation = useNavigate();
 
-            console.log(response);
-            state.cuser.setCurrentUser(response.data.res);
-            navigate('/');
-            // setIsLogin(true)
-            // if(user?.Role.id===1) {
-            //   navigate('/admin')
-            // }
-            // if(user?.Role.id===3) {
-            //   navigate('/');
-            // }
-            // user?.Role.name==='Admin'?navigate('/admin'): navigate('/')
-        } catch (e) {
-            throw new Error(e);
-        }
+    const [errorDisplay, setErrorDisplay] = useState(false);
+    const [errorMes, setErrorMes] = useState('');
+    const schema = yup
+        .object()
+        .shape({
+            email: yup
+                .string()
+                .required('Bạn cần nhập trường này')
+                .email('Email không hợp lệ')
+                .matches(/@gmail\.com$/, 'Email phải kết thúc bằng @gmail.com'),
+            password: yup.string().required('Bạn cần nhập trường này'),
+        })
+        .required();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        defaultValues: {
+            // userName: '',
+            // email: '',
+            // phoneNumber: '',
+        },
+        resolver: yupResolver(schema),
+    });
+    const handleLogin = (data) => {
+        const dataPost = {
+            ...data,
+        };
+
+        axios
+            .post(url + '/auth/login', dataPost)
+            .then((response) => {
+                const { access_token, refresh_token } = response.data;
+                toast.success(`Chào mừng ${response.data.res.fullname}`, {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'light',
+                });
+                // St ore the tokens in localStorage or secure cookie for later use
+                // cookies.set('accessToken', access_token);
+                // cookies.set('refreshToken', refresh_token);
+                // setUser(response.data.res)
+                localStorage.setItem('user', JSON.stringify(response.data.res));
+                localStorage.setItem('accessToken', JSON.stringify(access_token));
+                localStorage.setItem('refreshToken', JSON.stringify(refresh_token));
+
+                console.log(response);
+                state.cuser.setCurrentUser(response.data.res);
+                navigate('/');
+            })
+            .catch((res) => {
+                console.log(res);
+                if (res.response.status) {
+                    setErrorDisplay(true);
+                    setErrorMes(res.message);
+                } else console.log(res.message);
+                // console.log(res.message);
+            });
     };
-    // const loginwithgoogle = () => {
-    //     window.open('http://localhost:4000/auth/google/callback', '_self');
-    // };
     const getGoogleAuthUrl = () => {
         const url = `https://accounts.google.com/o/oauth2/v2/auth`;
         const query = {
@@ -87,8 +117,8 @@ function Login() {
     };
     const googleOAuth = getGoogleAuthUrl();
     return (
-        <div className={cx('wrap-login')}>
-            <div className={cx('wrapper')}>
+        <div className={cx('wrapper')}>
+            {/* <div className={cx('wrapper')}>
                 <h4 className={cx('logo')}>Luxury</h4>
                 <h1 className={cx('title')}>Sign in</h1>
                 <form className={cx('form')} onSubmit={handleSubmit}>
@@ -210,6 +240,92 @@ function Login() {
                     <Link to="/register" className={cx('link')}>
                         Register here
                     </Link>
+                </div>
+            </div> */}
+            <div className={cx('form')}>
+                <div className={cx('title')}>
+                    <p>Luxury</p>
+                    <p>Sign in</p>
+                </div>
+                <div className={cx('fill-in-form')}>
+                    {/* <div className={cx('error-message')}>
+                        <FontAwesomeIcon icon={faExclamation} />
+                        <h4>Error:</h4>
+                        <span>{errorMes}</span>
+                    </div> */}
+                    {errorDisplay && (
+                        <div className="alert alert-danger" role="alert">
+                            <h4 className="alert-heading">Error: {`${errorMes}`}</h4>
+                            <p>{`Tên tài khoản (email) hoặc là mật khẩu (password) không chính xác`}</p>
+
+                            <p className="mb-0">Vui lòng nhập lại!!</p>
+                        </div>
+                    )}
+
+                    <div className={cx('inputField')}>
+                        <label htmlFor="email" className="form-label">
+                            Tên đăng nhập
+                        </label>
+                        <input
+                            id="email"
+                            name="avatar"
+                            type="email"
+                            className="form-control"
+                            {...register('email')}
+                        />
+                        {errors.email && (
+                            <span className="form-message">{errors.email.message}</span>
+                        )}
+                    </div>
+                    <div className={cx('inputField')}>
+                        <label htmlFor="password" className="form-label">
+                            Mật khẩu
+                        </label>
+                        <input
+                            id="password"
+                            placeholder="mật khẩu"
+                            type="password"
+                            {...register('password')}
+                        />
+                        {errors.password && (
+                            <span className="form-message">{errors.password.message}</span>
+                        )}
+                    </div>
+
+                    <div className={cx('login-forget')}>
+                        <Link to="/forgot">Forgot Password?</Link>
+                    </div>
+                    <Button
+                        onClick={(e) => {
+                            handleSubmit(handleLogin)(e);
+                        }}
+                        primary
+                        rounded
+                    >
+                        Sign in
+                    </Button>
+                </div>
+                <p>or continue with </p>
+                <div className={cx('another-login')}>
+                    <div className={cx('another-login-btn')}>
+                        <Button rounded>
+                            <img src={images.google} alt="yt" />
+                        </Button>
+                        <Button rounded>
+                            <img src={images.google} alt="yt" />
+                        </Button>
+                        <Button rounded>
+                            <img src={images.google} alt="yt" />
+                        </Button>
+                    </div>
+                </div>
+                <div className={cx('register')}>
+                    <p>
+                        Don't have an account yet?{' '}
+                        <span>
+                            <Link to="/register">Register for free</Link>
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>
