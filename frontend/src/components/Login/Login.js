@@ -308,9 +308,11 @@ function Login() {
                 <p>or continue with </p>
                 <div className={cx('another-login')}>
                     <div className={cx('another-login-btn')}>
-                        <Button rounded>
-                            <img src={images.google} alt="yt" />
-                        </Button>
+                        <Link to={googleOAuth}>
+                            <Button rounded>
+                                <img src={images.google} alt="yt" />
+                            </Button>
+                        </Link>
                         <Button rounded>
                             <img src={images.google} alt="yt" />
                         </Button>

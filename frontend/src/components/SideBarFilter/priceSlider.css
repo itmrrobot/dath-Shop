@@ -22,7 +22,7 @@
     width: 18px;
     height: 18px;
     border: 2px solid white;
-    z-index: 2
+    z-index: 2;
 }
 
 #range-slider-yellow .range-slider__thumb[data-active] {
