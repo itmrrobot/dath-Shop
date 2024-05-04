@@ -6,7 +6,7 @@ import { Wrapper as PopperWrapper } from '../../../Popper';
 // import ProductItem from '~/components/AccountItem';
 import images from '../../../../assets/img';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import useDebounce from '../../../../hooks/useDebounce';
 import axios from 'axios';
@@ -21,7 +21,6 @@ function Search() {
     const [products, setProducts] = useState([]);
     const [showResults, setShowResults] = useState(true);
     const [suggest, setSuggest] = useState([]);
-    const [loading, setLoading] = useState(true);
     const debounce = useDebounce(searchValue, 800); // trả về data sau 1 khoảng trễ
     const inputRef = useRef();
     // console.log(products);
@@ -46,17 +45,16 @@ function Search() {
             if (!debounce.trim()) {
                 setSearchResult([]);
                 setSuggest([]);
-                return;
-            }
-            // console.log(product.name);
-            if (product.name !== null) {
+                return 0;
+            } else if (product.name !== null) {
                 let indexItem = product.name.toLowerCase().includes(debounce.toLowerCase());
                 return indexItem;
+            } else {
+                return [];
             }
         });
-
         return productFilter;
-    }, [debounce]);
+    }, [debounce, products]);
 
     // Xu ly hien thi ket qua
     useEffect(() => {
@@ -75,13 +73,7 @@ function Search() {
         };
         fetchData();
         setSearchResult(filterSearch);
-    }, [filterSearch]);
-    // const handleClear = () => {
-    //     setSearchValue('');
-    //     setSearchResult([]);
-
-    //     inputRef.current.focus();
-    // };
+    }, [filterSearch, debounce]);
     const handleHideResult = () => {
         setShowResults(false);
     };
@@ -101,10 +93,13 @@ function Search() {
                 return (
                     <div className={cx('search-result')} tabIndex="-1" {...attrs}>
                         <PopperWrapper overflow>
-                            <p className={cx('title-search-result')}>Gợi ý sản phẩm</p>
+                            {suggest && searchResult.length !== 1 && (
+                                <p className={cx('title-search-result')}>Gợi ý sản phẩm</p>
+                            )}
 
                             <div className={cx('recommendation-child')}>
                                 {suggest &&
+                                    searchResult.length !== 1 &&
                                     suggest.map((sug, index) => {
                                         return (
                                             <Tippy delay={[0, 50]} content={sug} placement="bottom">

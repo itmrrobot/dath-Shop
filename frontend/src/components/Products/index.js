@@ -1,14 +1,12 @@
 import styles from './Products.module.scss';
 import classNames from 'classnames/bind';
-import arrowDown from '../../assets/img/Vector 9.png';
 import SideBarFilter from '../SideBarFilter';
-import Rectangle53 from '../../assets/img/Rectangle53.png';
 import axios from 'axios';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { url } from '../../constants';
 import { Link } from 'react-router-dom';
 import images from '../../assets/img';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faBaseball,
@@ -29,9 +27,8 @@ function Products() {
     // const [isLoading, dispatch] = useContext(StoreContext);
     const [selected, setSelected] = useState('All');
     const [productsPerPage, setProductPerPage] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState();
-    const [wishlist, setWishlist] = useState([]);
     const [display, setDisplay] = useState(false);
     const searchParams = new URLSearchParams(location.search);
     const page = searchParams.get('page');
@@ -44,12 +41,6 @@ function Products() {
     const categoryId = searchParams.get('categoryId');
     const sort = searchParams.get('sort');
     const state = useContext(UseContextUser);
-    // const brand = searchParams.get('brand_id');
-    // const type = searchParams.get('type');
-    // const price_gte = searchParams.get('price_gte');
-    // const price_lte = searchParams.get('price_lte');
-    // const filter = searchParams.get('_order');
-    // const sort = searchParams.get('_sort');
     const numPages = (n) => {
         const arrPage = Math.ceil(+n / 9);
         return arrPage;
@@ -76,9 +67,7 @@ function Products() {
                 setTotalPages(numPages(Number(+xTotalCount)));
                 setProductPerPage(response.data.products);
                 setDisplay(false);
-                {
-                    sort ? setSelected((prev) => prev) : setSelected('All');
-                }
+                sort ? setSelected((prev) => prev) : setSelected('All');
                 // dispatch(actions.setLoading(false));
             } catch (error) {
                 console.error(error);
@@ -89,7 +78,7 @@ function Products() {
         setTimeout(async () => {
             await fetchData();
         }, 0);
-    }, [page, price_gte, price_lte, filter, categoryId, brandId]);
+    }, [page, price_gte, price_lte, filter, categoryId, brandId, limit, sort]);
 
     const handleDropItem = (select, path = '') => {
         if (selected !== select) {
@@ -122,7 +111,7 @@ function Products() {
         // console.log(wishlistObj);
         const fetchData = async () => {
             try {
-                const response = await axios.delete(`${url}/wishlist/delete/${wishlistObj.id}`);
+                await axios.delete(`${url}/wishlist/delete/${wishlistObj.id}`);
                 state?.render?.setRender((prev) => !prev);
             } catch (error) {
                 console.log(error);
@@ -140,7 +129,7 @@ function Products() {
         };
         const fetchData = async () => {
             try {
-                const response = await axios.post(`${url}/wishlist/create`, data);
+                await axios.post(`${url}/wishlist/create`, data);
                 toast.success(`Add product ${payload.name} to wishlist success`, {
                     position: 'top-right',
                     autoClose: 3000,
@@ -176,7 +165,13 @@ function Products() {
             <div className={cx('quantity-filter-wrapper')}>
                 <div className={cx('filter')}>
                     <p>Sort by:</p>
-                    <p className={cx('filter-name')} onClick={() => setDisplay((prev) => !prev)}>
+                    <p
+                        className={cx('filter-name')}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setDisplay((prev) => !prev);
+                        }}
+                    >
                         {selected}
                     </p>
                 </div>
@@ -242,7 +237,7 @@ function Products() {
                                                     />
                                                     <img
                                                         src={`${imgs[1]}`}
-                                                        alt="rear product image"
+                                                        alt="rear_product_image"
                                                         className={cx('rear-img')}
                                                     />
                                                 </div>

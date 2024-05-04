@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import { useContext, useEffect, useState, useMemo } from 'react';
 import { url } from '../../constants';
 import axios from 'axios';
-import { formatPrice, priceDiscount } from '../../common';
+import { formatPrice } from '../../common';
 import images from '../../assets/img';
 import { Link, useNavigate } from 'react-router-dom';
 import { UseContextUser } from '../../hooks/useContextUser';
@@ -25,7 +25,8 @@ function Cart() {
     const [address, setAddress] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [shipment, setShipment] = useState('save');
-    const [city, setCity] = useState('');
+    const [cash, setCash] = useState('COD');
+    const [, setCity] = useState('');
     const [noted, setNoted] = useState('');
     const navigate = useNavigate();
     const handleClose = () => setShowModal(false);
@@ -77,25 +78,43 @@ function Cart() {
         };
         let prodTicked = state?.cart?.value?.filter((prod) => prod.isChecked === true);
         let dataDelete = JSON.stringify(prodTicked.map((prod) => prod.id));
-        try {
-            await axios.post(`${url}/order/create`, dataPost);
-            await axios.post(`${url}/cart/delete/product/${state?.cuser?.value?.id}`, {
-                listIds: dataDelete,
-            });
-            toast.success(`thành công!`, {
-                position: 'top-right',
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: 'light',
-            });
-            state?.render?.setRender((prev) => !prev);
-            handleClose();
-        } catch (error) {
-            console.log(error);
+        if (cash === 'COD') {
+            try {
+                await axios.post(`${url}/order/create`, dataPost);
+                await axios.post(`${url}/cart/delete/product/${state?.cuser?.value?.id}`, {
+                    listIds: dataDelete,
+                });
+                toast.success(`thành công!`, {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'light',
+                });
+                state?.render?.setRender((prev) => !prev);
+                handleClose();
+            } catch (error) {
+                console.log(error);
+            }
+        } else if (cash === 'Vnpay') {
+            try {
+                const res = await axios.post(url + '/create_payment_url', {
+                    amount: shipment === 'save' ? totalSum : totalSum + 50000,
+                    bankCode: 'VNBANK',
+                    language: 'vn',
+                });
+
+                if (res) {
+                    console.log(res.data);
+
+                    window.location.replace(`${res.data}`);
+                }
+            } catch (e) {
+                console.log(e);
+            }
         }
     };
     const subtotal = useMemo(() => {
@@ -108,7 +127,7 @@ function Cart() {
             return cur + acc.quantity * acc.priceProduct;
         }, 0);
         return total;
-    }, [product, state?.cart?.value]);
+    }, [state?.cart?.value]);
     // console.log(subtotal);
     const tax = useMemo(() => {
         let productArr = state?.cart?.value.filter((prod) => prod.isChecked === true);
@@ -117,10 +136,10 @@ function Cart() {
         }, 0);
         return result_tax;
         // return total;
-    }, [product, subtotal]);
+    }, [state?.cart?.value]);
     const totalSum = useMemo(() => {
         return subtotal + tax;
-    }, [product, subtotal]);
+    }, [subtotal, tax]);
     useEffect(() => {
         let product_id = state.cart.value.map((i) => i.id_product);
         const fetchProducts = async () => {
@@ -208,7 +227,7 @@ function Cart() {
                             <p>Select All</p>
                         </div>
                         <div className={cx('remove')} onClick={handleRemoveProdTicked}>
-                            <img src={images.clear} />
+                            <img src={images.clear} alt="" />
                             <p>Delete</p>
                         </div>
                     </div>
@@ -519,8 +538,37 @@ function Cart() {
                         <p className={cx('modal-title')}>Payment Method</p>
                         <ul className={cx('payment-method')}>
                             <li className={cx('method')}>
-                                <input type="radio" id="cod" defaultChecked />
+                                <input
+                                    type="radio"
+                                    id="cod"
+                                    checked={cash === 'COD'}
+                                    onChange={() => {
+                                        setCash('COD');
+                                    }}
+                                />
                                 <label htmlFor="cod">COD (Cash On Delivery)</label>
+                            </li>
+                            <li className={cx('method')}>
+                                <input
+                                    type="radio"
+                                    id="paypal"
+                                    checked={cash === 'Paypal'}
+                                    onChange={() => {
+                                        setCash('Paypal');
+                                    }}
+                                />
+                                <label htmlFor="paypal">Paypal</label>
+                            </li>
+                            <li className={cx('method')}>
+                                <input
+                                    type="radio"
+                                    id="vnpay"
+                                    checked={cash === 'Vnpay'}
+                                    onChange={() => {
+                                        setCash('Vnpay');
+                                    }}
+                                />
+                                <label htmlFor="vnpay">VNPAY</label>
                             </li>
                         </ul>
                         <div className={cx('btn-pay')}>

@@ -1,10 +1,10 @@
 import classNames from 'classnames/bind';
 import styles from './Product.module.scss';
 import { useParams } from 'react-router-dom';
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { url } from '../../constants';
-import { formatPrice, priceDiscount } from '../../common';
+import { formatPrice } from '../../common';
 import { Link } from 'react-router-dom';
 import Carousel from '../Carousel/Carousel_Detail_Product';
 import images from '../../assets/img';
@@ -124,7 +124,7 @@ function Product() {
                         img: `${image[0]}`,
                     };
                     // console.log(data);
-                    const response = await axios.post(url + '/cart/create', data);
+                    await axios.post(url + '/cart/create', data);
                     toast.success(`Add product to cart success`, {
                         position: 'top-right',
                         autoClose: 3000,
@@ -153,7 +153,7 @@ function Product() {
                     img: `${image[0]}`,
                 };
                 // console.log(data);
-                const response = await axios.post(url + '/cart/create', data);
+                await axios.post(url + '/cart/create', data);
                 toast.success(`Add product to cart success`, {
                     position: 'top-right',
                     autoClose: 3000,
@@ -195,9 +195,9 @@ function Product() {
                             </li>
                             <span> &#62; </span>
                             <li>
-                                <a href="#">
+                                <Link to={`/products/${product?.id}`}>
                                     <strong>{product?.name}</strong>
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                         <div className={cx('product-header')}>
@@ -315,7 +315,11 @@ function Product() {
                                     rounded
                                     shopping
                                     leftIcon={
-                                        <img className={cx('shopping-img')} src={images.shopping} />
+                                        <img
+                                            className={cx('shopping-img')}
+                                            src={images.shopping}
+                                            alt=""
+                                        />
                                     }
                                     onClick={handleAddToCart}
                                 >
@@ -327,7 +331,11 @@ function Product() {
                                     rounded
                                     shopping
                                     leftIcon={
-                                        <img className={cx('shopping-img')} src={images.shopping} />
+                                        <img
+                                            className={cx('shopping-img')}
+                                            src={images.shopping}
+                                            alt=""
+                                        />
                                     }
                                     disabled
                                 >
@@ -475,7 +483,11 @@ function Product() {
 
                         <div className={cx('infor-container-description')}>
                             <h1>Also You Like</h1>
-                            <Slider param={param} images={image}></Slider>
+                            <Slider
+                                param={param}
+                                images={image}
+                                nameProduct={product?.name}
+                            ></Slider>
                         </div>
                     </div>
                 </div>
