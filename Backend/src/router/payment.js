@@ -2,6 +2,9 @@ const { config } = require("dotenv");
 const express = require("express");
 const router = express.Router();
 const moment = require("moment");
+const {
+    Order,
+  } = require("../models/index");
 
 router.get('/', function(req, res, next){
     let config = require("config");
@@ -26,8 +29,8 @@ router.get('/refund', function (req, res, next) {
 });
 
 
-router.post('/create_payment_url', function (req, res, next) {
-    
+router.post('/create_payment_url',async function (req, res, next) {
+    let order = req.body?.order;
     process.env.TZ = 'Asia/Ho_Chi_Minh';
     
     let date = new Date();
@@ -79,6 +82,7 @@ router.post('/create_payment_url', function (req, res, next) {
     let signed = hmac.update(Buffer.from(signData, 'utf-8')).digest("hex"); 
     vnp_Params['vnp_SecureHash'] = signed;
     vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
+    const orders = await Order.create({...order});
     res.send(vnpUrl)
 });
 
