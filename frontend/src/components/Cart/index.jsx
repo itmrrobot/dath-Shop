@@ -76,6 +76,7 @@ function Cart() {
             returnDate: futureDate,
             products: productArr,
         };
+        console.log(dataPost);
         let prodTicked = state?.cart?.value?.filter((prod) => prod.isChecked === true);
         let dataDelete = JSON.stringify(prodTicked.map((prod) => prod.id));
         if (cash === 'COD') {
@@ -113,7 +114,6 @@ function Cart() {
 
                 if (res) {
                     console.log(res.data);
-
                     window.location.replace(`${res.data}`);
                 }
             } catch (e) {
