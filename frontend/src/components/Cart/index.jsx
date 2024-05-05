@@ -110,6 +110,7 @@ function Cart() {
                         ...dataPost,
                         payed: 1,
                     },
+                    cartIds: prodTicked.map((prod) => prod.id),
                 });
 
                 if (res) {
