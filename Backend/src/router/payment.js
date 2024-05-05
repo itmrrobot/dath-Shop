@@ -5,6 +5,7 @@ const moment = require("moment");
 const {
     Order,
   } = require("../models/index");
+const cartService = require("../service/cartService");
 
 router.get('/', function(req, res, next){
     let config = require("config");
@@ -31,6 +32,7 @@ router.get('/refund', function (req, res, next) {
 
 router.post('/create_payment_url',async function (req, res, next) {
     let order = req.body?.order;
+    let cardIds = req.body?.cardIds;
     process.env.TZ = 'Asia/Ho_Chi_Minh';
     
     let date = new Date();
@@ -83,6 +85,9 @@ router.post('/create_payment_url',async function (req, res, next) {
     vnp_Params['vnp_SecureHash'] = signed;
     vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
     const orders = await Order.create({...order});
+    cardIds?.forEach(async(id) => {
+        await cartService.deleteCard(id);
+    })
     res.send(vnpUrl)
 });
 
