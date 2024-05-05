@@ -28,7 +28,7 @@ function ManageOrder() {
     const handleShow = () => setShowModal(true);
     const handleOk = async () => {
         axios
-            .patch(`${url}/orders/${order?.id}`, {
+            .put(`${url}/order/update/${order?.id}`, {
                 status: 4,
             })
             .then((res) => {
@@ -320,92 +320,11 @@ function ManageOrder() {
                                         >
                                             Detail
                                         </Button>
-                                        <Button
-                                            primary
-                                            disabled
-                                            manageReturn
-                                            // onClick={() => {
-                                            //     axios
-                                            //         .delete(`http://localhost:3000/orders/${order?.id}`)
-                                            //         .then((res) => {
-                                            //             console.log(res);
-                                            //             setCheckChange((prev) => !prev);
-                                            //             toast.success('Xoá đơn hàng thành công');
-                                            //         })
-                                            //         .catch((err) => {
-                                            //             console.log(err);
-                                            //             toast.error('Xoá đơn hàng thất bại');
-                                            //         });
-                                            // }}
-                                        >
+                                        <Button primary disabled manageReturn>
                                             Cancel
                                         </Button>
                                     </>
                                 )}
-                                {/* {order?.status === 1 || order?.status === 2 ? (
-                                    <Button
-                                        // className={cx('col', 'col-6', 'name', 'btn-hover')}
-                                        // data-label="Remove"
-                                        primary
-                                        managerOrder
-                                        // onClick={() => {
-                                        //     showModalDelete();
-                                        //     setItemId(item?.id);
-                                        // }}
-                                    >
-                                        Accept
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        disabled
-                                        managerOrder
-                                        // onClick={() => {
-                                        //     showModalDelete();
-                                        //     setItemId(item?.id);
-                                        // }}
-                                    >
-                                        Accepted!!!
-                                    </Button>
-                                )}
-                                <Button
-                                    // className={cx('col', 'col-8', 'name', 'btn-hover')}
-                                    // data-label="Modify"
-                                    primary
-                                    managerOrder
-                                    // onClick={() => {
-                                    //     handleShow();
-                                    //     setProdInfor(item);
-                                    // }}
-                                >
-                                    Detail
-                                </Button>
-                                {order?.status === 1 || order?.status === 2 ? (
-                                    <Button
-                                        // className={cx('col', 'col-9', 'name', 'btn-hover')}
-                                        // data-label="Modify"
-                                        primary
-                                        managerOrder
-                                        // onClick={() => {
-                                        //     handleShow();
-                                        //     setProdInfor(item);
-                                        // }}
-                                    >
-                                        Cancel
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        disabled
-                                        managerOrder
-                                        // className={cx('col', 'col-9', 'name', 'btn-hover')}
-
-                                        // onClick={() => {
-                                        //     handleShow();
-                                        //     setProdInfor(item);
-                                        // }}
-                                    >
-                                        Cancel
-                                    </Button>
-                                )} */}
                             </li>
                         );
                     })}

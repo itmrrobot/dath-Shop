@@ -1,5 +1,5 @@
 const images = {
-    // cart: require('./cart.svg').default,
+    cart: require('./cart.svg').default,
     search: require('./search.svg').default,
     thumbnail1: require('./catalogue_vest.png'),
     catalogue_hoodie: require('./catalogue_hoodie.png'),
@@ -29,7 +29,8 @@ const images = {
     youtube: require('./youtube.svg').default,
     facebook: require('./facebook.svg').default,
     instagram: require('./instagram.svg').default,
-
+    facebook_btn: require('./bi_facebook.svg').default,
+    github_btn: require('./icons_github.svg').default,
     // thumbnail2: require('./thumbnail_2.png'),
 };
 

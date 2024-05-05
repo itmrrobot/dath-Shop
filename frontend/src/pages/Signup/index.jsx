@@ -11,10 +11,30 @@ import { toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 import * as yup from 'yup';
 import { url } from '../../constants';
+import images from '../../assets/img';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const cx = classNames.bind(styles);
 function Register() {
     const [checkDuplicate, setCheckDuplicate] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const getGoogleAuthUrl = () => {
+        const url = `https://accounts.google.com/o/oauth2/v2/auth`;
+        const query = {
+            client_id: `529951967259-ndpvd8bdqpa0sacgdr4mviflrv0p63il.apps.googleusercontent.com`,
+            redirect_uri: `http://localhost:4000/auth/google/callback`,
+            response_type: 'code',
+            scope: [
+                'https://www.googleapis.com/auth/userinfo.email',
+                // ' ',
+                'https://www.googleapis.com/auth/userinfo.profile',
+            ].join(' '),
+            prompt: 'consent',
+            access_type: 'offline',
+        };
+        const queryString = new URLSearchParams(query).toString();
+        return `${url}?${queryString}`;
+    };
+    const googleOAuth = getGoogleAuthUrl();
     // const [userName, setUserName] = useState('')
     // Schema là một đối tượng mô tả cấu trúc và quy tắc kiểm tra của dữ liệu
     // 1 Schema có thể bao gồm các phương thức như string(), number(),
@@ -95,15 +115,22 @@ function Register() {
                 }
             })
             .catch((res) => {
-                // console.log();
-                if (res.response.data.keyPattern.email) {
-                    setCheckDuplicate(true);
-                }
+                // console.log(res);
+                setCheckDuplicate((prev) => !prev);
             });
     };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('form')}>
+                <div
+                    className={cx('return-home')}
+                    onClick={() => {
+                        navigate(`/`);
+                    }}
+                >
+                    <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
+                    <p>Return to Home</p>
+                </div>
                 <div className={cx('title')}>
                     <p>Luxury</p>
                     <p>Sign up</p>
@@ -270,6 +297,17 @@ function Register() {
                             />
                         </Button>
                     </div> */}
+                    <Link to={googleOAuth}>
+                        <Button rounded>
+                            <img src={images.google} alt="yt" />
+                        </Button>
+                    </Link>
+                    <Button rounded>
+                        <img src={images.github_btn} alt="yt" />
+                    </Button>
+                    <Button rounded>
+                        <img src={images.facebook_btn} alt="yt" />
+                    </Button>
                 </div>
             </div>
         </div>

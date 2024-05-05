@@ -105,6 +105,10 @@ function Cart() {
                     amount: shipment === 'save' ? totalSum : totalSum + 50000,
                     bankCode: 'VNBANK',
                     language: 'vn',
+                    order: {
+                        ...dataPost,
+                        payed: 1,
+                    },
                 });
 
                 if (res) {
