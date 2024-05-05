@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { url } from '../../constants';
 // import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
@@ -19,21 +20,22 @@ function LoginGoogle() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get('http://localhost:4000/login/success');
-                console.log(response.data.user);
+                const response = await axios.get(`${url}/login/success`);
+                console.log(response);
                 setEmail(response.data.user.email);
                 let payload = {
                     Role: {
                         id: response.data.user.RoleId,
                         name: 'Customer',
                     },
-                    address: '',
+                    address: response.data.user.address,
                     avatar: response.data.user.avatar,
                     email: response.data.user.email,
                     fullname: response.data.user.name,
                     id: response.data.user.id,
                     name: response.data.user.name,
-                    phone: '',
+                    phone: response.data.user.phone,
+                    isGoogle: 1,
                 };
                 localStorage.setItem('user', JSON.stringify(payload));
                 state?.cuser?.setCurrentUser(payload);

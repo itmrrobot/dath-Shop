@@ -5,6 +5,7 @@ import arrowDownIcon from '../../assets/img/Arrow - Down 2.png';
 import userImage from '../../assets/img/image 11.png';
 import { useState, useContext } from 'react';
 import { UseContextUser } from '../../hooks/useContextUser';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -17,6 +18,16 @@ function DropdownAccount() {
         localStorage.setItem('user', null);
         localStorage.setItem('accessToken', null);
         localStorage.setItem('refreshToken', null);
+        toast.success(`Đăng xuất thành công!`, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+        });
         navigator('/login');
         // setIsLogin(false);
     };
@@ -34,7 +45,7 @@ function DropdownAccount() {
                 style={isClickAvatar === true ? { display: 'block' } : { display: 'none' }}
             >
                 <div className={cx('avatar-dropdown-list')}>
-                    {state?.cuser?.value?.Role?.name === 'Admin' && (
+                    {state?.cuser?.value?.Role?.id === 1 && (
                         <Link to="/admin" className={cx('avatar-dropdown-item', 'avatar-link')}>
                             <div className={cx('item-icon')}>
                                 <svg
@@ -49,7 +60,7 @@ function DropdownAccount() {
                             <span className={cx('info-name')}>Quản lý</span>
                         </Link>
                     )}
-                    {state?.cuser?.value?.Role?.name === 'Customer' && (
+                    {state?.cuser?.value?.Role?.id === 3 && (
                         <Link
                             to="/user/profile"
                             className={cx('avatar-dropdown-item', 'avatar-link')}

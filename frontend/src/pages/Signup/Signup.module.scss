@@ -77,11 +77,26 @@
     // margin: 10px 0;
 }
 
-.another-login-btn {
+.another-login {
     display: flex;
     justify-content: space-between;
     margin: 15px 0 32px 0;
     button {
         padding: 12px 50px;
+    }
+}
+
+.return-home {
+    // position: absolute;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    cursor: pointer;
+    p {
+        margin-left: 12px;
+    }
+    &:hover {
+        color: #ab8a37;
+        font-weight: 600;
     }
 }
