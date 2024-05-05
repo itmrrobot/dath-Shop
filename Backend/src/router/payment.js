@@ -32,7 +32,7 @@ router.get('/refund', function (req, res, next) {
 
 router.post('/create_payment_url',async function (req, res, next) {
     let order = req.body?.order;
-    let cardIds = req.body?.cartIds;
+    let cartIds = req.body?.cartIds;
     process.env.TZ = 'Asia/Ho_Chi_Minh';
     
     let date = new Date();
