@@ -138,7 +138,6 @@
     .wrap-price {
         display: flex;
         flex-direction: column;
-        gap: 12px;
         .price {
             color: var(--primary-950, #171212);
             font-size: 18px;
@@ -154,10 +153,9 @@
         }
     }
     .wrap-orders-category {
-        display: flex;
+        display: none;
         flex-direction: column;
         margin-right: 24px;
-        gap: 12px;
         margin-top: 6px;
         .order-number {
             color: var(--grey-grey-600, #4b5563);
