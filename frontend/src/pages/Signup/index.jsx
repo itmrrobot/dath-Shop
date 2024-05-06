@@ -122,15 +122,10 @@ function Register() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('form')}>
-                <div
-                    className={cx('return-home')}
-                    onClick={() => {
-                        navigate(`/`);
-                    }}
-                >
+                <a className={cx('return-home')} href="/">
                     <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
                     <p>Return to Home</p>
-                </div>
+                </a>
                 <div className={cx('title')}>
                     <p>Luxury</p>
                     <p>Sign up</p>

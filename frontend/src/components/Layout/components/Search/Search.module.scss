@@ -28,6 +28,7 @@
 
 .product {
     margin-left: 12px;
+    font-size: 1.4rem;
 }
 
 .search {
@@ -99,9 +100,9 @@
 }
 
 .recommendation-child {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 4 cột với chiều rộng bằng nhau */
-    grid-gap: 10px; /* Khoảng cách giữa các ô */
+    // display: grid;
+    // grid-template-columns: repeat(3, 1fr); /* 4 cột với chiều rộng bằng nhau */
+    // grid-gap: 10px; /* Khoảng cách giữa các ô */
     padding: 0 12px;
     padding-bottom: 12px;
     .recommend-content {
@@ -119,7 +120,7 @@
         border: 2px solid white;
         border-radius: 8px;
         background-color: lighten(#ab8a37, 20%);
-        padding: 2px 4px;
+        padding: 4px;
         &:hover {
             background-color: #ab8a37;
             font-weight: 600;

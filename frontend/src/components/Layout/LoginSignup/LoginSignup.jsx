@@ -7,7 +7,9 @@ function LoginSignUp({ children }) {
         <div className={cx('wrapper')}>
             <div className={cx('left-side')}>{children}</div>
             <div className={cx('right-side')}>
-                {/* <img src={images.logoLogin} alt="Login" /> */}
+                <div className={cx('img-wrapper')}>
+                    <img src={images.logo_login} alt="Login" />
+                </div>
             </div>
             {/* {
 

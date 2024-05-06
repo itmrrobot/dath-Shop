@@ -1,6 +1,5 @@
 import styles from './Login.module.scss';
 import classNames from 'classnames/bind';
-import BrownWhiteAesthetic from '../../assets/img/Brown White Aesthetic Fashion Musllimah Logo 2.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import axios from 'axios';
@@ -121,15 +120,10 @@ function Login() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('form')}>
-                <div
-                    className={cx('return-home')}
-                    onClick={() => {
-                        navigate(`/`);
-                    }}
-                >
+                <a className={cx('return-home')} href="/">
                     <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
                     <p>Return to Home</p>
-                </div>
+                </a>
                 <div className={cx('title')}>
                     <p>Luxury</p>
                     <p>Sign in</p>

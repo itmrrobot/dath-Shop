@@ -17,7 +17,6 @@ function Search() {
     // const [searchResult, setSearchResult] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [searchResult, setSearchResult] = useState([]);
-    console.log(searchResult);
     const [products, setProducts] = useState([]);
     const [showResults, setShowResults] = useState(true);
     const [suggest, setSuggest] = useState([]);
@@ -40,6 +39,9 @@ function Search() {
     }, []);
 
     // Tra ve 1 mang chua nhung product = searchValue
+    const firstFourProducts = useMemo(() => {
+        return suggest.slice(0, 4);
+    }, [suggest]);
     const filterSearch = useMemo(() => {
         const productFilter = products.filter((product) => {
             if (!debounce.trim()) {
@@ -53,7 +55,7 @@ function Search() {
                 return [];
             }
         });
-        return productFilter;
+        return productFilter.slice(0, 5);
     }, [debounce, products]);
 
     // Xu ly hien thi ket qua
@@ -77,6 +79,7 @@ function Search() {
     const handleHideResult = () => {
         setShowResults(false);
     };
+
     return (
         <HeadlessTippy
             // Cho phep duoc active thanh phan trong Tippy
@@ -94,13 +97,13 @@ function Search() {
                     <div className={cx('search-result')} tabIndex="-1" {...attrs}>
                         <PopperWrapper overflow>
                             {suggest && searchResult.length !== 1 && (
-                                <p className={cx('title-search-result')}>Gợi ý sản phẩm</p>
+                                <p className={cx('title-search-result')}>Product Suggestions</p>
                             )}
 
                             <div className={cx('recommendation-child')}>
                                 {suggest &&
                                     searchResult.length !== 1 &&
-                                    suggest.map((sug, index) => {
+                                    firstFourProducts.map((sug, index) => {
                                         return (
                                             <Tippy delay={[0, 50]} content={sug} placement="bottom">
                                                 <p

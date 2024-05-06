@@ -245,21 +245,40 @@ function Products() {
                                             <p className={cx('desc')}>{product.name}</p>
                                             <div className={cx('wrap-all')}>
                                                 <div className={cx('wrap-price')}>
-                                                    <span className={cx('price')}>
-                                                        {product?.discount_price?.toLocaleString(
-                                                            'it-IT',
-                                                            {
-                                                                style: 'currency',
-                                                                currency: 'VND',
-                                                            },
-                                                        )}
-                                                    </span>
-                                                    <span className={cx('unused-price')}>
-                                                        {product?.price?.toLocaleString('it-IT', {
-                                                            style: 'currency',
-                                                            currency: 'VND',
-                                                        })}
-                                                    </span>
+                                                    {product?.discount_price == product?.price ? (
+                                                        <>
+                                                            <span className={cx('price')}>
+                                                                {product?.price?.toLocaleString(
+                                                                    'it-IT',
+                                                                    {
+                                                                        style: 'currency',
+                                                                        currency: 'VND',
+                                                                    },
+                                                                )}
+                                                            </span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <span className={cx('price')}>
+                                                                {product?.discount_price?.toLocaleString(
+                                                                    'it-IT',
+                                                                    {
+                                                                        style: 'currency',
+                                                                        currency: 'VND',
+                                                                    },
+                                                                )}
+                                                            </span>
+                                                            <span className={cx('unused-price')}>
+                                                                {product?.price?.toLocaleString(
+                                                                    'it-IT',
+                                                                    {
+                                                                        style: 'currency',
+                                                                        currency: 'VND',
+                                                                    },
+                                                                )}
+                                                            </span>
+                                                        </>
+                                                    )}
                                                 </div>
                                                 <div className={cx('wrap-orders-category')}>
                                                     <span className={cx('order-number')}>
@@ -271,24 +290,25 @@ function Products() {
                                                 </div>
                                             </div>
                                         </Link>
-                                        {state?.wishlist?.value.some(
-                                            (item) => item.id_product === product.id,
-                                        ) ? (
-                                            <div
-                                                className={cx('loved')}
-                                                onClick={() => handleRemoveWishList(product.id)}
-                                            >
-                                                <img src={images.heart_wishlist} alt="" />
-                                                {/* <p>Có tồn tại</p> */}
-                                            </div>
-                                        ) : (
-                                            <div
-                                                className={cx('loved')}
-                                                onClick={() => handleAddWishList(product)}
-                                            >
-                                                <img src={images.unheart} alt="" />
-                                            </div>
-                                        )}
+                                        {state?.cuser?.value !== '' &&
+                                            (state?.wishlist?.value.some(
+                                                (item) => item.id_product === product.id,
+                                            ) ? (
+                                                <div
+                                                    className={cx('loved')}
+                                                    onClick={() => handleRemoveWishList(product.id)}
+                                                >
+                                                    <img src={images.heart_wishlist} alt="" />
+                                                    {/* <p>Có tồn tại</p> */}
+                                                </div>
+                                            ) : (
+                                                <div
+                                                    className={cx('loved')}
+                                                    onClick={() => handleAddWishList(product)}
+                                                >
+                                                    <img src={images.unheart} alt="" />
+                                                </div>
+                                            ))}
                                     </div>
                                 )
                             );
