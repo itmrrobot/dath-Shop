@@ -5,20 +5,18 @@ const {
   Category,
   OrderDetail,
 } = require("../models/index");
-const { combineArray, mergeEntries } = require("../utils/util");
+const { mergeEntries } = require("../utils/util");
 
 const getOrderList = async (id) => {
   let orders = [];
   orders = await Order.findAll({
     where: { id_user: id },
-    include: [
-      {
-        model: OrderDetail,
-        attributes: {
-          exclude: ["createdAt", "updatedAt", "id_order", "id_user"],
-        },
+    include: {
+      model: OrderDetail,
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "id_order", "id_user"],
       },
-    ],
+    },
     raw: true,
     nest: true,
   });
