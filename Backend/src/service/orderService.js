@@ -22,7 +22,7 @@ const getOrderList = async (id) => {
     raw: true,
     nest: true,
   });
-  return mergeEntries(orders);
+  return (orders);
 };
 
 const getOrderById = async (id) => {
