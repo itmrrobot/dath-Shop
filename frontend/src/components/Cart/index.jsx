@@ -28,6 +28,7 @@ function Cart() {
     const [cash, setCash] = useState('COD');
     const [, setCity] = useState('');
     const [noted, setNoted] = useState('');
+
     const navigate = useNavigate();
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
@@ -53,7 +54,7 @@ function Cart() {
     });
     // console.log(product);
     const handleCreateOrder = async (data) => {
-        let futureDate = moment().add(30, 'days').format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+        let futureDate = moment().add(7, 'days').format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
         let productArr = state?.cart?.value
             .filter((prod) => prod.isChecked === true)
             .map((prod) => {
@@ -137,7 +138,7 @@ function Cart() {
     const tax = useMemo(() => {
         let productArr = state?.cart?.value.filter((prod) => prod.isChecked === true);
         let result_tax = productArr.reduce((current, value) => {
-            return current + value.priceProduct * 0.065;
+            return current + value.priceProduct * 0.065 * value.quantity;
         }, 0);
         return result_tax;
         // return total;
@@ -320,9 +321,9 @@ function Cart() {
                                 <div className={cx('content-delivery-promotion')}>
                                     <p className={cx('delivery-title')}>Return Delivery</p>
                                     <p className={cx('delivery-sub-title')}>
-                                        30 days to return it to us for a refund. We have made
-                                        returns SO EASY - you can now return your order to a store
-                                        or send it with FedEx FOR FREE
+                                        7 days to return it to us for a refund. We have made returns
+                                        SO EASY - you can now return your order to a store or send
+                                        it with FedEx FOR FREE
                                     </p>
                                 </div>
                             </div>
@@ -330,6 +331,7 @@ function Cart() {
                     </div>
                 </div>
             </div>
+
             <ModalComp showModal={showModal} handleClose={handleClose}>
                 <div className={cx('modal-wrapper')}>
                     <div className={cx('left-modal')}>

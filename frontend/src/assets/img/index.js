@@ -1,10 +1,6 @@
 const images = {
     cart: require('./cart.svg').default,
     search: require('./search.svg').default,
-    thumbnail1: require('./catalogue_vest.png'),
-    catalogue_hoodie: require('./catalogue_hoodie.png'),
-    catalogue_thun: require('./catalogue_thun.jpg'),
-    catalogue_family: require('./catalogue_family.jpg'),
     unheart: require('./unheart.svg').default,
     star: require('./star.svg').default,
     reviews: require('./reviews.svg').default,
@@ -23,6 +19,11 @@ const images = {
     bot: require('./Bot.svg').default,
     google: require('./google.svg').default,
     checkmark: require('./checkmark.svg').default,
+    unheart: require('./unheart.svg').default,
+    thumbnail1: require('./thumbnail_1.png'),
+    thumbnail2: require('./thumbnail_2.png'),
+    thumbnail3: require('./thumbnail_3.png'),
+
     eye: require('./eye.svg').default,
     eye_slash: require('./eye_slash.svg').default,
     heart_wishlist: require('./heart_wishlist.svg').default,
@@ -31,6 +32,7 @@ const images = {
     instagram: require('./instagram.svg').default,
     facebook_btn: require('./bi_facebook.svg').default,
     github_btn: require('./icons_github.svg').default,
+    logo_login: require('./Logo_Login.png'),
     // thumbnail2: require('./thumbnail_2.png'),
 };
 

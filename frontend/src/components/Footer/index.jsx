@@ -78,7 +78,7 @@ function Footer() {
                 </div>
             </div>
             <div className={cx('footer-tail')}>
-                <div className={cx('desc')}>CompanyName @ 202X. All rights reserved.</div>
+                <div className={cx('desc')}>© 2024 Luxury’s Closet. All rights reserved</div>
                 <div className={cx('social_media')}>
                     <img src={images.instagram} alt="" />
                     <img src={images.facebook} alt="" />

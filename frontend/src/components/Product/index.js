@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './Product.module.scss';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { url } from '../../constants';
@@ -18,11 +18,14 @@ import { expectedDate } from '../../utils';
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { AiOutlineStar } from 'react-icons/ai';
 import SliderImageReponsive from '../SliderImageReponsive';
+import { Modal } from 'antd';
+
 const cx = classNames.bind(styles);
 
 function Product() {
     const { id } = useParams();
     const param = useParams();
+    const navigator = useNavigate();
     const [product, setProduct] = useState({});
     const [checked, setChecked] = useState();
     const [size, setSize] = useState([]);
@@ -32,8 +35,6 @@ function Product() {
     const [quantity_Order, setQuantity_Order] = useState(1);
     const [reviews, setReviews] = useState([]);
 
-    console.log(product);
-    console.log(image[0]);
     const tabs = ['Description', 'Reviews'];
     const state = useContext(UseContextUser);
     const benefits = [
@@ -52,6 +53,13 @@ function Product() {
         'Colour Shown: Ale Brown/Black/Goldtone/Ale Brown',
         'Style: 805899-202',
     ];
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+    const handleOk = () => {
+        navigator(`/login`);
+    };
     const size_quantity_select = product?.Inventories?.find(
         (obj) => obj?.size === checked,
     )?.quantity;
@@ -97,21 +105,56 @@ function Product() {
     }, [id]);
 
     const handleAddToCart = async () => {
-        let sizeToString = JSON.stringify([checked]);
-        // const wishlistObj = state?.cart?.value.find((item) => item.id_product === id);
-        let indexProd = state?.cart?.value?.findIndex((i) => {
-            return i.id_product + i.size === Number(id) + JSON.stringify([checked]);
-        });
-        if (indexProd !== -1) {
-            if (state?.cart?.value[indexProd].quantity + quantity_Order > size_quantity_select) {
-                toast.info('Sản phẩm này đã vượt quá số lượng cho phép đặt', {
-                    // autoClose: 2000,
-                    theme: 'colored',
-                    position: 'top-right',
-                    autoClose: 3000,
-                });
-                // newCart = [...product_list];
-                // state.cart.setCart(newCart);
+        if (state?.cuser?.value === '') {
+            setIsModalOpen(true);
+        } else {
+            let sizeToString = JSON.stringify([checked]);
+            // const wishlistObj = state?.cart?.value.find((item) => item.id_product === id);
+            let indexProd = state?.cart?.value?.findIndex((i) => {
+                return i.id_product + i.size === Number(id) + JSON.stringify([checked]);
+            });
+            if (indexProd !== -1) {
+                if (
+                    state?.cart?.value[indexProd].quantity + quantity_Order >
+                    size_quantity_select
+                ) {
+                    toast.info('Sản phẩm này đã vượt quá số lượng cho phép đặt', {
+                        // autoClose: 2000,
+                        theme: 'colored',
+                        position: 'top-right',
+                        autoClose: 3000,
+                    });
+                    // newCart = [...product_list];
+                    // state.cart.setCart(newCart);
+                } else {
+                    try {
+                        let data = {
+                            id_user: state?.cuser?.value?.id,
+                            id_product: Number(id),
+                            quantity: quantity_Order,
+                            nameProduct: product?.name,
+                            priceProduct: product?.discount_price,
+                            size: sizeToString,
+                            img: `${image[0]}`,
+                        };
+                        // console.log(data);
+                        await axios.post(url + '/cart/create', data);
+                        toast.success(`Add product to cart success`, {
+                            position: 'top-right',
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            // theme: 'light',
+                            theme: 'colored',
+                        });
+                        state?.render?.setRender((prev) => !prev);
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
             } else {
                 try {
                     let data = {
@@ -141,34 +184,6 @@ function Product() {
                     console.log(e);
                 }
             }
-        } else {
-            try {
-                let data = {
-                    id_user: state?.cuser?.value?.id,
-                    id_product: Number(id),
-                    quantity: quantity_Order,
-                    nameProduct: product?.name,
-                    priceProduct: product?.discount_price,
-                    size: sizeToString,
-                    img: `${image[0]}`,
-                };
-                // console.log(data);
-                await axios.post(url + '/cart/create', data);
-                toast.success(`Add product to cart success`, {
-                    position: 'top-right',
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    // theme: 'light',
-                    theme: 'colored',
-                });
-                state?.render?.setRender((prev) => !prev);
-            } catch (e) {
-                console.log(e);
-            }
         }
     };
     return (
@@ -179,23 +194,24 @@ function Product() {
                     <div className={cx('product-option')}>
                         <ul className={cx('path')}>
                             <li>
-                                <Link to="/">Home</Link>
+                                <Link to="/">Products</Link>
+                            </li>
+
+                            <span> &#62; </span>
+                            <li>
+                                <Link to={`/products?brandId=${product?.Brand?.id}`}>
+                                    {product?.Brand?.brand_name}
+                                </Link>
                             </li>
                             <span> &#62; </span>
                             <li>
-                                <Link to="/products">Products</Link>
+                                <Link to={`/products?categoryId=${product?.Category?.id}`}>
+                                    {product?.Category?.category_name}
+                                </Link>
                             </li>
                             <span> &#62; </span>
                             <li>
-                                <Link to="#">{product?.Brand?.brand_name}</Link>
-                            </li>
-                            <span> &#62; </span>
-                            <li>
-                                <Link to="#">{product?.Category?.category_name}</Link>
-                            </li>
-                            <span> &#62; </span>
-                            <li>
-                                <Link to={`/products/${product?.id}`}>
+                                <Link to={`/product/${product?.id}`}>
                                     <strong>{product?.name}</strong>
                                 </Link>
                             </li>
@@ -209,10 +225,22 @@ function Product() {
                         <div className={cx('product-price-assess')}>
                             <div className={cx('product-price-assess-wrapper')}>
                                 <div className={cx('price-wrapper')}>
-                                    <p className={cx('price')}>
-                                        {formatPrice(product?.discount_price)}
-                                    </p>
-                                    <p className={cx('price-old')}>{formatPrice(product?.price)}</p>
+                                    {product?.discount_price === product?.price ? (
+                                        <>
+                                            <p className={cx('price')}>
+                                                {formatPrice(product?.price)}
+                                            </p>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <p className={cx('price')}>
+                                                {formatPrice(product?.discount_price)}
+                                            </p>
+                                            <p className={cx('price-old')}>
+                                                {formatPrice(product?.price)}
+                                            </p>
+                                        </>
+                                    )}
                                 </div>
                                 <div className={cx('assess-wrapper')}>
                                     <div className={cx('star-reviews')}>
@@ -367,7 +395,7 @@ function Product() {
                                     <div className={cx('content-delivery-promotion')}>
                                         <p className={cx('delivery-title')}>Return Delivery</p>
                                         <p className={cx('delivery-sub-title')}>
-                                            Free 30 days Delivery Return. Details
+                                            Free 7 days Delivery Return
                                         </p>
                                     </div>
                                 </div>
@@ -491,7 +519,9 @@ function Product() {
                         </div>
                     </div>
                 </div>
-                <div className={cx('product-third')}></div>
+                <Modal title="Thông báo" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                    <p>You need to login</p>
+                </Modal>
             </div>
         </>
     );
@@ -506,6 +536,7 @@ function Review({ reviews }) {
             <div className={cx('reviews')}>
                 {reviews.map((review, index) => {
                     console.log(review);
+                    console.log(review?.img === '[]');
                     return (
                         <div className={cx('review')}>
                             <p className={cx('review-date-create')}>
@@ -521,12 +552,21 @@ function Review({ reviews }) {
                                 <AvatarAuto nameU={review?.User?.fullname} />
                                 <p>{review?.User?.fullname}</p>
                             </div>
-                            <SliderImageReponsive
+                            {review.img !== '[]' && (
+                                <SliderImageReponsive
+                                    reviews
+                                    images={review?.img}
+                                    video={review?.video}
+                                ></SliderImageReponsive>
+                            )}
+                            {/* <SliderImageReponsive
                                 reviews
                                 images={review?.img}
                                 video={review?.video}
-                            ></SliderImageReponsive>
-                            <p className={cx('review-comment')}>{review.content}</p>
+                            ></SliderImageReponsive> */}
+                            {review?.content !== '""' && (
+                                <p className={cx('review-comment')}>{review.content}</p>
+                            )}
                         </div>
                     );
                 })}
