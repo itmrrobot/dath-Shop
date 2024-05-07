@@ -67,7 +67,7 @@ const refreshToken = async(data) => {
                 if(err) {return {err:1,msg:"Refresh token has expired. Required login!"}}
                 else {
                     const access_token = jwt.sign({id:res.id,email:res.email,roleId:res.roleId},process.env.JWT_SECRET,{expiresIn:'5d'});
-                    return {err:access_token?0:1,msg:access_token?"OK":"Cannot generate access token",access_token:access_token?`Bearer ${access_token}`:null,refresh_token}
+                    return {err:access_token?0:1,msg:access_token?"OK":"Cannot generate access token",access_token:access_token?`${access_token}`:null,refresh_token}
                 }
             })
             return result;
