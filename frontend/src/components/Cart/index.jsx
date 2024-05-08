@@ -16,6 +16,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import moment from 'moment';
 import * as yup from 'yup';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
 
 function Cart() {
@@ -65,6 +67,7 @@ function Cart() {
                     rating: 0,
                 };
             });
+        console.log(productArr);
         const dataPost = {
             name: address.name,
             address: address.address + ', ' + data.select,
@@ -211,7 +214,7 @@ function Cart() {
             <div className={cx('wrapper')}>
                 <div className={cx('content')}>
                     <div className={cx('header-title')}>
-                        <h1>Cart</h1>
+                        <p>Cart</p>
                         {/* <p className="total-product">
                         ( <span>{totalProduct}</span> Products )
                     </p> */}
@@ -238,10 +241,26 @@ function Cart() {
                         </div>
                     </div>
                     <div className={cx('product')}>
-                        {product?.map((item, i) => {
-                            console.log(item);
-                            return <Product_Item item={item} key={i} index={i}></Product_Item>;
-                        })}
+                        {product?.length > 0 ? (
+                            product?.map((item, i) => {
+                                return <Product_Item item={item} key={i} index={i}></Product_Item>;
+                            })
+                        ) : (
+                            <div className={cx('notification')}>
+                                {/* <h1>Xin chao</h1> */}
+                                <p>Không có sản phẩm nào trong giỏ hàng</p>
+                                <div
+                                    className={cx('return_to_store')}
+                                    onClick={() => {
+                                        navigate('/products?page=1&limit9');
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
+                                    <p className={cx('return')}>Return to Store!</p>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className={cx('payment')}>

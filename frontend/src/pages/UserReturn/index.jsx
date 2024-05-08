@@ -99,95 +99,102 @@ function Return({ response, userID }) {
     // console.log(expectedDate());
     return (
         <>
-            {response?.map((res, i) => {
-                // console.log(order);
-                console.log(res);
-                return (
-                    <div className={cx('order')} key={i}>
-                        <div className={cx('header-bill')}>
-                            <ul className={cx('title-bill')}>
-                                <li>
-                                    <div className={cx('status')}>
-                                        <p className={cx('row-title')}>Status</p>
-                                        {res.status === 1 && <p>Return Confirmation</p>}
-                                        {res.status === 2 && <p>Picking up</p>}
-                                        {res.status === 3 && <p>Returning</p>}
-                                        {res.status === 4 && <p>Refund</p>}
-                                        {res.status === 5 && <p>Returned</p>}
-                                        {res.status === 6 && <p>Cancel</p>}
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className={cx('order-id')}>
-                                        <p className={cx('row-title')}>Return ID</p>
-                                        <p>RT_#2024{res.id}</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className={cx('total')}>
-                                        <p className={cx('row-title')}>Total</p>
-                                        <p>{formatPrice(res?.Orders[0].total)}</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className={cx('detail')}>
-                                        <button onClick={() => handleChangePage(res?.id)}>
-                                            See Detail
-                                        </button>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div className={cx('body-bill')}>
-                            <div className={cx('message-status')}>
-                                {res.status === 1 && (
-                                    <p>Please Waiting Confirmation For Your Return</p>
-                                )}
-                                {res.status === 2 && (
-                                    <p>Drop off the items by {expectedDate(res.date_pickup)}</p>
-                                )}
-                                {res.status === 3 && (
-                                    <p>
-                                        Item was returning to us
-                                        {/* {expectedDate(res.createdAt, res?.shipment)} */}
-                                    </p>
-                                )}
-                                {res.status === 4 && (
-                                    <p>Refund sent within a week after we get the items</p>
-                                )}
-                                {res.status === 5 && <p>Completed</p>}
-                                {res.status === 6 && <p>Cancelation</p>}
+            {response?.length > 0 ? (
+                response?.map((res, i) => {
+                    // console.log(order);
+                    console.log(res);
+                    return (
+                        <div className={cx('order')} key={i}>
+                            <div className={cx('header-bill')}>
+                                <ul className={cx('title-bill')}>
+                                    <li>
+                                        <div className={cx('status')}>
+                                            <p className={cx('row-title')}>Status</p>
+                                            {res.status === 1 && <p>Return Confirmation</p>}
+                                            {res.status === 2 && <p>Picking up</p>}
+                                            {res.status === 3 && <p>Returning</p>}
+                                            {res.status === 4 && <p>Refund</p>}
+                                            {res.status === 5 && <p>Returned</p>}
+                                            {res.status === 6 && <p>Cancel</p>}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div className={cx('order-id')}>
+                                            <p className={cx('row-title')}>Return ID</p>
+                                            <p>RT_#2024{res.id}</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div className={cx('total')}>
+                                            <p className={cx('row-title')}>Total</p>
+                                            <p>{formatPrice(res?.Orders[0].total)}</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div className={cx('detail')}>
+                                            <button onClick={() => handleChangePage(res?.id)}>
+                                                See Detail
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
-                            <Order_Item product={res?.Orders[0]?.OrderDetails}></Order_Item>
-                            {/* <div className={cx('received')}>
-                                {res?.status === 4 && (
-                                    <Button
-                                        primary
-                                        onClick={() => {
-                                            axios
-                                                .patch(`http://localhost:3000/return/${res?.id}`, {
-                                                    isRefund: 1,
-                                                    status: 4,
-                                                })
-                                                .then((res) => {
-                                                    console.log(res);
-                                                    // setCheckChange((prev) => !prev);
-                                                    toast.success(
-                                                        'Đã xác nhận hoàn tiền đẩy đủ. Xin lỗi quý khách về sản phẩm!!',
-                                                    );
-                                                    navigator('/user/return');
-                                                })
-                                                .catch((err) => console.log(err));
-                                        }}
-                                    >
-                                        Have Already Received Refund
-                                    </Button>
-                                )}
-                            </div> */}
+                            <div className={cx('body-bill')}>
+                                <div className={cx('message-status')}>
+                                    {res.status === 1 && (
+                                        <p>Please Waiting Confirmation For Your Return</p>
+                                    )}
+                                    {res.status === 2 && (
+                                        <p>Drop off the items by {expectedDate(res.date_pickup)}</p>
+                                    )}
+                                    {res.status === 3 && (
+                                        <p>
+                                            Item was returning to us
+                                            {/* {expectedDate(res.createdAt, res?.shipment)} */}
+                                        </p>
+                                    )}
+                                    {res.status === 4 && (
+                                        <p>Refund sent within a week after we get the items</p>
+                                    )}
+                                    {res.status === 5 && <p>Completed</p>}
+                                    {res.status === 6 && <p>Cancelation</p>}
+                                </div>
+                                <Order_Item product={res?.Orders[0]?.OrderDetails}></Order_Item>
+                                {/* <div className={cx('received')}>
+                                        {res?.status === 4 && (
+                                            <Button
+                                                primary
+                                                onClick={() => {
+                                                    axios
+                                                        .patch(`http://localhost:3000/return/${res?.id}`, {
+                                                            isRefund: 1,
+                                                            status: 4,
+                                                        })
+                                                        .then((res) => {
+                                                            console.log(res);
+                                                            // setCheckChange((prev) => !prev);
+                                                            toast.success(
+                                                                'Đã xác nhận hoàn tiền đẩy đủ. Xin lỗi quý khách về sản phẩm!!',
+                                                            );
+                                                            navigator('/user/return');
+                                                        })
+                                                        .catch((err) => console.log(err));
+                                                }}
+                                            >
+                                                Have Already Received Refund
+                                            </Button>
+                                        )}
+                                    </div> */}
+                            </div>
                         </div>
-                    </div>
-                );
-            })}
+                    );
+                })
+            ) : (
+                <div className={cx('notification')}>
+                    {/* <h1>Xin chao</h1> */}
+                    <p>Không có đơn hàng nào</p>
+                </div>
+            )}
         </>
     );
 }

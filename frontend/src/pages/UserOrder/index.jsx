@@ -129,107 +129,97 @@ function Orders({ orders, userID }) {
     // console.log(expectedDate());
     return (
         <>
-            {orders.map((order, i) => {
-                return (
-                    order.status !== 5 && (
-                        <div className={cx('order')} key={i}>
-                            <div className={cx('header-bill')}>
-                                <ul className={cx('title-bill')}>
-                                    <li>
-                                        <div className={cx('status')}>
-                                            <p className={cx('row-title')}>Status</p>
-                                            {order.status === 1 && <p>Confirmating</p>}
-                                            {order.status === 2 && <p>Delivering</p>}
-                                            {order.status === 3 && <p>Completed</p>}
-                                            {order.status === 4 && <p>Canceled</p>}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className={cx('order-id')}>
-                                            <p className={cx('row-title')}>Order ID</p>
-                                            <p>#2024{order.id}</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className={cx('total')}>
-                                            <p className={cx('row-title')}>Total</p>
-                                            <p>{formatPrice(order.total)}</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className={cx('detail')}>
-                                            <button onClick={() => handleChangePage(order.id)}>
-                                                See Detail
-                                            </button>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className={cx('body-bill')}>
-                                <div className={cx('message-status')}>
-                                    {order.status === 1 && <p>Please Waiting Confirm Your Order</p>}
-                                    {order.status === 2 && (
-                                        <p>
-                                            Estimated delivery:{' '}
-                                            {expectedDate(order.createdAt, order?.shipment)}
-                                        </p>
-                                    )}
-                                    {order.status === 3 && <p>Delivered</p>}
-                                    {order.status === 4 && <p>Cancellation requested</p>}
+            {orders?.length > 0 ? (
+                orders.map((order, i) => {
+                    console.log(order);
+                    return (
+                        order.status !== 5 && (
+                            <div className={cx('order')} key={i}>
+                                <div className={cx('header-bill')}>
+                                    <ul className={cx('title-bill')}>
+                                        <li>
+                                            <div className={cx('status')}>
+                                                <p className={cx('row-title')}>Status</p>
+                                                {order.status === 1 && <p>Confirmating</p>}
+                                                {order.status === 2 && <p>Delivering</p>}
+                                                {order.status === 3 && <p>Completed</p>}
+                                                {order.status === 4 && <p>Canceled</p>}
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className={cx('order-id')}>
+                                                <p className={cx('row-title')}>Order ID</p>
+                                                <p>#2024{order.id}</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className={cx('total')}>
+                                                <p className={cx('row-title')}>Total</p>
+                                                <p>{formatPrice(order.total)}</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className={cx('detail')}>
+                                                <button onClick={() => handleChangePage(order.id)}>
+                                                    See Detail
+                                                </button>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <Order_Item product={order?.OrderDetails}></Order_Item>
-                                <div className={cx('received')}>
-                                    {order?.status === 2 &&
-                                        (order?.payed === 2 ? (
+                                <div className={cx('body-bill')}>
+                                    <div className={cx('message-status')}>
+                                        {order.status === 1 && (
+                                            <p>Please Waiting Confirm Your Order</p>
+                                        )}
+                                        {order.status === 2 && (
+                                            <p>
+                                                Estimated delivery:{' '}
+                                                {expectedDate(order.createdAt, order?.shipment)}
+                                            </p>
+                                        )}
+                                        {order.status === 3 && <p>Delivered</p>}
+                                        {order.status === 4 && <p>Cancellation requested</p>}
+                                    </div>
+                                    <Order_Item product={order?.OrderDetails}></Order_Item>
+                                    <div className={cx('received')}>
+                                        {order?.status === 2 &&
+                                            (order?.payed === 2 ? (
+                                                <Button
+                                                    primary
+                                                    onClick={() => {
+                                                        axios
+                                                            .put(
+                                                                `${url}/order/update/${order?.id}`,
+                                                                {
+                                                                    payed: 1,
+                                                                    status: 3,
+                                                                },
+                                                            )
+                                                            .then((res) => {
+                                                                console.log(res);
+                                                                // setCheckChange((prev) => !prev);
+                                                                toast.success(
+                                                                    'Đã hoàn tất thanh toán đầy đủ. Cảm ơn quý khách!!',
+                                                                );
+                                                                navigator('/user/order');
+                                                            })
+                                                            .catch((err) => console.log(err));
+                                                    }}
+                                                >
+                                                    Received
+                                                </Button>
+                                            ) : (
+                                                <Button primary disabled>
+                                                    Received
+                                                </Button>
+                                            ))}
+                                        {/* Rating */}
+                                        {/* {order?.status === 3 && order?.isPay === 1 && order?.rating === 0 ? (
                                             <Button
                                                 primary
                                                 onClick={() => {
-                                                    axios
-                                                        .put(`${url}/order/update/${order?.id}`, {
-                                                            payed: 1,
-                                                            status: 3,
-                                                        })
-                                                        .then((res) => {
-                                                            console.log(res);
-                                                            // setCheckChange((prev) => !prev);
-                                                            toast.success(
-                                                                'Đã hoàn tất thanh toán đầy đủ. Cảm ơn quý khách!!',
-                                                            );
-                                                            navigator('/user/order');
-                                                        })
-                                                        .catch((err) => console.log(err));
-                                                }}
-                                            >
-                                                Received
-                                            </Button>
-                                        ) : (
-                                            <Button primary disabled>
-                                                Received
-                                            </Button>
-                                        ))}
-                                    {/* Rating */}
-                                    {/* {order?.status === 3 && order?.isPay === 1 && order?.rating === 0 ? (
-                                    <Button
-                                        primary
-                                        onClick={() => {
-                                            console.log('Hello');
-                                        }}
-                                    >
-                                        Rating your Order!
-                                    </Button>
-                                ) : (
-                                    <Button primary disabled>
-                                        Rated!
-                                    </Button>
-                                )} */}
-                                    {order?.status === 3 &&
-                                        order?.payed === 1 &&
-                                        (order?.OrderDetails?.some((prod) => prod.rating === 0) ? (
-                                            <Button
-                                                primary
-                                                onClick={() => {
-                                                    setOrderId(order?.id);
-                                                    handleShow();
+                                                    console.log('Hello');
                                                 }}
                                             >
                                                 Rating your Order!
@@ -238,14 +228,39 @@ function Orders({ orders, userID }) {
                                             <Button primary disabled>
                                                 Rated!
                                             </Button>
-                                        ))}
+                                        )} */}
+                                        {order?.status === 3 &&
+                                            order?.payed === 1 &&
+                                            (order?.OrderDetails?.some(
+                                                (prod) => prod.rating === 0,
+                                            ) ? (
+                                                <Button
+                                                    primary
+                                                    onClick={() => {
+                                                        setOrderId(order?.id);
+                                                        handleShow();
+                                                    }}
+                                                >
+                                                    Rating your Order!
+                                                </Button>
+                                            ) : (
+                                                <Button primary disabled>
+                                                    Rated!
+                                                </Button>
+                                            ))}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )
-                );
-                // console.log();
-            })}
+                        )
+                    );
+                    // console.log();
+                })
+            ) : (
+                <div className={cx('notification')}>
+                    {/* <h1>Xin chao</h1> */}
+                    <p>Không có đơn hàng nào</p>
+                </div>
+            )}
             <ModalRating
                 show={showModal}
                 handleClose={handleClose}
@@ -258,6 +273,7 @@ function Orders({ orders, userID }) {
 
 function Order_Item({ product }) {
     const [prod, setProd] = useState();
+    console.log(product);
     useEffect(() => {
         let product_id = product.map((i) => i.id_product);
         const fetchProducts = async () => {

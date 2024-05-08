@@ -16,6 +16,7 @@ import axios from 'axios';
 import Search from '../Layout/components/Search';
 import { formatPrice } from '../../common';
 import Button from '../Button';
+import { url } from '../../constants';
 const cx = classNames.bind(styles);
 
 function Header() {
@@ -23,9 +24,7 @@ function Header() {
     const state = useContext(UseContextUser);
     // console.log(state.cuser.value);
     const [isSuccess, setIsSuccess] = useState(false);
-    const [products, setProducts] = useState([]);
     const [cartHeader, setCartHeader] = useState([]);
-    const inputRef = useRef();
     const navigate = useNavigate();
     const totalProduct = useMemo(() => {
         return cartHeader.reduce((acc, cur) => {
@@ -34,6 +33,7 @@ function Header() {
     }, [cartHeader]);
     const handleClickCart = () => {
         navigate('/cart');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         // else setIsSuccess(true)
     };
     // const filterSearch = useMemo(() => {
@@ -52,7 +52,7 @@ function Header() {
         let product_id = state.cart.value.map((i) => i.id_product);
         const fetchProducts = async () => {
             try {
-                const baseUrl = 'http://localhost:4000/products';
+                const baseUrl = `${url}/products`;
                 const requests = product_id?.map((id) => axios.get(`${baseUrl}/${id}`));
                 const responses = await Promise.all(requests);
                 const products = responses.map((response) => response.data);
@@ -99,7 +99,11 @@ function Header() {
                                 >
                                     Store
                                 </Button> */}
-                        <Link className={cx('nav-link')} to="/products?page=1&limit=9">
+                        <Link
+                            className={cx('nav-link')}
+                            to="/products?page=1&limit=9"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        >
                             <Button text>Store</Button>
                         </Link>
                     </Tippy>
@@ -140,18 +144,31 @@ function Header() {
                                 );
                             }}
                         >
-                            <Button text>
+                            <Button
+                                text
+                                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                            >
                                 <p className={cx('nav-link')}>Account</p>
                             </Button>
                         </HeadlessTippy>
                     )}
                     {state?.cuser?.value === '' ? (
                         <Tippy delay={[0, 50]} content="Your Favourites!" placement="bottom">
-                            <Button text>Wish List</Button>
+                            <Button
+                                text
+                                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                            >
+                                Wish List
+                            </Button>
                         </Tippy>
                     ) : (
                         <Tippy delay={[0, 50]} content="Your Favourites!" placement="bottom">
-                            <Link to={`/user/wishlist/${state?.cuser?.value?.id}`}>
+                            <Link
+                                to={`/user/wishlist/${state?.cuser?.value?.id}`}
+                                onClick={() => {
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }}
+                            >
                                 <Button text>Wish List</Button>
                             </Link>
                         </Tippy>

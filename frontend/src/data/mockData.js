@@ -431,51 +431,51 @@ export const mockPieData = [
 
 export const mockLineData = [
     {
-        id: 'Doanh thu',
+        id: '',
         color: tokens('dark').greenAccent[500],
         data: [
             {
-                x: 'plane',
-                y: 101,
+                x: 'Jan',
+                y: 0,
             },
             {
-                x: 'helicopter',
-                y: 75,
+                x: 'Feb',
+                y: 0,
             },
             {
-                x: 'boat',
+                x: 'Mar',
                 y: 36,
             },
             {
-                x: 'train',
+                x: 'Apr',
                 y: 216,
             },
             {
-                x: 'subway',
+                x: 'May',
                 y: 35,
             },
             {
-                x: 'bus',
+                x: 'Jun',
                 y: 236,
             },
             {
-                x: 'car',
+                x: 'Jul',
                 y: 88,
             },
             {
-                x: 'moto',
+                x: 'Aug',
                 y: 232,
             },
             {
-                x: 'bicycle',
+                x: 'Sep',
                 y: 281,
             },
             {
-                x: 'horse',
+                x: 'Oct',
                 y: 1,
             },
             {
-                x: 'skateboard',
+                x: 'Nov',
                 y: 35,
             },
             {
@@ -489,8 +489,8 @@ export const mockLineData = [
         color: tokens('dark').blueAccent[300],
         data: [
             {
-                x: 'plane',
-                y: 212,
+                x: 'Jan',
+                y: 200,
             },
             {
                 x: 'helicopter',
@@ -543,7 +543,7 @@ export const mockLineData = [
         color: tokens('dark').redAccent[200],
         data: [
             {
-                x: 'plane',
+                x: 'Jan',
                 y: 191,
             },
             {

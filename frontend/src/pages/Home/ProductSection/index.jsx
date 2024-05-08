@@ -3,20 +3,65 @@ import styles from './ProductSection.module.scss';
 import { url } from '../../../constants';
 import SliderHome from '../SliderHome';
 import images from '../../../assets/img';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../../../common';
+import { toast } from 'react-toastify';
+import { UseContextUser } from '../../../hooks/useContextUser';
 const cx = classNames.bind(styles);
 function ProductSection({ brandId }) {
     const [products, setProduct] = useState([]);
-    console.log(products);
+    const state = useContext(UseContextUser);
     useEffect(() => {
         axios.get(`${url}/products?brandId=${brandId}`).then((res) => {
             // Trả về 1 mảng [sản phẩm]
             setProduct(res.data.products);
         });
     }, [brandId]);
+    const handleAddWishList = (payload) => {
+        const data = {
+            id_user: state?.cuser?.value?.id,
+            id_product: payload.id,
+            nameProduct: payload.name,
+            priceProduct: payload.discount_price,
+            img: `${payload.img[0]}`,
+        };
+        const fetchData = async () => {
+            try {
+                await axios.post(`${url}/wishlist/create`, data);
+                toast.success(`Add product ${payload.name} to wishlist success`, {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    // theme: 'light',
+                    theme: 'colored',
+                });
+                state?.render?.setRender((prev) => !prev);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchData();
+    };
+
+    const handleRemoveWishList = (id) => {
+        const wishlistObj = state?.wishlist?.value.find((item) => item.id_product === id);
+        // console.log(wishlistObj);
+        const fetchData = async () => {
+            try {
+                await axios.delete(`${url}/wishlist/delete/${wishlistObj.id}`);
+                state?.render?.setRender((prev) => !prev);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchData();
+    };
     return (
         <div className={cx('wrapper')}>
             <SliderHome>
@@ -58,9 +103,28 @@ function ProductSection({ brandId }) {
                                             {formatPrice(product.price)}
                                         </p>
                                     </div>
-                                    <div className={cx('loved')}>
+                                    {state?.cuser?.value !== '' &&
+                                        (state?.wishlist?.value.some(
+                                            (item) => item.id_product === product.id,
+                                        ) ? (
+                                            <div
+                                                className={cx('loved')}
+                                                onClick={() => handleRemoveWishList(product.id)}
+                                            >
+                                                <img src={images.heart_wishlist} alt="" />
+                                                {/* <p>Có tồn tại</p> */}
+                                            </div>
+                                        ) : (
+                                            <div
+                                                className={cx('loved')}
+                                                onClick={() => handleAddWishList(product)}
+                                            >
+                                                <img src={images.unheart} alt="" />
+                                            </div>
+                                        ))}
+                                    {/* <div className={cx('loved')}>
                                         <img src={images.unheart} alt="" />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </>
                         );

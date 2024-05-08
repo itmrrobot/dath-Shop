@@ -6,6 +6,7 @@ import styles from './ManageAccount.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faUnlock, faUserTie, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import ModalDetailAccount from './ModalDetailAccount';
+import { url } from '../../constants';
 
 const cx = classNames.bind(styles);
 const Team = () => {
@@ -17,7 +18,7 @@ const Team = () => {
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
     const handleLockAcc = (id, value) => {
-        axios.put('http://localhost:4000' + `/auth/user/update/${id}`, {
+        axios.put(url + `/auth/user/update/${id}`, {
             RoleId: value,
         });
         // .then(res => console.log(res))
@@ -27,7 +28,7 @@ const Team = () => {
         const accessToken = JSON.parse(localStorage.getItem('accessToken'));
         console.log(accessToken);
         axios
-            .get('http://localhost:4000/auth/all-user', {
+            .get(`${url}/auth/all-user`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
@@ -57,7 +58,7 @@ const Team = () => {
                     return (
                         <li key={index} className={cx('table-row')}>
                             <div className={cx('col', 'col-1', 'name')} data-label="Id">
-                                {index + 1}
+                                {item.id}
                             </div>
                             <div className={cx('col', 'col-2', 'name')} data-label="Customer Name">
                                 {item.fullname}

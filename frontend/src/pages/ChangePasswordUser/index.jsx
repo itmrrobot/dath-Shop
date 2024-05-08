@@ -11,9 +11,10 @@ import { UseContextUser } from '../../hooks/useContextUser';
 // import images from '~/assets/images';
 import images from '../../assets/img';
 import { PoweroffOutlined } from '@ant-design/icons';
-import { Button as ButtonLibrary, Modal } from 'antd';
+import { Button as ButtonLibrary } from 'antd';
 import { toast } from 'react-toastify';
 import { url } from '../../constants';
+import Button from '../../components/Button';
 const cx = classNames.bind(styles);
 function ChangePasswordUser() {
     // Password trả về từ API là 1 password đã được mã hoá bằng bcrypt => sử dụng thư viện bcryptjs để mã hoá
@@ -263,17 +264,23 @@ function ChangePasswordUser() {
                         </div>
                     </div>
                 </div>
-                <ButtonLibrary
-                    type="primary"
-                    loading={loadings[0]}
-                    // onClick={() => enterLoading(0)}
-                    onClick={(e) => {
-                        handleSubmit(onSubmit)(e);
-                    }}
-                    style={{ background: 'var(--primary)', borderColor: 'yellow' }}
-                >
-                    Confirm
-                </ButtonLibrary>
+                {state?.cuser?.value?.isGoogle ? (
+                    <Button disabled primary>
+                        Confirm
+                    </Button>
+                ) : (
+                    <ButtonLibrary
+                        type="primary"
+                        loading={loadings[0]}
+                        // onClick={() => enterLoading(0)}
+                        onClick={(e) => {
+                            handleSubmit(onSubmit)(e);
+                        }}
+                        style={{ background: '#ab8a37', borderColor: 'yellow' }}
+                    >
+                        Confirm
+                    </ButtonLibrary>
+                )}
             </div>
         </>
     );

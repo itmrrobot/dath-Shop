@@ -80,7 +80,7 @@ function DetailRefund() {
                                 <p>Refund sent within a week after we get the items</p>
                             )}
                             {returnOrder?.status === 5 && <p>Completed</p>}
-                            {returnOrder?.status === 5 && <p>Cancel your Return by Admin</p>}
+                            {returnOrder?.status === 6 && <p>Cancel your Return by Admin</p>}
                         </div>
                     </div>
                     <div className={cx('process-information')}>

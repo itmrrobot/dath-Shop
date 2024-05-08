@@ -22,7 +22,6 @@ const cx = classNames.bind(styles);
 const Profile = () => {
     const navigate = useNavigate();
     const state = useContext(UseContextUser);
-    console.log(state?.cuser?.value);
     const [isFormDirty, setIsFormDirty] = useState(false);
     const phoneRegExp =
         /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -31,7 +30,11 @@ const Profile = () => {
         .shape({
             fullname: yup.string().required('Bạn cần nhập trường này'),
             name: yup.string().required('Bạn cần nhập trường này'),
-            email: yup.string().required('Bạn cần nhập trường này').email('Email không hợp lệ'),
+            email: yup
+                .string()
+                .required('Bạn cần nhập trường này')
+                .email('Email không hợp lệ')
+                .matches(/@gmail\.com$/, 'Email phải kết thúc bằng @gmail.com'),
             phoneNumber: yup
                 .string()
                 .required('Bạn cần nhập trường này')
@@ -64,7 +67,6 @@ const Profile = () => {
         address: watch('address', defaultValues.address),
         // Lấy giá trị của các trường input khác và gán vào đây
     };
-    console.log(currentValues);
     useEffect(() => {
         const isDirty = Object.keys(dirtyFields).some(
             (fieldName) => currentValues[fieldName] !== defaultValues[fieldName],
@@ -72,7 +74,6 @@ const Profile = () => {
         setIsFormDirty(isDirty);
     }, [dirtyFields, currentValues, defaultValues]);
     const onSubmit = async (data) => {
-        console.log(data);
         const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
         const dataPost = {
             fullname: data.fullname,
@@ -145,7 +146,7 @@ const Profile = () => {
                                 {...register('name')}
                             />
                             {errors.name && (
-                                <span className="form-message">{errors.name.message}</span>
+                                <span className={cx('form-message')}>{errors.name.message}</span>
                             )}
                             {/* <input type="text" className={cx("form-input")} placeholder="Nguyen Ngoc Khanh"/> */}
                         </div>
@@ -160,7 +161,9 @@ const Profile = () => {
                                 {...register('fullname')}
                             />
                             {errors.fullname && (
-                                <span className="form-message">{errors.fullname.message}</span>
+                                <span className={cx('form-message')}>
+                                    {errors.fullname.message}
+                                </span>
                             )}
                         </div>
                     </div>
@@ -175,7 +178,7 @@ const Profile = () => {
                             {...register('email')}
                         />
                         {errors.email && (
-                            <span className="form-message">{errors.email.message}</span>
+                            <span className={cx('form-message')}>{errors.email.message}</span>
                         )}
                     </div>
                     <div className={cx('form-group')}>
@@ -189,7 +192,7 @@ const Profile = () => {
                             {...register('phoneNumber')}
                         />
                         {errors.phoneNumber && (
-                            <span className="form-message">{errors.phoneNumber.message}</span>
+                            <span className={cx('form-message')}>{errors.phoneNumber.message}</span>
                         )}
                     </div>
                     <div className={cx('form-group')}>
@@ -203,7 +206,7 @@ const Profile = () => {
                             {...register('address')}
                         />
                         {errors.address && (
-                            <span className="form-message">{errors.address.message}</span>
+                            <span className={cx('form-message')}>{errors.address.message}</span>
                         )}
                     </div>
 
