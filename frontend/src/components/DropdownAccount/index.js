@@ -31,8 +31,19 @@ function DropdownAccount() {
         navigator('/login');
         // setIsLogin(false);
     };
+    const handleClickOut = function (event) {
+        setIsClickAvatar(false);
+    };
+
+    window.addEventListener('click', handleClickOut);
     return (
-        <div className={cx('account')} onClick={() => setIsClickAvatar(!isClickAvatar)}>
+        <div
+            className={cx('account')}
+            onClick={(e) => {
+                e.stopPropagation();
+                setIsClickAvatar(!isClickAvatar);
+            }}
+        >
             <img src={state?.cuser?.value?.avatar} alt="img-user" className={cx('img')} />
             <div className={cx('desc')}>
                 <span className={cx('text')}>Welcome back</span>

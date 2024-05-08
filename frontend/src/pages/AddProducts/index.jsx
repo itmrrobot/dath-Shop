@@ -237,13 +237,12 @@ function AddProducts() {
                     </div>
                     <div className={cx('input_product')}>
                         <label className={cx('label-product')}>name: </label>
-                        <input placeholder="..." {...register('name')} />
+                        <input {...register('name')} />
                         {errors.name && <p className={cx('form-message')}>{errors.name.message}</p>}
                     </div>
                     <div className={cx('input_product')}>
                         <label className={cx('label-product')}>price: </label>
                         <input
-                            placeholder="..."
                             onChange={(e) => {
                                 setPrice(e.target.value);
                                 console.log(price);
@@ -446,13 +445,16 @@ function AddProducts() {
                             <span className={cx('form-message')}>{errors.description.message}</span>
                         )}
                     </div>
-                    <button
-                        onClick={(e) => {
-                            handleSubmit(onSubmit)(e);
-                        }}
-                    >
-                        Click me!
-                    </button>
+                    <div className={cx('btn-submit')}>
+                        <Button
+                            onClick={(e) => {
+                                handleSubmit(onSubmit)(e);
+                            }}
+                            primary
+                        >
+                            Click me!
+                        </Button>
+                    </div>
                 </div>
             </div>
             <Modal title="Thông báo" open={isModalOpen} onOk={handleCancel} onCancel={handleCancel}>

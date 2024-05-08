@@ -29,7 +29,7 @@ function ModalComp({ children, showModal, handleClose }) {
                     bottom: '40px',
                     border: '1px solid #ccc',
                     // background: 'red',
-                    width: '50%',
+                    width: '60%',
                     height: '70%',
                     overflow: 'auto',
                     WebkitOverflowScrolling: 'touch',

@@ -89,8 +89,9 @@
         padding: 8px;
         justify-content: center;
         border-radius: 8px;
-        border: 1px solid var(--Primary, #5f4c49);
-        color: var(--Primary, #5f4c49);
+        border: 1px solid #ab8a37;
+        background-color: #ab8a37;
+        color: white;
         font-size: 1.6rem;
         font-weight: 600;
         &:hover {

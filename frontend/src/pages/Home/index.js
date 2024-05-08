@@ -34,6 +34,7 @@ function Home() {
             console.log(error);
         }
     }, []);
+
     return (
         <div className={cx('wrapper')}>
             <img className={cx('thumbnail-1')} src={images.thumbnail1} alt="thumbnail1" />

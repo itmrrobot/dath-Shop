@@ -470,7 +470,7 @@ export default ModalDetailOrder;
 
 function Order_Item({ product }) {
     const [prod, setProd] = useState();
-    console.log(prod);
+    console.log(product);
     useEffect(() => {
         let product_id = product?.map((i) => i.id_product);
         const fetchProducts = async () => {

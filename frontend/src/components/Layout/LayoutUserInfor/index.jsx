@@ -5,6 +5,7 @@ import styles from './LayoutUserInfor.module.scss';
 import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UseContextUser } from '../../../hooks/useContextUser';
+import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 function LayoutUserInfor({
     children,
@@ -19,9 +20,21 @@ function LayoutUserInfor({
     const navigate = useNavigate();
     const state = useContext(UseContextUser);
     const handleLogout = () => {
-        localStorage.removeItem('user');
-        state?.cuser?.setCurrentUser();
-        navigate('/login');
+        state?.cuser?.setCurrentUser(null);
+        localStorage.setItem('user', null);
+        localStorage.setItem('accessToken', null);
+        localStorage.setItem('refreshToken', null);
+
+        toast.success(`Đăng xuất thành công!`, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+        });
     };
     return (
         <div className={cx('wrapper')}>
@@ -36,10 +49,10 @@ function LayoutUserInfor({
             </ul>
             <div className={cx('title')}>
                 <p>{title}</p>
-                <button className={cx('logout')} onClick={handleLogout}>
+                <a className={cx('logout')} onClick={handleLogout} href="/login">
                     <FontAwesomeIcon icon={faArrowRightFromBracket}></FontAwesomeIcon>
                     <p>Log out</p>
-                </button>
+                </a>
             </div>
             <div className={cx('wrapper-content')}>
                 <div className={cx('side-bar-user')}>

@@ -1,7 +1,7 @@
 import styles from './Login.module.scss';
 import classNames from 'classnames/bind';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import { url } from '../../constants';
@@ -36,6 +36,19 @@ function Login() {
 
     const [errorDisplay, setErrorDisplay] = useState(false);
     const [errorMes, setErrorMes] = useState('');
+    useEffect(() => {
+        const handleKeyPress = (event) => {
+            if (event.keyCode === 13) {
+                window.location.reload();
+            }
+        };
+
+        window.addEventListener('keypress', handleKeyPress);
+
+        return () => {
+            window.removeEventListener('keypress', handleKeyPress);
+        };
+    }, [state?.cuser?.value]);
     const schema = yup
         .object()
         .shape({

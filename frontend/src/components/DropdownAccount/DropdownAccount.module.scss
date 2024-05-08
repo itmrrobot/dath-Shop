@@ -1,5 +1,5 @@
 .account {
-  position: relative;
+    position: relative;
     display: flex;
     padding: 11.515px 9.212px;
     align-items: center;
@@ -9,37 +9,40 @@
     border: 1.152px solid var(--primary-50, #f5f2f1);
     background: rgba(255, 255, 255, 0.5);
     cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     .desc {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      flex: 1 0 0;
-      padding-right: 62px;
-      .text {
-        color: #373b5c;
-        font-size: 11.515px;
-        font-weight: 500;
-      }
-      .name {
-        color: #373b5c;
-        font-size: 19.576px;
-        font-weight: 500;
-      }
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        flex: 1 0 0;
+        padding-right: 62px;
+        .text {
+            color: #373b5c;
+            font-size: 11.515px;
+            font-weight: 500;
+        }
+        .name {
+            color: #373b5c;
+            font-size: 19.576px;
+            font-weight: 500;
+        }
     }
     .img {
-      width: 38.237px;
-      height: 38.237px;
+        width: 38.237px;
+        height: 38.237px;
+        border-radius: 50%;
     }
-    
-      .avatar-dropdown {
+
+    .avatar-dropdown {
         position: absolute;
-        left: 0;
-        top: 61px;
+        top: 75px;
         z-index: 11;
         width: 160px;
         background-color: #fff;
         box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.4);
-        width: 248px;
+        width: 271px;
+        right: 4px;
+        border-radius: 6px;
         .avatar-dropdown-item {
             display: flex;
             align-items: center;
@@ -48,14 +51,13 @@
             height: 50px;
             text-decoration: none;
         }
-        
+
         .avatar-dropdown-item:active {
-            background-color: rgba(204, 204, 204,0.5);
+            background-color: rgba(204, 204, 204, 0.5);
         }
         .info-name {
-          margin-left: 8px;
-          color: #000;
-      }
+            margin-left: 8px;
+            color: #000;
+        }
     }
-    
-  }
+}
