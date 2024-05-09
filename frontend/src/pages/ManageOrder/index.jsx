@@ -32,11 +32,13 @@ function ManageOrder() {
                 return item.size == prod?.size?.replace(/[\[\]"]+/g, '');
             });
             sizeSelected.quantity = sizeSelected.quantity + prod.quantity; // Cập nhật quantity thành 13
-
+            // console.log([...prod.Product.Inventories, sizeSelected]);
+            // return sizeSelected;
             return axios.put(`${url}/inventory/update/${prod.id}`, {
-                listInventory: [...prod.Product.Inventories, sizeSelected],
+                listInventory: [sizeSelected],
             });
         });
+        console.log(requests);
         try {
             await Promise.all(requests);
             await axios.put(`${url}/order/update/${order?.id}`, {
