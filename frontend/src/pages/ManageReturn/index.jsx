@@ -20,7 +20,7 @@ function ManageReturn() {
     const [pagCurr, setPagCurr] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [order, setOrder] = useState();
-    // console.log(order);
+    console.log(order);
     const [checkChange, setCheckChange] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleClose = () => setShowModal(false);
@@ -164,27 +164,60 @@ function ManageReturn() {
     };
     const handleOk = async () => {
         var accessToken = JSON.parse(localStorage.getItem('accessToken'));
-        try {
-            await axios.put(
-                `${url}/returns/update/${order?.id}`,
-                {
-                    status: 6,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                },
-            );
-            await axios.put(`${url}/order/update/${order?.Orders[0]?.id}`, {
-                status: 3,
+        if (order?.status === 4) {
+            const requests = order?.Orders[0]?.OrderDetails?.map((prod) => {
+                let sizeSelected = prod?.Product?.Inventories?.find((item) => {
+                    return item.size == prod?.size?.replace(/[\[\]"]+/g, '');
+                });
+                sizeSelected.quantity = sizeSelected.quantity - prod.quantity; // Cập nhật quantity thành 13
+
+                return axios.put(`${url}/inventory/update/${prod.id}`, {
+                    listInventory: [...prod.Product.Inventories, sizeSelected],
+                });
             });
-            setCheckChange((prev) => !prev);
-            toast.success('Huỷ đơn hàng hoàn trả thành công');
-            setIsModalOpen(false);
-        } catch (error) {
-            toast.error('Huỷ đơn hàng thất bại');
-            setIsModalOpen(false);
+            console.log(requests);
+            try {
+                await Promise.all(requests);
+                await axios.put(
+                    `${url}/returns/update/${order?.id}`,
+                    {
+                        status: 6,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        },
+                    },
+                );
+                setCheckChange((prev) => !prev);
+                toast.success('Huỷ đơn hàng thành công');
+                setIsModalOpen(false);
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            try {
+                await axios.put(
+                    `${url}/returns/update/${order?.id}`,
+                    {
+                        status: 6,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        },
+                    },
+                );
+                await axios.put(`${url}/order/update/${order?.Orders[0]?.id}`, {
+                    status: 3,
+                });
+                setCheckChange((prev) => !prev);
+                toast.success('Huỷ đơn hàng hoàn trả thành công');
+                setIsModalOpen(false);
+            } catch (error) {
+                toast.error('Huỷ đơn hàng thất bại');
+                setIsModalOpen(false);
+            }
         }
     };
     const handleCancel = () => {
@@ -395,14 +428,10 @@ function ManageReturn() {
                                                                             );
                                                                         },
                                                                     );
-                                                                // console.log(sizeSelected);
                                                                 sizeSelected.quantity =
                                                                     sizeSelected.quantity +
                                                                     prod.quantity; // Cập nhật quantity thành 13
-                                                                // let newData = [
-                                                                //     ...prod.Product.Inventories,
-                                                                //     sizeSelected,
-                                                                // ];
+
                                                                 return axios.put(
                                                                     `${url}/inventory/update/${prod.id}`,
                                                                     {

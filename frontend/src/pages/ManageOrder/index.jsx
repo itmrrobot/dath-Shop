@@ -27,21 +27,29 @@ function ManageOrder() {
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
     const handleOk = async () => {
-        axios
-            .put(`${url}/order/update/${order?.id}`, {
-                status: 4,
-            })
-            .then((res) => {
-                console.log(res);
-                setCheckChange((prev) => !prev);
-                toast.success('Huỷ đơn hàng thành công');
-                setIsModalOpen(false);
-            })
-            .catch((err) => {
-                console.log(err);
-                toast.error('Huỷ đơn hàng thất bại');
-                setIsModalOpen(false);
+        const requests = order?.OrderDetails?.map((prod) => {
+            let sizeSelected = prod?.Product?.Inventories?.find((item) => {
+                return item.size == prod?.size?.replace(/[\[\]"]+/g, '');
             });
+            sizeSelected.quantity = sizeSelected.quantity + prod.quantity; // Cập nhật quantity thành 13
+
+            return axios.put(`${url}/inventory/update/${prod.id}`, {
+                listInventory: [...prod.Product.Inventories, sizeSelected],
+            });
+        });
+        try {
+            await Promise.all(requests);
+            await axios.put(`${url}/order/update/${order?.id}`, {
+                status: 4,
+            });
+            setCheckChange((prev) => !prev);
+            toast.success('Huỷ đơn hàng thành công');
+            setIsModalOpen(false);
+        } catch (error) {
+            console.log(error);
+            toast.error('Huỷ đơn hàng thất bại');
+            setIsModalOpen(false);
+        }
     };
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -80,6 +88,7 @@ function ManageOrder() {
             })
             .then((res) => {
                 let orderUser = [...res.data].reverse();
+                console.log(orderUser);
                 if (pagCurr === 0) {
                     // orderUser = res.data.filter(i => i.id_client === user._id)
                     orderUser = orderUser.filter((i) => i.status === 1);
