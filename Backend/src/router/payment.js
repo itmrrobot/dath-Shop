@@ -7,6 +7,7 @@ const {
   } = require("../models/index");
 const cartService = require("../service/cartService");
 const inventoryService = require("../service/inventoryService");
+const orderService = require("../service/orderService");
 
 router.get('/', function(req, res, next){
     let config = require("config");
@@ -86,7 +87,7 @@ router.post('/create_payment_url',async function (req, res, next) {
     let signed = hmac.update(Buffer.from(signData, 'utf-8')).digest("hex"); 
     vnp_Params['vnp_SecureHash'] = signed;
     vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
-    const orders = await Order.create({...order,status:2});
+    await orderService.createNewOrder({...order,status:2});
     cartIds?.forEach(async(id) => {
         await cartService.deleteCard(id);
     })
