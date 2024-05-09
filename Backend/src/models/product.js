@@ -21,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
       });
       Product.belongsTo(models.Category);
       Product.belongsTo(models.Brand);
-      Product.belongsTo(models.OrderDetail);
       Product.hasMany(models.Reviews,{foreignKey:"id_product"});
       Product.hasMany(models.Inventory,{foreignKey:"id_product"});
     }
