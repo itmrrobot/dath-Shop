@@ -20,6 +20,7 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-session": "^1.18.0",
+    "fuzzball": "^2.1.2",
     "googleapis": "^134.0.0",
     "jade": "^1.11.0",
     "joi": "^17.13.1",

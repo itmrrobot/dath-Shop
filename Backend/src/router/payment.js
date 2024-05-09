@@ -6,6 +6,7 @@ const {
     Order,
   } = require("../models/index");
 const cartService = require("../service/cartService");
+const inventoryService = require("../service/inventoryService");
 
 router.get('/', function(req, res, next){
     let config = require("config");
@@ -32,7 +33,8 @@ router.get('/refund', function (req, res, next) {
 
 router.post('/create_payment_url',async function (req, res, next) {
     let order = req.body?.order;
-    let cartIds = req.body?.cartIds;
+    let cartIds = req.body?.product.map(p => p.cart_id);
+    let inventorys = req.body?.product.map(p => p.Inventories);
     process.env.TZ = 'Asia/Ho_Chi_Minh';
     
     let date = new Date();
@@ -84,10 +86,11 @@ router.post('/create_payment_url',async function (req, res, next) {
     let signed = hmac.update(Buffer.from(signData, 'utf-8')).digest("hex"); 
     vnp_Params['vnp_SecureHash'] = signed;
     vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
-    const orders = await Order.create({...order});
+    const orders = await Order.create({...order,status:2});
     cartIds?.forEach(async(id) => {
         await cartService.deleteCard(id);
     })
+    await inventoryService.updateInventory("",{listInventory:inventorys});
     res.send(vnpUrl)
 });
 

@@ -182,10 +182,12 @@ const responeQuestions = (input) => {
     // If the network is not trained yet, train it
     trainNetwork();
   }
-  const singleCharacterRegex = /^[.?!@#$%^&*()-+=/*~`,:;'<>|\\{}[]]$/;
+
+  const singleCharacterRegex = /^[.?!@#$%^&*()-+=/*~`,:;'<>|\\{}[\]]$/;
   if (singleCharacterRegex.test(input)) {
-    return "Tôi không hiểu,làm ơn nhập đúng";
+    return "Tôi không hiểu, làm ơn nhập đúng";
   }
+
   const fileContent = fs.readFileSync(
     path.join(__dirname, "../../dataset/data.csv"),
     "utf-8"
@@ -193,7 +195,6 @@ const responeQuestions = (input) => {
 
   // Parse CSV content
   const csvData = fileContent.trim().split("\n");
-  //console.log(csvData);
 
   // Convert CSV data to object
   var data = {};
@@ -202,29 +203,36 @@ const responeQuestions = (input) => {
   for (var i = 1; i < csvData.length; i++) {
     var pair = csvData[i].split(":");
     var question = pair[0].trim();
-    var answer = pair[1].trim();
+    var answer = pair.slice(1).join(":").trim(); // Handle ':' in the answer
     data[question] = answer;
   }
 
-  var texts = [];
-  var categories = [];
+  // Check if the input exactly matches a question in the CSV data
+  if (data.hasOwnProperty(input)) {
+    // Return the corresponding answer
+    return data[input];
+  }
 
-  for (var text in data) {
-    var category = data[text];
-
-    texts.push(text);
-    if (categories.indexOf(category) === -1) {
-      categories.push(category);
+  // If the input doesn't exactly match any question, find the closest match
+  var texts = Object.keys(data);
+  var closestMatch = natural.JaroWinklerDistance(input, texts[0]);
+  var closestQuestion = texts[0];
+  for (var i = 1; i < texts.length; i++) {
+    var similarity = natural.JaroWinklerDistance(input, texts[i]);
+    if (similarity > closestMatch) {
+      closestMatch = similarity;
+      closestQuestion = texts[i];
     }
   }
 
-  // Train
-  // console.log('-------- Initialization started --------');
-  var trainingSet = [];
-  var wordsDictionary = arrayToDictonary(texts);
-  return categories[
-    arrayMaxIndex(network.activate(textToVector(input, wordsDictionary)))
-  ];
+  // If the closest match has a similarity score above a certain threshold, return its answer
+  if (closestMatch > 0.8) {
+    return data[closestQuestion];
+  }
+  
+  // If no close match is found, return "I don't understand"
+  return "I don't understand.";
 };
+
 
 module.exports = { responeQuestions };
