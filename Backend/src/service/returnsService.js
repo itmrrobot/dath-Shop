@@ -54,7 +54,6 @@ const getAllReturns = async () => {
                       exclude: ["createdAt", "updatedAt", "id_product"],
                     },
                   },
-                  { model: Brand },
                 ],
               },
             ],
