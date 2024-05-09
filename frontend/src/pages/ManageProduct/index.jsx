@@ -79,7 +79,7 @@ function ManageProduct() {
     return (
         <>
             <div className={cx('wrapper')}>
-                <Header title="MANAGER PRODUCT" subtitle="View & Managing Product!" />
+                <Header title="MANAGE PRODUCT" subtitle="View & Managing Product!" />
                 <div className={cx('total-prod-search')}>
                     <p>
                         Showing {currentPage + 1} - {pageCount}{' '}

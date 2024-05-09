@@ -298,7 +298,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
                     reverse: false,
                 }}
                 yFormat=" >-.2f"
-                // curve="catmullRom"
+                curve="catmullRom"
                 axisTop={null}
                 axisRight={null}
                 axisBottom={{

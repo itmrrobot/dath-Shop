@@ -39,6 +39,18 @@ function DetailOrder() {
             // console.log(dataPost);
             // console.log(state?.cuser?.value);
             await delay(2000); // Chờ 2 giây
+            const requests = order?.OrderDetails?.map((prod) => {
+                let sizeSelected = prod?.product?.Inventories?.find((item) => {
+                    return item.size == prod?.size?.replace(/[\[\]"]+/g, '');
+                });
+                // console.log(sizeSelected);
+                sizeSelected.quantity = sizeSelected.quantity + prod.quantity; // Cập nhật quantity thành 13
+                // let newData = [...prod?.Inventories, sizeSelected];
+                return axios.put(`${url}/inventory/update/${prod.id}`, {
+                    listInventory: [...prod?.product?.Inventories, sizeSelected],
+                });
+            });
+            await Promise.all(requests);
             const res = await axios.put(`${url}/order/update/${param.id}`, cancel);
             let dataUpdate = {
                 ...res,
@@ -139,14 +151,28 @@ function DetailOrder() {
     };
     // console.log(param.id);
     useEffect(() => {
-        axios.get(`${url}/order/${param.id}`).then((res) => {
-            console.log(res.data);
-            // console.log(res.data.createdAt);
-            // let order = [...res.data]
-            // order[createAt] =
-            setOrder(res.data);
-            // console.log(res.data);
-        });
+        const fetchOrder = async () => {
+            let baseUrl = `${url}/products`;
+            let res = await axios.get(`${url}/order/${param.id}`);
+            let requests = res.data.OrderDetails.map((prod) =>
+                axios.get(`${baseUrl}/${prod.id_product}`),
+            );
+            console.log(requests);
+            let responses = await Promise.all(requests);
+            let products = responses.map((response) => response.data);
+            let a = res.data.OrderDetails?.map((item) => {
+                return {
+                    ...item,
+                    product: products?.find((i) => i.id === item.id_product),
+                };
+            });
+
+            setOrder({
+                ...res.data,
+                OrderDetails: a,
+            });
+        };
+        fetchOrder();
     }, [param]);
     // console.log(order?.status);
     return (

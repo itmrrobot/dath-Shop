@@ -41,7 +41,7 @@ const Team = () => {
 
     return (
         <>
-            <Header title="MANAGER USER" subtitle="View & Managing Account!" />
+            <Header title="MANAGE USER" subtitle="View & Managing Account!" />
 
             <ul className={cx('responsive-table')}>
                 <li className={cx('table-header')}>

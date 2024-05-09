@@ -167,7 +167,8 @@ function App() {
                             </>
                         )} */}
                         {(state?.cuser?.value?.Role?.id === 1 ||
-                            state?.cuser?.value?.Role?.id === 3) && (
+                            state?.cuser?.value?.Role?.id === 3 ||
+                            state?.cuser?.value?.Role?.id === 4) && (
                             <>
                                 <>
                                     <Route
