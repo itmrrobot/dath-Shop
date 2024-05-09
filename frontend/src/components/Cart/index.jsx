@@ -127,12 +127,16 @@ function Cart() {
                         payed: 1,
                     },
                     product: prodTickeds.map((prod) => {
+                        let inventoryUpdate = prod?.product?.Inventories?.find((item) => {
+                            return item.size == prod?.size?.replace(/[\[\]"]+/g, '');
+                        });
                         return {
                             cart_id: prod.id,
-                            quantity: prod.quantity,
-                            Inventories: prod?.product?.Inventories?.find((item) => {
-                                return item.size == prod?.size?.replace(/[\[\]"]+/g, '');
-                            }),
+                            // quantity: prod.quantity,
+                            Inventories: {
+                                ...inventoryUpdate,
+                                quantity: inventoryUpdate.quantity - prod.quantity,
+                            },
                         };
                     }),
                 });
