@@ -137,7 +137,7 @@ function Cart() {
                     }),
                 });
                 if (res) {
-                    // console.log(res.data);
+                    console.log(res.data);
                     window.location.replace(`${res.data}`);
                 }
             } catch (e) {
