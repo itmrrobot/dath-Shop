@@ -16,11 +16,11 @@ const cx = classNames.bind(styles);
 
 function ManageReturn() {
     const [response, setResponse] = useState();
-    console.log(response);
+    // console.log(response);
     const [pagCurr, setPagCurr] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [order, setOrder] = useState();
-    console.log(order);
+    // console.log(order);
     const [checkChange, setCheckChange] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleClose = () => setShowModal(false);
@@ -57,6 +57,7 @@ function ManageReturn() {
                 returnOrder = returnOrder.filter((i) => i.status === 6);
             }
             console.log(res.data);
+
             // if (returnOrder.length > 0) {
             //     let requests = returnOrder.map((rt) => {
             //         let orders = rt.Orders.map((item) => {
@@ -64,23 +65,29 @@ function ManageReturn() {
             //                 axios.get(`${baseUrl}/${prod.id_product}`),
             //             );
             //         });
-            //         orders.map(async (item) => {
+            //         let b = orders.map(async (item) => {
             //             // console.log(item);
             //             let responses = await Promise.all(item);
             //             let products = responses.map((response) => response.data);
+            //             // console.log(products);
             //             let a = rt.Orders.map((item) => {
-            //                 return item?.OrderDetails?.map((prod) =>
-            //                     axios.get(`${baseUrl}/${prod.id_product}`),
-            //                 );
+            //                 return item?.OrderDetails?.map((prod) => {
+            //                     return {
+            //                         ...prod,
+            //                         product: products?.find((i) => i.id === prod.id_product),
+            //                     };
+            //                 });
             //             });
+            //             // console.log(a);
+            //             return a;
             //         });
-
+            //         console.log(b);
             //         // console.log(products);
-            //         // return orders;
+            //         return orders;
             //         // console.log('Duma' + item?.map((prod) => prod));
             //         // return item?.map((prod) => axios.get(`${baseUrl}/${prod.id_product}`));
             //     });
-            //     // console.log(requests);
+            //     console.log(requests);
             // }
 
             // console.log(requests);
@@ -368,12 +375,50 @@ function ManageReturn() {
                                             <Button
                                                 primary
                                                 manageReturn
-                                                onClick={() => {
+                                                onClick={async () => {
                                                     var accessToken = JSON.parse(
                                                         localStorage.getItem('accessToken'),
                                                     );
-                                                    axios
-                                                        .put(
+                                                    console.log(order);
+                                                    const requests =
+                                                        order?.Orders[0]?.OrderDetails?.map(
+                                                            (prod) => {
+                                                                let sizeSelected =
+                                                                    prod?.Product?.Inventories?.find(
+                                                                        (item) => {
+                                                                            return (
+                                                                                item.size ==
+                                                                                prod?.size?.replace(
+                                                                                    /[\[\]"]+/g,
+                                                                                    '',
+                                                                                )
+                                                                            );
+                                                                        },
+                                                                    );
+                                                                // console.log(sizeSelected);
+                                                                sizeSelected.quantity =
+                                                                    sizeSelected.quantity +
+                                                                    prod.quantity; // Cập nhật quantity thành 13
+                                                                // let newData = [
+                                                                //     ...prod.Product.Inventories,
+                                                                //     sizeSelected,
+                                                                // ];
+                                                                return axios.put(
+                                                                    `${url}/inventory/update/${prod.id}`,
+                                                                    {
+                                                                        listInventory: [
+                                                                            ...prod.Product
+                                                                                .Inventories,
+                                                                            sizeSelected,
+                                                                        ],
+                                                                    },
+                                                                );
+                                                            },
+                                                        );
+                                                    console.log(requests);
+                                                    try {
+                                                        await Promise.all(requests);
+                                                        await axios.put(
                                                             `${url}/returns/update/${order?.id}`,
                                                             {
                                                                 status: 4,
@@ -383,14 +428,21 @@ function ManageReturn() {
                                                                     Authorization: `Bearer ${accessToken}`,
                                                                 },
                                                             },
-                                                        )
-                                                        .then((res) => {
-                                                            setCheckChange((prev) => !prev);
-                                                            toast.success(
-                                                                'Xác nhận đã nhận hàng hoàn trả từ khách hàng về shop thành công!. Tiến hành refund',
-                                                            );
-                                                        })
-                                                        .catch((err) => console.log(err));
+                                                        );
+                                                        setCheckChange((prev) => !prev);
+                                                        toast.success(
+                                                            'Xác nhận đã nhận hàng hoàn trả từ khách hàng về shop thành công!. Tiến hành refund',
+                                                        );
+                                                    } catch (error) {
+                                                        console.log(error);
+                                                    }
+
+                                                    // await Promise.all(requests);
+
+                                                    //     .then((res) => {
+
+                                                    //     })
+                                                    //     .catch((err) => console.log(err));
                                                 }}
                                             >
                                                 Accept

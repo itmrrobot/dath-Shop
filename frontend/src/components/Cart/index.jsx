@@ -82,7 +82,7 @@ function Cart() {
 
         let prodTicked = state?.cart?.value?.filter((prod) => prod.isChecked === true);
         let dataDelete = JSON.stringify(prodTicked.map((prod) => prod.id));
-
+        let prodTickeds = product.filter((prod) => prod.isChecked === true);
         if (cash === 'COD') {
             try {
                 const requests = product?.map((prod) => {
@@ -126,11 +126,18 @@ function Cart() {
                         ...dataPost,
                         payed: 1,
                     },
-                    cartIds: prodTicked.map((prod) => prod.id),
+                    product: prodTickeds.map((prod) => {
+                        return {
+                            cart_id: prod.id,
+                            quantity: prod.quantity,
+                            Inventories: prod?.product?.Inventories?.find((item) => {
+                                return item.size == prod?.size?.replace(/[\[\]"]+/g, '');
+                            }),
+                        };
+                    }),
                 });
-
                 if (res) {
-                    console.log(res.data);
+                    // console.log(res.data);
                     window.location.replace(`${res.data}`);
                 }
             } catch (e) {
