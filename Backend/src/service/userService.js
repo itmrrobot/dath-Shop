@@ -15,6 +15,7 @@ const getCurrentUser = async (id) => {
 const getAllUser = async() => {
   let users = []
   users = await User.findAll({raw:true});
+  users.sort((a, b) => a.id - b.id);
   return users;
 }
 
