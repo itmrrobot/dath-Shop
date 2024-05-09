@@ -53,7 +53,7 @@ const UserProvider = ({ children }) => {
             setCurrentUser(cuser);
         };
         checkedLogin();
-    }, []);
+    }, [render]);
     useEffect(() => {
         const getData = async () => {
             let cuser = isAuthenticated();
