@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       OrderDetail.belongsTo(models.Order,{foreignKey:"id_order"});
+      OrderDetail.belongsTo(models.Product,{foreignKey:"id_product"});
     }
   }
   OrderDetail.init({

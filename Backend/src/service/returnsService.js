@@ -40,6 +40,22 @@ const getAllReturns = async () => {
             attributes: {
               exclude: ["createdAt", "updatedAt"],
             },
+            include: [
+              {
+                model: Product,
+                attributes: {
+                  exclude: ["createdAt", "updatedAt"],
+                },
+                include: [
+                  {
+                    model: Inventory,
+                    attributes: {
+                      exclude: ["createdAt", "updatedAt"],
+                    },
+                  },
+                ],
+              },
+            ],
           },
         ],
       },

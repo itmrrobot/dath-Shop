@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       Product.belongsTo(models.Brand);
       Product.hasMany(models.Reviews,{foreignKey:"id_product"});
       Product.hasMany(models.Inventory,{foreignKey:"id_product"});
+      Product.hasMany(models.OrderDetail,{foreignKey:"id_product"});
     }
   }
   Product.init({
