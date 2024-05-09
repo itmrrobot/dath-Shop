@@ -101,7 +101,7 @@ function ManageOrder() {
     }, [pagCurr, checkChange]);
     return (
         <>
-            <Header title="MANAGER ORDER" subtitle="View & Managing Orders!" />
+            <Header title="MANAGE ORDER" subtitle="View & Managing Orders!" />
             <div className={cx('wrapper')}>
                 <ul className={cx('navigate')}>
                     {pagName.map((item, index) => (
@@ -131,203 +131,216 @@ function ManageOrder() {
                         <div className={cx('col', 'col-8')}></div>
                         {/* <div className={cx('col', 'col-9')}></div> */}
                     </li>
-                    {orders?.map((order, index) => {
-                        return (
-                            <li key={index} className={cx('table-row')}>
-                                <div className={cx('col', 'col-1', 'name')} data-label="ID">
-                                    #2024{order?.id}
-                                </div>
-                                <div className={cx('col', 'col-2', 'name')} data-label="ID">
-                                    {order?.status === 1 && 'Confirmating'}
-                                    {order?.status === 2 && 'Delivering'}
-                                    {order?.status === 3 && 'Completed'}
-                                    {order?.status === 4 && 'Canceled'}
-                                </div>
-                                <div
-                                    className={cx('col', 'col-3', 'name')}
-                                    data-label="Product Name"
-                                >
-                                    {date(order?.createdAt)}
-                                </div>
-                                <div className={cx('col', 'col-4', 'name')} data-label="Price">
-                                    {/* {item.price} */}
-                                    {/* {formatPrice(order?.amount)} */}
-                                    {order.address}, {order?.city}
-                                </div>
-                                <div className={cx('col', 'col-5', 'name')} data-label="Discount">
-                                    {/* {order.id} */}
-                                    {formatPrice(order?.total)}
-                                </div>
-                                {/* Comfirm */}
-                                {order?.status === 1 && pagCurr === 0 && (
-                                    <>
-                                        <Button
-                                            primary
-                                            managerOrder
-                                            onClick={() => {
-                                                axios
-                                                    .put(`${url}/order/update/${order?.id}`, {
-                                                        status: 2,
-                                                    })
-                                                    .then((res) => {
-                                                        setCheckChange((prev) => !prev);
-                                                        toast.success('Xác nhận thành công');
-                                                    })
-                                                    .catch((err) => console.log(err));
-                                            }}
-                                        >
-                                            Accept
-                                        </Button>
-                                        <Button
-                                            primary
-                                            managerOrder
-                                            onClick={() => {
-                                                handleShow();
-                                                setOrder(order);
-                                            }}
-                                        >
-                                            Detail
-                                        </Button>
-                                        <Button
-                                            primary
-                                            managerOrder
-                                            onClick={() => {
-                                                setIsModalOpen(true);
-                                                setOrder(order);
-                                            }}
-                                        >
-                                            Cancel
-                                        </Button>
-                                    </>
-                                )}
-                                {/* Delivering */}
-                                {order?.status === 2 && pagCurr === 1 && (
-                                    <>
-                                        {order?.payed === 2 ? (
-                                            <Button
-                                                primary
-                                                disabled
-                                                managerOrder
-                                                // onClick={() => {
-                                                //     showModalDelete();
-                                                //     setItemId(item?.id);
-                                                // }}
-                                            >
-                                                Accepted!!!
-                                            </Button>
-                                        ) : (
+                    {orders.length > 0 ? (
+                        orders?.map((order, index) => {
+                            return (
+                                <li key={index} className={cx('table-row')}>
+                                    <div className={cx('col', 'col-1', 'name')} data-label="ID">
+                                        #2024{order?.id}
+                                    </div>
+                                    <div className={cx('col', 'col-2', 'name')} data-label="ID">
+                                        {order?.status === 1 && 'Confirmating'}
+                                        {order?.status === 2 && 'Delivering'}
+                                        {order?.status === 3 && 'Completed'}
+                                        {order?.status === 4 && 'Canceled'}
+                                    </div>
+                                    <div
+                                        className={cx('col', 'col-3', 'name')}
+                                        data-label="Product Name"
+                                    >
+                                        {date(order?.createdAt)}
+                                    </div>
+                                    <div className={cx('col', 'col-4', 'name')} data-label="Price">
+                                        {/* {item.price} */}
+                                        {/* {formatPrice(order?.amount)} */}
+                                        {order.address}, {order?.city}
+                                    </div>
+                                    <div
+                                        className={cx('col', 'col-5', 'name')}
+                                        data-label="Discount"
+                                    >
+                                        {/* {order.id} */}
+                                        {formatPrice(order?.total)}
+                                    </div>
+                                    {/* Comfirm */}
+                                    {order?.status === 1 && pagCurr === 0 && (
+                                        <>
                                             <Button
                                                 primary
                                                 managerOrder
                                                 onClick={() => {
                                                     axios
                                                         .put(`${url}/order/update/${order?.id}`, {
-                                                            payed: 2,
+                                                            status: 2,
                                                         })
                                                         .then((res) => {
                                                             setCheckChange((prev) => !prev);
-                                                            toast.success(
-                                                                'Xác nhận đã giao đơn hàng tới cho khách. Chờ khách xác nhận thanh toán',
-                                                            );
+                                                            toast.success('Xác nhận thành công');
                                                         })
                                                         .catch((err) => console.log(err));
                                                 }}
                                             >
                                                 Accept
                                             </Button>
-                                        )}
+                                            <Button
+                                                primary
+                                                managerOrder
+                                                onClick={() => {
+                                                    handleShow();
+                                                    setOrder(order);
+                                                }}
+                                            >
+                                                Detail
+                                            </Button>
+                                            <Button
+                                                primary
+                                                managerOrder
+                                                onClick={() => {
+                                                    setIsModalOpen(true);
+                                                    setOrder(order);
+                                                }}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </>
+                                    )}
+                                    {/* Delivering */}
+                                    {order?.status === 2 && pagCurr === 1 && (
+                                        <>
+                                            {order?.payed === 2 ? (
+                                                <Button
+                                                    primary
+                                                    disabled
+                                                    managerOrder
+                                                    // onClick={() => {
+                                                    //     showModalDelete();
+                                                    //     setItemId(item?.id);
+                                                    // }}
+                                                >
+                                                    Accepted!!!
+                                                </Button>
+                                            ) : (
+                                                <Button
+                                                    primary
+                                                    managerOrder
+                                                    onClick={() => {
+                                                        axios
+                                                            .put(
+                                                                `${url}/order/update/${order?.id}`,
+                                                                {
+                                                                    payed: 2,
+                                                                },
+                                                            )
+                                                            .then((res) => {
+                                                                setCheckChange((prev) => !prev);
+                                                                toast.success(
+                                                                    'Xác nhận đã giao đơn hàng tới cho khách. Chờ khách xác nhận thanh toán',
+                                                                );
+                                                            })
+                                                            .catch((err) => console.log(err));
+                                                    }}
+                                                >
+                                                    Accept
+                                                </Button>
+                                            )}
 
-                                        <Button
-                                            primary
-                                            managerOrder
-                                            onClick={() => {
-                                                handleShow();
-                                                setOrder(order);
-                                            }}
-                                        >
-                                            Detail
-                                        </Button>
-                                        <Button
-                                            primary
-                                            // disabled
-                                            managerOrder
-                                            onClick={() => {
-                                                setIsModalOpen(true);
-                                                setOrder(order);
-                                            }}
-                                        >
-                                            Cancel
-                                        </Button>
-                                    </>
-                                )}
-                                {order?.status === 3 && pagCurr === 2 && (
-                                    <>
-                                        <Button
-                                            primary
-                                            managerOrder
-                                            disabled
-                                            // onClick={() => {
-                                            //     showModalDelete();
-                                            //     setItemId(item?.id);
-                                            // }}
-                                        >
-                                            Accept
-                                        </Button>
-                                        <Button
-                                            primary
-                                            managerOrder
-                                            onClick={() => {
-                                                handleShow();
-                                                setOrder(order);
-                                            }}
-                                        >
-                                            Detail
-                                        </Button>
-                                        <Button
-                                            primary
-                                            disabled
-                                            managerOrder
+                                            <Button
+                                                primary
+                                                managerOrder
+                                                onClick={() => {
+                                                    handleShow();
+                                                    setOrder(order);
+                                                }}
+                                            >
+                                                Detail
+                                            </Button>
+                                            <Button
+                                                primary
+                                                // disabled
+                                                managerOrder
+                                                onClick={() => {
+                                                    setIsModalOpen(true);
+                                                    setOrder(order);
+                                                }}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </>
+                                    )}
+                                    {order?.status === 3 && pagCurr === 2 && (
+                                        <>
+                                            <Button
+                                                primary
+                                                managerOrder
+                                                disabled
+                                                // onClick={() => {
+                                                //     showModalDelete();
+                                                //     setItemId(item?.id);
+                                                // }}
+                                            >
+                                                Accept
+                                            </Button>
+                                            <Button
+                                                primary
+                                                managerOrder
+                                                onClick={() => {
+                                                    handleShow();
+                                                    setOrder(order);
+                                                }}
+                                            >
+                                                Detail
+                                            </Button>
+                                            <Button
+                                                primary
+                                                disabled
+                                                managerOrder
 
-                                            // onClick={() => {
-                                            //     handleShow();
-                                            //     setProdInfor(item);
-                                            // }}
-                                        >
-                                            Cancel
-                                        </Button>
-                                    </>
-                                )}
-                                {order?.status === 4 && pagCurr === 3 && (
-                                    <>
-                                        <Button
-                                            primary
-                                            manageReturn
-                                            disabled
-                                            // onClick={() => {
-                                            //     showModalDelete();
-                                            //     setItemId(item?.id);
-                                            // }}
-                                        >
-                                            Accept
-                                        </Button>
-                                        <Button
-                                            primary
-                                            manageReturn
-                                            onClick={() => {
-                                                handleShow();
-                                                setOrder(order);
-                                            }}
-                                        >
-                                            Detail
-                                        </Button>
-                                        <Button primary disabled manageReturn>
-                                            Cancel
-                                        </Button>
-                                    </>
-                                )}
-                            </li>
-                        );
-                    })}
+                                                // onClick={() => {
+                                                //     handleShow();
+                                                //     setProdInfor(item);
+                                                // }}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </>
+                                    )}
+                                    {order?.status === 4 && pagCurr === 3 && (
+                                        <>
+                                            <Button
+                                                primary
+                                                manageReturn
+                                                disabled
+                                                // onClick={() => {
+                                                //     showModalDelete();
+                                                //     setItemId(item?.id);
+                                                // }}
+                                            >
+                                                Accept
+                                            </Button>
+                                            <Button
+                                                primary
+                                                manageReturn
+                                                onClick={() => {
+                                                    handleShow();
+                                                    setOrder(order);
+                                                }}
+                                            >
+                                                Detail
+                                            </Button>
+                                            <Button primary disabled manageReturn>
+                                                Cancel
+                                            </Button>
+                                        </>
+                                    )}
+                                </li>
+                            );
+                        })
+                    ) : (
+                        <div className={cx('notification')}>
+                            {/* <h1>Xin chao</h1> */}
+                            <p>Không có đơn hàng nào nào</p>
+                        </div>
+                    )}
                 </ul>
             </div>
             <ModalDetailOrder

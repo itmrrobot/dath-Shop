@@ -30,7 +30,6 @@ function Cart() {
     const [cash, setCash] = useState('COD');
     const [, setCity] = useState('');
     const [noted, setNoted] = useState('');
-
     const navigate = useNavigate();
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
@@ -80,16 +79,29 @@ function Cart() {
             returnDate: futureDate,
             products: productArr,
         };
-        console.log(dataPost);
+
         let prodTicked = state?.cart?.value?.filter((prod) => prod.isChecked === true);
         let dataDelete = JSON.stringify(prodTicked.map((prod) => prod.id));
+
         if (cash === 'COD') {
             try {
+                const requests = product?.map((prod) => {
+                    let sizeSelected = prod?.product?.Inventories?.find((item) => {
+                        return item.size == prod?.size?.replace(/[\[\]"]+/g, '');
+                    });
+                    // console.log(sizeSelected);
+                    sizeSelected.quantity = sizeSelected.quantity - prod.quantity; // Cập nhật quantity thành 13
+                    // let newData = [...prod?.Inventories, sizeSelected];
+                    return axios.put(`${url}/inventory/update/${prod.id}`, {
+                        listInventory: [...prod?.product?.Inventories, sizeSelected],
+                    });
+                });
+                await Promise.all(requests);
                 await axios.post(`${url}/order/create`, dataPost);
                 await axios.post(`${url}/cart/delete/product/${state?.cuser?.value?.id}`, {
                     listIds: dataDelete,
                 });
-                toast.success(`thành công!`, {
+                toast.success(`Thành công!`, {
                     position: 'top-right',
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -215,9 +227,9 @@ function Cart() {
                 <div className={cx('content')}>
                     <div className={cx('header-title')}>
                         <p>Cart</p>
-                        {/* <p className="total-product">
-                        ( <span>{totalProduct}</span> Products )
-                    </p> */}
+                        {state?.cuser?.value?.Role?.id === 4 && (
+                            <p className={cx('total-product')}>(Your account is blocked)</p>
+                        )}
                     </div>
                     <AddressPicker
                         isAddress={updateState}
@@ -286,6 +298,7 @@ function Cart() {
                         </div>
                         {state?.cart?.value.find((prod) => prod.isChecked === true) !== undefined &&
                         product.length > 0 &&
+                        state?.cuser?.value?.Role?.id !== 4 &&
                         isAddress === true ? (
                             <Button
                                 // className={cx('btn_payment')}

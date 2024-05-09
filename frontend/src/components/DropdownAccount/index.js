@@ -71,7 +71,8 @@ function DropdownAccount() {
                             <span className={cx('info-name')}>Quản lý</span>
                         </Link>
                     )}
-                    {state?.cuser?.value?.Role?.id === 3 && (
+                    {(state?.cuser?.value?.Role?.id === 3 ||
+                        state?.cuser?.value?.Role?.id === 4) && (
                         <Link
                             to="/user/profile"
                             className={cx('avatar-dropdown-item', 'avatar-link')}

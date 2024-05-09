@@ -127,7 +127,9 @@ function Return({ response, userID }) {
                                     <li>
                                         <div className={cx('total')}>
                                             <p className={cx('row-title')}>Total</p>
-                                            <p>{formatPrice(res?.Orders[0].total)}</p>
+                                            {res?.Orders?.map((order) => {
+                                                return <p>{formatPrice(order.total)}</p>;
+                                            })}
                                         </div>
                                     </li>
                                     <li>
@@ -159,7 +161,10 @@ function Return({ response, userID }) {
                                     {res.status === 5 && <p>Completed</p>}
                                     {res.status === 6 && <p>Cancelation</p>}
                                 </div>
-                                <Order_Item product={res?.Orders[0]?.OrderDetails}></Order_Item>
+                                {res.Orders.map((order) => {
+                                    return <Order_Item product={order?.OrderDetails}></Order_Item>;
+                                })}
+
                                 {/* <div className={cx('received')}>
                                         {res?.status === 4 && (
                                             <Button
