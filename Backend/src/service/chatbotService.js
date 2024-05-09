@@ -6,7 +6,10 @@ var tokenizer = new natural.WordTokenizer();
 var objectKeys = Object.keys || require("object-keys");
 const path = require("path");
 
-const networkFilePath = path.join(__dirname, "../../dataset/trained_network.json"); // Path to save/load the trained network
+const networkFilePath = path.join(
+  __dirname,
+  "../../dataset/trained_network.json"
+); // Path to save/load the trained network
 
 let network = null; // Declare the network variable outside the function
 // Helpers
@@ -169,7 +172,7 @@ if (fs.existsSync(networkFilePath)) {
 } else {
   // Train the network if the trained network file doesn't exist
   trainNetwork();
-}  
+}
 
 //console.log(result);
 // console.log('-------- Training completed --------');
@@ -180,9 +183,9 @@ const responeQuestions = (input) => {
     trainNetwork();
   }
   const singleCharacterRegex = /^[.?!@#$%^&*()-+=/*~`,:;'<>|\\{}[]]$/;
-    if (singleCharacterRegex.test(input)) {
-     return "Tôi không hiểu,làm ơn nhập đúng";
-    }
+  if (singleCharacterRegex.test(input)) {
+    return "Tôi không hiểu,làm ơn nhập đúng";
+  }
   const fileContent = fs.readFileSync(
     path.join(__dirname, "../../dataset/data.csv"),
     "utf-8"

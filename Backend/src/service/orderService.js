@@ -52,6 +52,18 @@ const getAllOrders = async () => {
       attributes: {
         exclude: ["createdAt", "updatedAt", "id_order", "id_user"],
       },
+      include: {
+        model: Product,
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "id_order", "id_user"],
+        },
+        include: {
+          model: Inventory,
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "id_order", "id_user"],
+          },
+        },
+      },
     },
   });
   return orders;
