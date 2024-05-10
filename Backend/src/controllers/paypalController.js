@@ -7,7 +7,7 @@ const handelCreateNewPayment = async(req,res) => {
 const handelGetPaymentSuccess = async(req,res) => {
     const payerId = req.query.PayerID;
     const paymentId = req.query.paymentId;
-    await paypalService.getPaymentSuccess(payerId,paymentId);
+    await paypalService.getPaymentSuccess(payerId,paymentId,res);
 }
 
 module.exports = {handelCreateNewPayment,handelGetPaymentSuccess};

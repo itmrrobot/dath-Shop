@@ -57,7 +57,7 @@ const createPayment = (req,res) => {
     });
 }
 
-const getPaymentSuccess = async(payerId,paymentId) => {
+const getPaymentSuccess = async(payerId,paymentId,res) => {
     const execute_payment_json = {
         "payer_id": payerId,
         "transactions": [{
@@ -73,7 +73,7 @@ const getPaymentSuccess = async(payerId,paymentId) => {
             throw error;
         } else {
             console.log(JSON.stringify(payment));
-            console.log('Success (Mua hàng thành công)');
+            res.send('Success (Mua hàng thành công)');
         }
     });
 }
