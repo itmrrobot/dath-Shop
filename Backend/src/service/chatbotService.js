@@ -225,9 +225,14 @@ const responeQuestions = (input) => {
     }
   }
 
+  var categories = Object.values(data);
+  var wordsDictionary = arrayToDictonary(texts);
   // If the closest match has a similarity score above a certain threshold, return its answer
   if (closestMatch > 0.8) {
-    return data[closestQuestion];
+    return categories[
+      arrayMaxIndex(network.activate(textToVector(input, wordsDictionary)))
+    ];
+    //return data[closestQuestion];
   }
   
   // If no close match is found, return "I don't understand"
