@@ -2,7 +2,7 @@ const paypal = require("paypal-rest-sdk");
 const cartService = require("./cartService");
 const inventoryService = require("./inventoryService");
 const orderService = require("./orderService");
-var totals;
+var totals,order,cartIds,inventorys;
 
 paypal.configure({
   mode: process.env.PAYPAL_MODE, //sandbox or live
@@ -12,9 +12,9 @@ paypal.configure({
 
 const createPayment = (req, res) => {
   const { total, item_list } = req.body;
-  let order = req.body?.order;
-  let cartIds = req.body?.product.map((p) => p.cart_id);
-  let inventorys = req.body?.product.map((p) => p.Inventories);
+  order = req.body?.order;
+  cartIds = req.body?.product.map((p) => p.cart_id);
+  inventorys = req.body?.product.map((p) => p.Inventories);
   totals = total;
   const create_payment_json = {
     intent: "sale",
@@ -22,7 +22,7 @@ const createPayment = (req, res) => {
       payment_method: "paypal",
     },
     redirect_urls: {
-      return_url: "http://localhost:3000/paypal/payment/success",
+      return_url: "http://localhost:4000/paypal/payment/success",
       cancel_url: "http://localhost:3000/cancel",
     },
     transactions: [
@@ -43,13 +43,7 @@ const createPayment = (req, res) => {
     } else {
       for (let i = 0; i < payment.links.length; i++) {
         if (payment.links[i].rel === "approval_url") {
-          await orderService.createNewOrder({ ...order, status: 2 });
-          cartIds?.forEach(async (id) => {
-            await cartService.deleteCard(id);
-          });
-          await inventoryService.updateInventory("", {
-            listInventory: inventorys,
-          });
+            
           res.json({ forwardLink: payment.links[i].href });
         }
       }
@@ -72,13 +66,19 @@ const getPaymentSuccess = async (payerId, paymentId, res) => {
   paypal.payment.execute(
     paymentId,
     execute_payment_json,
-    function (error, payment) {
+    async function (error, payment) {
       if (error) {
         console.log(error.response);
         throw error;
       } else {
-        console.log(JSON.stringify(payment));
-        res.send("Success (Mua hàng thành công)");
+        await orderService.createNewOrder({ ...order, status: 2 });
+          cartIds?.forEach(async (id) => {
+            await cartService.deleteCard(id);
+          });
+          await inventoryService.updateInventory("", {
+            listInventory: inventorys,
+          });
+        res.redirect("http://localhost:3000/paypal/payment/success");
       }
     }
   );
