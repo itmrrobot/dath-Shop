@@ -37,26 +37,28 @@ function App() {
     console.log(state?.cuser?.value);
     return (
         <>
-            {/* Toast Dialog */}
-            <ToastContainer />
-            {/* Chatbox Floater */}
-            <>
-                <FloatButton.Group
-                    trigger="click"
-                    type="primary"
-                    style={{ right: 24 }}
-                    icon={<CustomerServiceOutlined />}
-                >
-                    <FloatButton
-                        icon={<CommentOutlined />}
-                        onClick={() => {
-                            setChat((prev) => !prev);
-                        }}
-                        // style={{position: 'relative'}}
-                    />
-                    {chat === true && <Chatbox></Chatbox>}
-                </FloatButton.Group>
-            </>
+            {(state?.cuser?.value?.Role?.id === 3 || state?.cuser?.value?.Role?.id === 4) && (
+                <>
+                    <ToastContainer />
+                    <>
+                        <FloatButton.Group
+                            trigger="click"
+                            type="primary"
+                            style={{ right: 24 }}
+                            icon={<CustomerServiceOutlined />}
+                        >
+                            <FloatButton
+                                icon={<CommentOutlined />}
+                                onClick={() => {
+                                    setChat((prev) => !prev);
+                                }}
+                                // style={{position: 'relative'}}
+                            />
+                            {chat === true && <Chatbox></Chatbox>}
+                        </FloatButton.Group>
+                    </>
+                </>
+            )}
             <Router>
                 <div className="App">
                     <Routes>
@@ -170,11 +172,24 @@ function App() {
                                 />
                             </>
                         )} */}
-                        {(state?.cuser?.value?.Role?.id === 1 ||
-                            state?.cuser?.value?.Role?.id === 3 ||
+                        {(state?.cuser?.value?.Role?.id === 3 ||
                             state?.cuser?.value?.Role?.id === 4) && (
                             <>
                                 <>
+                                    <Route path="/auth/oauth2/login" element={<LoginGoogle />} />
+                                    <Route
+                                        path="/vnpay/payment/success"
+                                        element={<PurchaseOrder />}
+                                    />
+                                    <Route
+                                        path="/vnpay/payment/cancel"
+                                        element={<PurchaseOrderCancel />}
+                                    />
+                                    <Route
+                                        path="/paypal/payment/success"
+                                        element={<PaypalSuccess />}
+                                    />
+                                    <Route path="/cancel" element={<PaypalCancel />} />
                                     <Route
                                         path="/user/profile"
                                         element={
@@ -282,6 +297,10 @@ function App() {
                                         }
                                     />
                                 </>
+                            </>
+                        )}
+                        {state?.cuser?.value?.Role?.id === 1 && (
+                            <>
                                 <Route
                                     path="/admin"
                                     element={
@@ -378,11 +397,6 @@ function App() {
                             );
                         })} */}
                         {/* <Route path={"/account/profile"} element={<Profile/>}/> */}
-                        <Route path="/auth/oauth2/login" element={<LoginGoogle />} />
-                        <Route path="/vnpay/payment/success" element={<PurchaseOrder />} />
-                        <Route path="/vnpay/payment/cancel" element={<PurchaseOrderCancel />} />
-                        <Route path="/paypal/payment/success" element={<PaypalSuccess />} />
-                        <Route path="/cancel" element={<PaypalCancel />} />
                     </Routes>
                 </div>
             </Router>
