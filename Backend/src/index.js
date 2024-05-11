@@ -32,6 +32,8 @@ const port = process.env.PORT || 8888;
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+app.set('trust proxy', true);
+
 
 const corsOptions ={
     origin:'http://localhost:3000', 

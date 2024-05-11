@@ -6,6 +6,27 @@ var tokenizer = new natural.WordTokenizer();
 var objectKeys = Object.keys || require("object-keys");
 const path = require("path");
 
+// Define a map to track the frequency of each message
+const messageFrequencyMap = new Map();
+
+// Function to check if a message is spam based on repetition frequency
+function isSpamByFrequency(message) {
+  const threshold = 3; // Adjust as needed
+  
+  // Increment message frequency count
+  const count = messageFrequencyMap.get(message) || 0;
+  messageFrequencyMap.set(message, count + 1);
+  
+  // Check if message frequency exceeds the threshold
+  if (count >= threshold) {
+    // Reset message frequency count to prevent continuous spam detection
+    messageFrequencyMap.set(message, 0);
+    return true; // Message is considered spam
+  }
+  
+  return false; // Message is not considered spam
+}
+
 const networkFilePath = path.join(
   __dirname,
   "../../dataset/trained_network.json"
@@ -177,12 +198,15 @@ if (fs.existsSync(networkFilePath)) {
 //console.log(result);
 // console.log('-------- Training completed --------');
 // const newInput = "Tôi có";
-const responeQuestions = (input) => {
+const responeQuestions = async(input) => {
   if (network === null) {
     // If the network is not trained yet, train it
     trainNetwork();
   }
-
+  const spam = isSpamByFrequency(input);
+  if (spam) {
+    return "You are spam";
+  }
   const singleCharacterRegex = /^[.?!@#$%^&*()-+=/*~`,:;'<>|\\{}[\]]$/;
   if (singleCharacterRegex.test(input)) {
     return "Tôi không hiểu, làm ơn nhập đúng";
