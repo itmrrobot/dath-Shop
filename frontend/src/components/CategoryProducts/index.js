@@ -11,6 +11,7 @@ const cx = classNames.bind(styles);
 function CategoryProducts() {
     const [isBlur, setIsBlur] = useState(false);
     const [data, setData] = useState([]);
+    console.log(data);
     let newData = data.category?.slice(0, 4);
     useEffect(() => {
         const controller = new AbortController();
