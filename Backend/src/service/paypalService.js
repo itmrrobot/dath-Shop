@@ -8,8 +8,8 @@ paypal.configure({
 });
 
 const createPayment = (req,res) => { 
-    const {total,list} = req.body;
-    totals=70;
+    const {total,item_list} = req.body;
+    totals=total;
     const create_payment_json = {
         "intent": "sale",
         "payer": {
@@ -20,24 +20,10 @@ const createPayment = (req,res) => {
             "cancel_url": "http://localhost:3000/cancel"
         },
         "transactions": [{
-            "item_list": {
-                "items": [{
-                    "name": "Iphone 4S",
-                    "sku": "001",
-                    "price": "35.00",
-                    "currency": "USD",
-                    "quantity": 1
-                },{
-                    "name": "Iphone 10S",
-                    "sku": "001",
-                    "price": "35.00",
-                    "currency": "USD",
-                    "quantity": 1
-                }]
-            },
+            "item_list": item_list,
             "amount": {
                 "currency": "USD",
-                "total": totals
+                "total": total
             },
             "description": "Iphone 4S cũ giá siêu rẻ"
         }]
