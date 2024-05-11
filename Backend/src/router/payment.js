@@ -30,6 +30,8 @@ router.get('/paypal/payment/success',vnpayController.handelGetPaymentSuccess);
 
 router.post('/create_payment_url',vnpayController.handelCreateNewPayment);
 
+router.get('/vnpay_return',vnpayController.handleGetVnpayReturn);
+
 router.get('/vnpay_ipn', function (req, res, next) {
     let vnp_Params = req.query;
     let secureHash = vnp_Params['vnp_SecureHash'];

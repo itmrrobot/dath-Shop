@@ -4,6 +4,41 @@ const orderService = require("./orderService");
 var order,cartIds,inventorys;
 const moment = require("moment");
 
+const getVnpayReturn = async (req,res) => {
+  var vnp_Params = req.query;
+    
+  var secureHash = vnp_Params['vnp_SecureHash'];
+
+  delete vnp_Params['vnp_SecureHash'];
+  delete vnp_Params['vnp_SecureHashType'];
+
+  vnp_Params = sortObject(vnp_Params);
+
+  var config = require('config');
+  var tmnCode = config.get('vnp_TmnCode');
+  var secretKey = config.get('vnp_HashSecret');
+
+  var querystring = require('qs');
+  var signData = querystring.stringify(vnp_Params, { encode: false });
+  var crypto = require("crypto");     
+  var hmac = crypto.createHmac("sha512", secretKey);
+  var signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");     
+
+  if(secureHash === signed){
+      //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
+      await orderService.createNewOrder({ ...order, status: 2 });
+      cartIds?.forEach(async (id) => {
+        await cartService.deleteCard(id);
+      });
+      await inventoryService.updateInventory("", {
+        listInventory: inventorys,
+      });
+    res.redirect("http://localhost:3000/vnpay/payment/success");
+  } else{
+    res.redirect("http://localhost:3000/vnpay/payment/cancel");
+  }
+}
+
 const createPayment = async (req,res) => {
     order = req.body?.order;
     cartIds = req.body?.product.map(p => p.cart_id);
@@ -91,4 +126,4 @@ const getPaymentSuccess = async (res) => {
     return sorted;
 }
 
-  module.exports = { createPayment, getPaymentSuccess };
+  module.exports = { createPayment, getPaymentSuccess,getVnpayReturn };

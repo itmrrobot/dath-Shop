@@ -8,4 +8,8 @@ const handelGetPaymentSuccess = async(req,res) => {
     await vnpayService.getPaymentSuccess(res);
 }
 
-module.exports = {handelCreateNewPayment,handelGetPaymentSuccess};
+const handleGetVnpayReturn = async(req,res) => {
+    await vnpayService.getVnpayReturn(req,res);
+}
+
+module.exports = {handelCreateNewPayment,handelGetPaymentSuccess,handleGetVnpayReturn};
