@@ -86,7 +86,7 @@ const Profile = () => {
             // console.log(dataPost);
             await delay(2000); // Chờ 2 giây
             const res = await axios.put(
-                `http://localhost:4000/auth/user/update/${state?.cuser?.value?.id}`,
+                `${url}/auth/user/update/${state?.cuser?.value?.id}`,
                 dataPost,
             );
 

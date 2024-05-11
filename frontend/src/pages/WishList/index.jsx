@@ -17,7 +17,7 @@ function WishList() {
     const state = useContext(UseContextUser);
     useEffect(() => {
         const fetchData = async () => {
-            const reponse = await axios.get(`http://localhost:4000/wishlist/${user_id.id}`);
+            const reponse = await axios.get(`${url}/wishlist/${user_id.id}`);
             setProducts(reponse.data);
         };
         fetchData();

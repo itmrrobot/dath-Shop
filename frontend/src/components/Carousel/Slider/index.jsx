@@ -64,22 +64,6 @@ function Slider({ param, brand_id, images, nameProduct }) {
             controller.abort();
         };
     }, [param, brand_id, nameProduct]);
-    // useEffect(() => {
-    //     axios
-    //         .get(`http://localhost:3000/product`, {
-    //             params: {
-    //                 brand_id: brand_id,
-    //             },
-    //         })
-    //         .then((res) => {
-    //             // Trả về 1 mảng [sản phẩm]
-    //             if (param) {
-    //                 setRecommend(res.data);
-    //             } else {
-    //                 setBrand(res.data);
-    //             }
-    //         });
-    // }, [param, brand_id]);
     const filteredProducts = products?.filter((product) => {
         return recommend?.some((recommendation) => {
             return product.name.toLowerCase().includes(recommendation.toLowerCase());

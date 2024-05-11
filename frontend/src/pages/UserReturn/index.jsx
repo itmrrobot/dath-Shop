@@ -164,32 +164,6 @@ function Return({ response, userID }) {
                                 {res.Orders.map((order) => {
                                     return <Order_Item product={order?.OrderDetails}></Order_Item>;
                                 })}
-
-                                {/* <div className={cx('received')}>
-                                        {res?.status === 4 && (
-                                            <Button
-                                                primary
-                                                onClick={() => {
-                                                    axios
-                                                        .patch(`http://localhost:3000/return/${res?.id}`, {
-                                                            isRefund: 1,
-                                                            status: 4,
-                                                        })
-                                                        .then((res) => {
-                                                            console.log(res);
-                                                            // setCheckChange((prev) => !prev);
-                                                            toast.success(
-                                                                'Đã xác nhận hoàn tiền đẩy đủ. Xin lỗi quý khách về sản phẩm!!',
-                                                            );
-                                                            navigator('/user/return');
-                                                        })
-                                                        .catch((err) => console.log(err));
-                                                }}
-                                            >
-                                                Have Already Received Refund
-                                            </Button>
-                                        )}
-                                    </div> */}
                             </div>
                         </div>
                     );

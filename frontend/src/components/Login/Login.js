@@ -116,7 +116,7 @@ function Login() {
         const url = `https://accounts.google.com/o/oauth2/v2/auth`;
         const query = {
             client_id: `529951967259-ndpvd8bdqpa0sacgdr4mviflrv0p63il.apps.googleusercontent.com`,
-            redirect_uri: `http://localhost:4000/auth/google/callback`,
+            redirect_uri: `${url}/auth/google/callback`,
             response_type: 'code',
             scope: [
                 'https://www.googleapis.com/auth/userinfo.email',
