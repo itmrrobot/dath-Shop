@@ -33,6 +33,7 @@ const images = {
     facebook_btn: require('./bi_facebook.svg').default,
     github_btn: require('./icons_github.svg').default,
     logo_login: require('./Logo_Login.png'),
+    vnpay: require('./vnpayy.svg').default,
     // thumbnail2: require('./thumbnail_2.png'),
 };
 

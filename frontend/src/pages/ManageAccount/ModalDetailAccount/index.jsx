@@ -232,7 +232,7 @@ function Orders({ orders, userID }) {
                                     <li>
                                         <div className={cx('total')}>
                                             <p className={cx('row-title')}>Total</p>
-                                            <p>{formatPrice(order.amount)}</p>
+                                            <p>{formatPrice(order.total)}</p>
                                         </div>
                                     </li>
                                     <li>

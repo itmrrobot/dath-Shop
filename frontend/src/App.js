@@ -26,6 +26,7 @@ import ManageOrder from './pages/ManageOrder';
 import ManageReturn from './pages/ManageReturn';
 import AddProducts from './pages/AddProducts';
 import LoginSignUp from './components/Layout/LoginSignup/LoginSignup';
+import PurchaseOrder from './components/PurchaseOrder';
 
 function App() {
     const [chat, setChat] = useState(false);
@@ -375,6 +376,7 @@ function App() {
                         })} */}
                         {/* <Route path={"/account/profile"} element={<Profile/>}/> */}
                         <Route path="/auth/oauth2/login" element={<LoginGoogle />} />
+                        <Route path="/purchase/order" element={<PurchaseOrder />} />
                     </Routes>
                 </div>
             </Router>

@@ -1,44 +1,87 @@
-import styles from "./PurchaseOrder.module.scss";
-import classNames from "classnames/bind";
-import ArrowNext from "../../assets/img/Frame.svg";
+import styles from './PurchaseOrder.module.scss';
+import classNames from 'classnames/bind';
+import ArrowNext from '../../assets/img/Frame.svg';
+import images from '../../assets/img';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 function PurchaseOrder() {
-    return(
-        <div className={cx("wrap-manage","wrap")}>
-            <h2 className={cx("title-manage")}>Purchase order</h2>
-            <div className={cx("wrap-code")}>
-                <span className={cx("code-order")}>Code orders:8224XHDLAD632</span>
-                <span>|</span>
-                <span className={cx("text")}>The seller has confirmed the order</span>
-            </div>
-            <div className={cx("process-purchase")}>
-                <span className={cx("name")}>Order placed</span>
-                <img src={ArrowNext} alt="arrow-next-icon" className={cx("icon")}/>
-                <span className={cx("name")}>Confirm information</span>
-                <img src={ArrowNext} alt="arrow-next-icon" className={cx("icon")}/>
-                <span className={cx("name")}>Transpot</span>
-                <img src={ArrowNext} alt="arrow-next-icon" className={cx("icon")}/>
-                <span className={cx("name","non-active")}>Delivery</span>
-                <img src={ArrowNext} alt="arrow-next-icon" className={cx("icon")}/>
-                <span className={cx("name","non-active")}>Evaluate</span>
-            </div>
-            <div className={cx("box")}>
-                <p className={cx("desc")}>The order has been successfully paid and is waiting for the shipping unit to pick up the goods</p>
-                <div className={cx("group-btn")}>
-                    <button className={cx("btn-common","btn-contact")}>Contact seller</button>
-                    <button className={cx("btn-common","btn-cancel")}>Cancel order</button>
+    // const [email, setEmail] = useState();
+    const navigate = useNavigate();
+    // const state = useContext(UseContextUser);
+    // useEffect(() => {
+    //     async function fetchData() {
+    //         try {
+    //             const response = await axios.get(`${url}/login/success`);
+    //             console.log(response);
+    //             setEmail(response.data.user.email);
+    //             let payload = {
+    //                 Role: {
+    //                     id: response.data.user.RoleId,
+    //                     name: 'Customer',
+    //                 },
+    //                 address: response.data.user.address,
+    //                 avatar: response.data.user.avatar,
+    //                 email: response.data.user.email,
+    //                 fullname: response.data.user.name,
+    //                 id: response.data.user.id,
+    //                 name: response.data.user.name,
+    //                 phone: response.data.user.phone,
+    //                 isGoogle: 1,
+    //             };
+    //             localStorage.setItem('user', JSON.stringify(payload));
+    //             state?.cuser?.setCurrentUser(payload);
+    //             toast.success(`Đăng nhập thành công`, {
+    //                 position: 'top-right',
+    //                 autoClose: 5000,
+    //                 hideProgressBar: false,
+    //                 closeOnClick: true,
+    //                 pauseOnHover: true,
+    //                 draggable: true,
+    //                 progress: undefined,
+    //                 theme: 'light',
+    //             });
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     }
+    //     fetchData();
+    // }, []);
+    const handleNavigationToMyOrder = () => {
+        navigate('/user/order');
+    };
+    return (
+        <div className={cx('wrapper')}>
+            <div className={cx('infor-container')}>
+                <div className={cx('infor-header')}>
+                    <div className={cx('logo')}>
+                        {/* <p>Hello</p> */}
+                        <img src={images.vnpay} alt="" />
+                    </div>
+                    <p>Thanh toán bằng VNPAY</p>
+                </div>
+                <div className={cx('infor-body')}>
+                    <div className={cx('logo')}>
+                        {/* <p>Hello</p> */}
+                        <img src={images.checkmark} alt="" />
+                    </div>
+                    <div className={cx('content')}>
+                        <p className={cx('content-notification')}>Đặt hàng thành công!!</p>
+                        <p className={cx('content-notification-sub')}>
+                            Vui lòng kiểm tra đơn hàng của bạn trong mục My Order
+                        </p>
+                    </div>
+                </div>
+                <div className={cx('return-home')} onClick={handleNavigationToMyOrder}>
+                    <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
+                    <p>Quay lại trang My Orders</p>
                 </div>
             </div>
-            <div className={cx("wrap-address")}>
-                <h4 className={cx("wrap-address__title")}>Delivery address</h4>
-                <div className={cx("wrap-address__name")}></div>
-                <div className={cx("wrap-address__address")}></div>
-                <div className={cx("wrap-address__phone")}></div>
-            </div>
         </div>
-    )
+    );
 }
 
 export default PurchaseOrder;

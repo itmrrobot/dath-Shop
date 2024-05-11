@@ -183,37 +183,39 @@ function Orders({ orders, userID }) {
                                     </div>
                                     <Order_Item product={order?.OrderDetails}></Order_Item>
                                     <div className={cx('received')}>
-                                        {order?.status === 2 &&
-                                            (order?.payed === 2 ? (
-                                                <Button
-                                                    primary
-                                                    onClick={() => {
-                                                        axios
-                                                            .put(
-                                                                `${url}/order/update/${order?.id}`,
-                                                                {
-                                                                    payed: 1,
-                                                                    status: 3,
-                                                                },
-                                                            )
-                                                            .then((res) => {
-                                                                console.log(res);
-                                                                // setCheckChange((prev) => !prev);
-                                                                toast.success(
-                                                                    'Đã hoàn tất thanh toán đầy đủ. Cảm ơn quý khách!!',
-                                                                );
-                                                                navigator('/user/order');
-                                                            })
-                                                            .catch((err) => console.log(err));
-                                                    }}
-                                                >
-                                                    Received
-                                                </Button>
-                                            ) : (
-                                                <Button primary disabled>
-                                                    Received
-                                                </Button>
-                                            ))}
+                                        {order?.status === 2 && order?.payed === 2 && (
+                                            <Button
+                                                primary
+                                                onClick={() => {
+                                                    axios
+                                                        .put(`${url}/order/update/${order?.id}`, {
+                                                            payed: 1,
+                                                            status: 3,
+                                                        })
+                                                        .then((res) => {
+                                                            console.log(res);
+                                                            // setCheckChange((prev) => !prev);
+                                                            toast.success(
+                                                                'Đã hoàn tất thanh toán đầy đủ. Cảm ơn quý khách!!',
+                                                            );
+                                                            navigator('/user/order');
+                                                        })
+                                                        .catch((err) => console.log(err));
+                                                }}
+                                            >
+                                                Received
+                                            </Button>
+                                        )}
+                                        {order?.status === 2 && order?.payed === 0 && (
+                                            <Button primary disabled>
+                                                Received
+                                            </Button>
+                                        )}
+                                        {order?.status === 2 && order?.payed === 1 && (
+                                            <Button primary disabled>
+                                                Have already payment!
+                                            </Button>
+                                        )}
                                         {/* Rating */}
                                         {/* {order?.status === 3 && order?.isPay === 1 && order?.rating === 0 ? (
                                             <Button
