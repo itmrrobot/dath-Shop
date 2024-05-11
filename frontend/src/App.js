@@ -29,6 +29,7 @@ import LoginSignUp from './components/Layout/LoginSignup/LoginSignup';
 import PurchaseOrder from './components/PurchaseOrder';
 import PaypalSuccess from './pages/PaypalSuccess';
 import PaypalCancel from './pages/PaypalCancel';
+import PurchaseOrderCancel from './components/PurchaseOrderCancel';
 
 function App() {
     const [chat, setChat] = useState(false);
@@ -378,7 +379,8 @@ function App() {
                         })} */}
                         {/* <Route path={"/account/profile"} element={<Profile/>}/> */}
                         <Route path="/auth/oauth2/login" element={<LoginGoogle />} />
-                        <Route path="/purchase/order" element={<PurchaseOrder />} />
+                        <Route path="/vnpay/payment/success" element={<PurchaseOrder />} />
+                        <Route path="/vnpay/payment/cancel" element={<PurchaseOrderCancel />} />
                         <Route path="/paypal/payment/success" element={<PaypalSuccess />} />
                         <Route path="/cancel" element={<PaypalCancel />} />
                     </Routes>
