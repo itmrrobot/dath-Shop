@@ -88,6 +88,8 @@ function Search() {
             appendTo={() => document.body}
             //
             visible={showResults && searchResult.length > 0}
+            // visible={showResults && searchResult.length > 0}
+
             // trigger="click"
             // placement="bottom-end"
             // Attribute cho phep render ra popup voi dieu kien la

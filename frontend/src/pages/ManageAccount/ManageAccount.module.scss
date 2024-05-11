@@ -129,12 +129,14 @@ h2 {
     }
 
     &.lock {
-        background-color: rgb(230, 145, 114);
-        color: #fff;
+        background-color: white;
+        color: rgb(230, 145, 114);
+        font-weight: 700;
     }
     &.unlock {
-        background-color: rgb(146, 202, 150);
-        color: #fff;
+        background-color: white;
+        color: rgb(146, 202, 150);
+        font-weight: 700;
     }
 }
 

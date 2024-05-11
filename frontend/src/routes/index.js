@@ -25,7 +25,7 @@ export const publicRoutes = [
     { path: '/products', component: Products },
     { path: '/product/:id', component: Product },
     { path: '/cart', component: Cart },
-    { path: '/purchase/order', component: PurchaseOrder },
+    // { path: '/purchase/order', component: PurchaseOrder },
 ];
 
 export const privateRoutes = [

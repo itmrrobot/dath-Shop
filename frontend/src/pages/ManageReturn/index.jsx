@@ -172,7 +172,7 @@ function ManageReturn() {
                 sizeSelected.quantity = sizeSelected.quantity - prod.quantity; // Cập nhật quantity thành 13
 
                 return axios.put(`${url}/inventory/update/${prod.id}`, {
-                    listInventory: [...prod.Product.Inventories, sizeSelected],
+                    listInventory: [sizeSelected],
                 });
             });
             console.log(requests);
@@ -189,8 +189,11 @@ function ManageReturn() {
                         },
                     },
                 );
+                await axios.put(`${url}/order/update/${order?.Orders[0]?.id}`, {
+                    status: 3,
+                });
                 setCheckChange((prev) => !prev);
-                toast.success('Huỷ đơn hàng thành công');
+                toast.success('Huỷ đơn hàng hoàn trả thành công');
                 setIsModalOpen(false);
             } catch (error) {
                 console.log(error);
@@ -436,8 +439,6 @@ function ManageReturn() {
                                                                     `${url}/inventory/update/${prod.id}`,
                                                                     {
                                                                         listInventory: [
-                                                                            ...prod.Product
-                                                                                .Inventories,
                                                                             sizeSelected,
                                                                         ],
                                                                     },

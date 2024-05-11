@@ -130,17 +130,17 @@ function Products() {
         const fetchData = async () => {
             try {
                 await axios.post(`${url}/wishlist/create`, data);
-                toast.success(`Add product ${payload.name} to wishlist success`, {
-                    position: 'top-right',
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    // theme: 'light',
-                    theme: 'colored',
-                });
+                // toast.success(`Add product ${payload.name} to wishlist success`, {
+                //     position: 'top-right',
+                //     autoClose: 3000,
+                //     hideProgressBar: false,
+                //     closeOnClick: true,
+                //     pauseOnHover: true,
+                //     draggable: true,
+                //     progress: undefined,
+                //     // theme: 'light',
+                //     theme: 'colored',
+                // });
                 state?.render?.setRender((prev) => !prev);
             } catch (error) {
                 console.log(error);

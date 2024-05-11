@@ -218,7 +218,7 @@ function ManageOrder() {
                                     {/* Delivering */}
                                     {order?.status === 2 && pagCurr === 1 && (
                                         <>
-                                            {order?.payed === 2 ? (
+                                            {order?.payed === 2 && (
                                                 <Button
                                                     primary
                                                     disabled
@@ -230,7 +230,32 @@ function ManageOrder() {
                                                 >
                                                     Accepted!!!
                                                 </Button>
-                                            ) : (
+                                            )}
+                                            {order?.payed === 1 && (
+                                                <Button
+                                                    primary
+                                                    managerOrder
+                                                    onClick={() => {
+                                                        axios
+                                                            .put(
+                                                                `${url}/order/update/${order?.id}`,
+                                                                {
+                                                                    status: 3,
+                                                                },
+                                                            )
+                                                            .then((res) => {
+                                                                setCheckChange((prev) => !prev);
+                                                                toast.success(
+                                                                    'Xác nhận đã giao đơn hàng tới cho khách. Khách hàng đã thanh toán đầy đủ.',
+                                                                );
+                                                            })
+                                                            .catch((err) => console.log(err));
+                                                    }}
+                                                >
+                                                    Accept
+                                                </Button>
+                                            )}
+                                            {order?.payed === 0 && (
                                                 <Button
                                                     primary
                                                     managerOrder
@@ -254,7 +279,6 @@ function ManageOrder() {
                                                     Accept
                                                 </Button>
                                             )}
-
                                             <Button
                                                 primary
                                                 managerOrder

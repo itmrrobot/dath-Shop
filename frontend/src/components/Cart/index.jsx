@@ -79,10 +79,31 @@ function Cart() {
             returnDate: futureDate,
             products: productArr,
         };
+        console.log(dataPost);
 
         let prodTicked = state?.cart?.value?.filter((prod) => prod.isChecked === true);
         let dataDelete = JSON.stringify(prodTicked.map((prod) => prod.id));
         let prodTickeds = product.filter((prod) => prod.isChecked === true);
+        // console.log({
+        //     order: {
+        //         ...dataPost,
+        //         status: 2,
+        //         payed: 1,
+        //     },
+        //     product: prodTickeds.map((prod) => {
+        //         let inventoryUpdate = prod?.product?.Inventories?.find((item) => {
+        //             return item.size == prod?.size?.replace(/[\[\]"]+/g, '');
+        //         });
+        //         return {
+        //             cart_id: prod.id,
+        //             // quantity: prod.quantity,
+        //             Inventories: {
+        //                 ...inventoryUpdate,
+        //                 quantity: inventoryUpdate.quantity - prod.quantity,
+        //             },
+        //         };
+        //     }),
+        // });
         if (cash === 'COD') {
             try {
                 const requests = product?.map((prod) => {
@@ -93,7 +114,7 @@ function Cart() {
                     sizeSelected.quantity = sizeSelected.quantity - prod.quantity; // Cập nhật quantity thành 13
                     // let newData = [...prod?.Inventories, sizeSelected];
                     return axios.put(`${url}/inventory/update/${prod.id}`, {
-                        listInventory: [...prod?.product?.Inventories, sizeSelected],
+                        listInventory: [sizeSelected],
                     });
                 });
                 await Promise.all(requests);
@@ -144,6 +165,48 @@ function Cart() {
                     console.log(res.data);
                     window.location.replace(`${res.data}`);
                 }
+            } catch (e) {
+                console.log(e);
+            }
+        } else if (cash === 'Paypal') {
+            try {
+                await axios.post(url + '/paypal/payment', {
+                    order: {
+                        ...dataPost,
+                        payed: 1,
+                    },
+                    product: prodTickeds.map((prod) => {
+                        let inventoryUpdate = prod?.product?.Inventories?.find((item) => {
+                            return item.size == prod?.size?.replace(/[\[\]"]+/g, '');
+                        });
+                        return {
+                            cart_id: prod.id,
+                            // quantity: prod.quantity,
+                            Inventories: {
+                                ...inventoryUpdate,
+                                quantity: inventoryUpdate.quantity - prod.quantity,
+                            },
+                        };
+                    }),
+                    item_list: {
+                        items: prodTickeds.map((prod) => {
+                            console.log(prod);
+                            return {
+                                name: prod.nameProduct,
+                                sku: '001',
+                                price: JSON.stringify(
+                                    Math.ceil((prod.priceProduct / 23000) * 100) / 100,
+                                ),
+                                currency: 'USD',
+                                quantity: prod.quantity,
+                            };
+                        }),
+                    },
+                    total:
+                        shipment === 'save'
+                            ? Math.ceil((totalSum / 23000) * 100) / 100
+                            : Math.ceil(((totalSum + 50000) / 23000) * 100) / 100,
+                });
             } catch (e) {
                 console.log(e);
             }
@@ -429,10 +492,6 @@ function Cart() {
                             <div className={cx('payment-display-modal')}>
                                 <p className={cx('label-modal')}>Sales tax (6.5%)</p>
                                 <p className={cx('discount-price-modal')}>{formatPrice(tax)}</p>
-                            </div>
-                            <div className={cx('payment-display-modal')}>
-                                <p className={cx('label-modal')}>Voucher</p>
-                                <p className={cx('discount-price-modal')}>-20%</p>
                             </div>
                             <div className={cx('payment-display-modal')}>
                                 <p className={cx('label-modal')}>Shipping Fee</p>

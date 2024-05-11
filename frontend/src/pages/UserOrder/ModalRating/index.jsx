@@ -171,6 +171,7 @@ function Rating({ product, key, order, render, prodToRating, orderId }) {
 
     let imgs = product?.product?.img;
     const onDrop = (acceptedFiles) => {
+        console.log(product.id);
         const file = acceptedFiles[0];
         setVideoFile(file);
     };
@@ -262,6 +263,7 @@ function Rating({ product, key, order, render, prodToRating, orderId }) {
                     </div>
                 </div>
             </div>
+
             {product?.rating === 0 ? (
                 <div className={cx('rating')}>
                     <div className={cx('star')}>
@@ -326,7 +328,7 @@ function Rating({ product, key, order, render, prodToRating, orderId }) {
                                         <div className={cx('img_sub')}>
                                             <label
                                                 className={cx(['add_btn-on', 'img_sub__add'])}
-                                                htmlFor="file2"
+                                                htmlFor={`file-${product.id}`}
                                             >
                                                 <FontAwesomeIcon icon={faSquarePlus} size="4x" />
                                             </label>
@@ -340,13 +342,14 @@ function Rating({ product, key, order, render, prodToRating, orderId }) {
                                 onChange={(e) => {
                                     try {
                                         const file = e?.target?.files[0];
+                                        // console.log(product.id);
                                         file.preview = URL.createObjectURL(file);
                                         setImg((pre) => [...pre, file]);
                                     } catch {
                                         console.log('Error');
                                     }
                                 }}
-                                id="file2"
+                                id={`file-${product.id}`}
                                 className={cx('add_imgSub_btn-off')}
                             />
                             <div>
@@ -403,8 +406,6 @@ function Rating({ product, key, order, render, prodToRating, orderId }) {
 function Order_Item({ product, render, orderId }) {
     const [prod, setProd] = useState();
     const [prodToRating, setProductToRating] = useState();
-
-    console.log(prod);
     useEffect(() => {
         let product_id = product?.map((i) => i.id_product);
         const fetchProducts = async () => {
@@ -429,11 +430,12 @@ function Order_Item({ product, render, orderId }) {
     return (
         <>
             {prod?.map((item, index) => {
+                // console.log(item);
                 return (
                     <>
                         <Rating
                             product={item}
-                            key={index}
+                            key={item.id}
                             order={product}
                             prodToRating={prodToRating}
                             render={render}
