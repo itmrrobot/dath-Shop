@@ -47,7 +47,6 @@ const getVnpayIPN = async (req, res) => {
               listInventory: inventorys,
             });
             res.redirect("http://localhost:3000/vnpay/payment/success");
-            res.redirect("http://localhost:3000/vnpay/payment/success");
           } else {
             //that bai
             //paymentStatus = '2'
