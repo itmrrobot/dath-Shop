@@ -19,6 +19,8 @@ const images = {
     bot: require('./Bot.svg').default,
     google: require('./google.svg').default,
     checkmark: require('./checkmark.svg').default,
+    uncheckmark: require('./uncheckmark.svg').default,
+
     unheart: require('./unheart.svg').default,
     thumbnail1: require('./thumbnail_1.png'),
     thumbnail2: require('./thumbnail_2.png'),
@@ -34,6 +36,7 @@ const images = {
     github_btn: require('./icons_github.svg').default,
     logo_login: require('./Logo_Login.png'),
     vnpay: require('./vnpayy.svg').default,
+    paypal: require('./paypal.svg').default,
     // thumbnail2: require('./thumbnail_2.png'),
 };
 
