@@ -84,6 +84,38 @@ function Cart() {
         let prodTicked = state?.cart?.value?.filter((prod) => prod.isChecked === true);
         let dataDelete = JSON.stringify(prodTicked.map((prod) => prod.id));
         let prodTickeds = product.filter((prod) => prod.isChecked === true);
+        console.log({
+            item_list: {
+                items: prodTickeds.map((prod) => {
+                    return {
+                        name: JSON.stringify(prod.nameProduct),
+                        sku: '001',
+                        price: JSON.stringify(
+                            Math.ceil(
+                                ((prod.priceProduct * prod.quantity +
+                                    prod.priceProduct * 0.065 * prod.quantity) /
+                                    23000) *
+                                    100,
+                            ) / 100,
+                        ),
+                        currency: 'USD',
+                        quantity: prod.quantity,
+                    };
+                }),
+            },
+            total: prodTickeds.reduce((acc, prod) => {
+                return (
+                    acc +
+                    Math.ceil(
+                        ((prod.priceProduct * prod.quantity +
+                            prod.priceProduct * 0.065 * prod.quantity) /
+                            23000) *
+                            100,
+                    ) /
+                        100
+                );
+            }, 0),
+        });
         // console.log({
         //     order: {
         //         ...dataPost,
@@ -169,8 +201,9 @@ function Cart() {
                 console.log(e);
             }
         } else if (cash === 'Paypal') {
+            setShipment('save');
             try {
-                await axios.post(url + '/paypal/payment', {
+                let res = await axios.post(url + '/paypal/payment', {
                     order: {
                         ...dataPost,
                         payed: 1,
@@ -190,23 +223,39 @@ function Cart() {
                     }),
                     item_list: {
                         items: prodTickeds.map((prod) => {
-                            console.log(prod);
                             return {
                                 name: prod.nameProduct,
                                 sku: '001',
                                 price: JSON.stringify(
-                                    Math.ceil((prod.priceProduct / 23000) * 100) / 100,
+                                    Math.ceil(
+                                        ((prod.priceProduct + prod.priceProduct * 0.065) / 23000) *
+                                            100,
+                                    ) / 100,
                                 ),
                                 currency: 'USD',
                                 quantity: prod.quantity,
                             };
                         }),
                     },
-                    total:
-                        shipment === 'save'
-                            ? Math.ceil((totalSum / 23000) * 100) / 100
-                            : Math.ceil(((totalSum + 50000) / 23000) * 100) / 100,
+                    total: JSON.stringify(
+                        prodTickeds.reduce((acc, prod) => {
+                            return (
+                                acc +
+                                Math.ceil(
+                                    ((prod.priceProduct * prod.quantity +
+                                        prod.priceProduct * 0.065 * prod.quantity) /
+                                        23000) *
+                                        100,
+                                ) /
+                                    100
+                            );
+                        }, 0),
+                    ),
                 });
+                if (res) {
+                    window.location = res.data.forwardLink;
+                }
+                // navigate(`/paypal/payment/success`);
             } catch (e) {
                 console.log(e);
             }
@@ -634,11 +683,12 @@ function Cart() {
                             <li className={cx('method')}>
                                 <input
                                     type="radio"
-                                    name=""
                                     id="fast"
-                                    checked={shipment === 'fast'}
+                                    checked={shipment === 'fast' && cash !== 'Paypal'}
                                     onChange={() => {
-                                        setShipment('fast');
+                                        if (cash !== 'Paypal') {
+                                            setShipment('fast');
+                                        }
                                     }}
                                 />
                                 <label htmlFor="fast">Vận chuyển Nhanh (từ 2 - 3 ngày)</label>
@@ -664,6 +714,7 @@ function Cart() {
                                     checked={cash === 'Paypal'}
                                     onChange={() => {
                                         setCash('Paypal');
+                                        setShipment('save');
                                     }}
                                 />
                                 <label htmlFor="paypal">Paypal</label>
