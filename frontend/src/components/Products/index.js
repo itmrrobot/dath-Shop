@@ -73,7 +73,7 @@ function Products() {
                 setProductPerPage(response.data.products);
                 setDisplay(false);
                 sort ? setSelected((prev) => prev) : setSelected('All');
-                // dispatch(actions.setLoading(false));
+                dispatch(actions.setLoading(false));
             } catch (error) {
                 console.error(error);
             }
