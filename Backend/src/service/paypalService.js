@@ -22,8 +22,8 @@ const createPayment = (req, res) => {
       payment_method: "paypal",
     },
     redirect_urls: {
-      return_url: "http://localhost:4000/paypal/payment/success",
-      cancel_url: "http://localhost:3000/cancel",
+      return_url: "https://backend-datn-production.up.railway.app/paypal/payment/success",
+      cancel_url: "https://shop-datn.netlify.app/cancel",
     },
     transactions: [
       {
@@ -78,7 +78,7 @@ const getPaymentSuccess = async (payerId, paymentId, res) => {
           await inventoryService.updateInventory("", {
             listInventory: inventorys,
           });
-        res.redirect("http://localhost:3000/paypal/payment/success");
+        res.redirect("https://shop-datn.netlify.app/paypal/payment/success");
       }
     }
   );
