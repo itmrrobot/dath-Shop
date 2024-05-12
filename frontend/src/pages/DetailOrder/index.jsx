@@ -8,12 +8,15 @@ import axios from 'axios';
 import { Button, Modal } from 'antd';
 import { url } from '../../constants';
 import moment from 'moment';
+import { StoreContext } from '../../components/PageLoading/store';
+import { actions } from '../../components/PageLoading/store';
 const cx = classNames.bind(styles);
 function DetailOrder() {
     const param = useParams();
     const [order, setOrder] = useState();
     console.log(order);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isLoading, dispatch] = useContext(StoreContext);
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -38,6 +41,7 @@ function DetailOrder() {
         try {
             // console.log(dataPost);
             // console.log(state?.cuser?.value);
+            dispatch(actions.setLoading(true));
             await delay(2000); // Chờ 2 giây
             const requests = order?.OrderDetails?.map((prod) => {
                 let sizeSelected = prod?.product?.Inventories?.find((item) => {
@@ -72,6 +76,7 @@ function DetailOrder() {
             });
         } finally {
             navigator('/user/order');
+            dispatch(actions.setLoading(false)); // Kết thúc hiển thị trạng thái loading
         }
     };
 
@@ -151,28 +156,35 @@ function DetailOrder() {
     };
     // console.log(param.id);
     useEffect(() => {
+        let baseUrl = `${url}/products`;
         const fetchOrder = async () => {
-            let baseUrl = `${url}/products`;
-            let res = await axios.get(`${url}/order/${param.id}`);
-            let requests = res.data.OrderDetails.map((prod) =>
-                axios.get(`${baseUrl}/${prod.id_product}`),
-            );
-            console.log(requests);
-            let responses = await Promise.all(requests);
-            let products = responses.map((response) => response.data);
-            let a = res.data.OrderDetails?.map((item) => {
-                return {
-                    ...item,
-                    product: products?.find((i) => i.id === item.id_product),
-                };
-            });
+            try {
+                let res = await axios.get(`${url}/order/${param.id}`);
+                let requests = res.data.OrderDetails.map((prod) =>
+                    axios.get(`${baseUrl}/${prod.id_product}`),
+                );
+                let responses = await Promise.all(requests);
+                let products = responses.map((response) => response.data);
+                let a = res.data.OrderDetails?.map((item) => {
+                    return {
+                        ...item,
+                        product: products?.find((i) => i.id === item.id_product),
+                    };
+                });
 
-            setOrder({
-                ...res.data,
-                OrderDetails: a,
-            });
+                setOrder({
+                    ...res.data,
+                    OrderDetails: a,
+                });
+                dispatch(actions.setLoading(false));
+            } catch (err) {
+                console.log(err);
+            }
         };
-        fetchOrder();
+        dispatch(actions.setLoading(true));
+        setTimeout(async () => {
+            await fetchOrder();
+        }, 1000);
     }, [param]);
     // console.log(order?.status);
     return (

@@ -17,15 +17,25 @@ import Search from '../Layout/components/Search';
 import { formatPrice } from '../../common';
 import Button from '../Button';
 import { url } from '../../constants';
+import { Modal } from 'antd';
+
 const cx = classNames.bind(styles);
 
 function Header() {
     // const {setSearchContent} = FilterState();
     const state = useContext(UseContextUser);
+
     // console.log(state.cuser.value);
-    const [isSuccess, setIsSuccess] = useState(false);
     const [cartHeader, setCartHeader] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const navigate = useNavigate();
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+    const handleOk = () => {
+        navigate(`/login`);
+    };
     const totalProduct = useMemo(() => {
         return cartHeader.reduce((acc, cur) => {
             return acc + Number(cur?.quantity);
@@ -156,7 +166,10 @@ function Header() {
                         <Tippy delay={[0, 50]} content="Your Favourites!" placement="bottom">
                             <Button
                                 text
-                                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                                onClick={() => {
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    setIsModalOpen(true);
+                                }}
                             >
                                 Wish List
                             </Button>
@@ -284,7 +297,9 @@ function Header() {
                     {state.cuser.value !== '' && <DropdownAccount />}
                 </div>
             </div>
-            {isSuccess && <ModalMessage setIsSuccess={setIsSuccess} msg={'You need to login'} />}
+            <Modal title="Thông báo" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <p>You need to login</p>
+            </Modal>
         </nav>
     );
 }

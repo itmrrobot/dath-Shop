@@ -19,6 +19,9 @@ import { UseContextUser } from '../../hooks/useContextUser';
 import { toast } from 'react-toastify';
 import ReactPaginate from 'react-paginate';
 import './pagination.css';
+import { StoreContext } from '../PageLoading/store';
+import { actions } from '../PageLoading/store';
+
 const cx = classNames.bind(styles);
 
 function Products() {
@@ -41,6 +44,8 @@ function Products() {
     const categoryId = searchParams.get('categoryId');
     const sort = searchParams.get('sort');
     const state = useContext(UseContextUser);
+    const [isLoading, dispatch] = useContext(StoreContext);
+
     const numPages = (n) => {
         const arrPage = Math.ceil(+n / 9);
         return arrPage;
@@ -68,16 +73,16 @@ function Products() {
                 setProductPerPage(response.data.products);
                 setDisplay(false);
                 sort ? setSelected((prev) => prev) : setSelected('All');
-                // dispatch(actions.setLoading(false));
+                dispatch(actions.setLoading(false));
             } catch (error) {
                 console.error(error);
             }
         };
-
-        // dispatch(actions.setLoading(true));
+        dispatch(actions.setLoading(true));
         setTimeout(async () => {
             await fetchData();
-        }, 0);
+        }, 1000);
+        // dispatch(actions.setLoading(true));
     }, [page, price_gte, price_lte, filter, categoryId, brandId, limit, sort]);
 
     const handleDropItem = (select, path = '') => {

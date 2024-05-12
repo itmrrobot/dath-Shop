@@ -38,27 +38,25 @@ function App() {
     return (
         <>
             <ToastContainer />
-            {(state?.cuser?.value?.Role?.id === 3 || state?.cuser?.value?.Role?.id === 4) && (
+            <>
                 <>
-                    <>
-                        <FloatButton.Group
-                            trigger="click"
-                            type="primary"
-                            style={{ right: 24 }}
-                            icon={<CustomerServiceOutlined />}
-                        >
-                            <FloatButton
-                                icon={<CommentOutlined />}
-                                onClick={() => {
-                                    setChat((prev) => !prev);
-                                }}
-                                // style={{position: 'relative'}}
-                            />
-                            {chat === true && <Chatbox></Chatbox>}
-                        </FloatButton.Group>
-                    </>
+                    <FloatButton.Group
+                        trigger="click"
+                        type="primary"
+                        style={{ right: 24 }}
+                        icon={<CustomerServiceOutlined />}
+                    >
+                        <FloatButton
+                            icon={<CommentOutlined />}
+                            onClick={() => {
+                                setChat((prev) => !prev);
+                            }}
+                            // style={{position: 'relative'}}
+                        />
+                        {chat === true && <Chatbox></Chatbox>}
+                    </FloatButton.Group>
                 </>
-            )}
+            </>
             <Router>
                 <div className="App">
                     <Routes>
@@ -173,7 +171,8 @@ function App() {
                             </>
                         )} */}
                         {(state?.cuser?.value?.Role?.id === 3 ||
-                            state?.cuser?.value?.Role?.id === 4) && (
+                            state?.cuser?.value?.Role?.id === 4 ||
+                            state?.cuser?.value?.Role?.id === 1) && (
                             <>
                                 <>
                                     <Route path="/auth/oauth2/login" element={<LoginGoogle />} />
