@@ -95,7 +95,7 @@ function Slider({ param, brand_id, images, nameProduct }) {
                         return (
                             <div key={i}>
                                 <SwiperSlide>
-                                    <Link to={`http://localhost:3000/product/${slide.id}`}>
+                                    <Link to={`https://shop-datn.netlify.app/product/${slide.id}`}>
                                         <div className={cx('item-slider')}>
                                             <img
                                                 // src={'https://shoesshop-6n6z.onrender.com/imgs/' + slide?.img}
@@ -119,7 +119,9 @@ function Slider({ param, brand_id, images, nameProduct }) {
                             return (
                                 <div key={index}>
                                     <SwiperSlide>
-                                        <Link to={`http://localhost:3000/product/${slide.id}`}>
+                                        <Link
+                                            to={`https://shop-datn.netlify.app/product/${slide.id}`}
+                                        >
                                             <div className={cx('item-slider')}>
                                                 <img
                                                     src={`${slide.img[0]}`}
