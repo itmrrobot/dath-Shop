@@ -17,6 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Button from '../Button';
 import { toast } from 'react-toastify';
+// import AvatarAuto from '../AvatarAuto';
 const cx = classNames.bind(styles);
 
 const Profile = () => {
@@ -127,7 +128,8 @@ const Profile = () => {
                 <img src={HeaderBackground} alt="" className={cx('header-img')} />
                 <div className={cx('avatar-wrapper')}>
                     {/* <img src={state?.cuser?.value?.avatar} alt="avatar" className={cx("avatar")}/>  */}
-                    <img src={state?.cuser?.value?.avatar} alt="avatar" className={cx('avatar')} />
+                    {/* <img src={state?.cuser?.value?.avatar} alt="avatar" className={cx('avatar')} /> */}
+                    <AvatarAuto nameU={state?.cuser?.value?.name} />
                 </div>
             </div>
             <div className={cx('container')}>
@@ -248,3 +250,24 @@ const Profile = () => {
 };
 
 export default Profile;
+
+function AvatarAuto({ nameU = 'User' }) {
+    let bgRand = nameU.lastIndexOf(' ')
+        ? nameU[nameU.lastIndexOf(' ') + 1].charCodeAt(0) % 10
+        : nameU[0].charCodeAt(0) % 10;
+    bgRand = bgRand > 0 ? bgRand : bgRand + 1;
+    const sumaryU = () => {
+        let n = nameU.lastIndexOf(' ') + 1;
+        let splitName = nameU.split(' ');
+        // return nameU[n]
+        return splitName.length > 1
+            ? splitName[splitName.length - 2][0] + splitName[splitName.length - 1][0]
+            : nameU[0];
+    };
+
+    return (
+        <div className={cx(['wrapper_auto', `bgA_${bgRand}`])}>
+            <span>{sumaryU()}</span>
+        </div>
+    );
+}

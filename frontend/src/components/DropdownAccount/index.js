@@ -6,6 +6,7 @@ import userImage from '../../assets/img/image 11.png';
 import { useState, useContext } from 'react';
 import { UseContextUser } from '../../hooks/useContextUser';
 import { toast } from 'react-toastify';
+import AvatarAuto from '../AvatarAuto';
 
 const cx = classNames.bind(styles);
 
@@ -45,7 +46,7 @@ function DropdownAccount() {
                 setIsClickAvatar(!isClickAvatar);
             }}
         >
-            <img src={state?.cuser?.value?.avatar} alt="img-user" className={cx('img')} />
+            <AvatarAuto nameU={state?.cuser?.value?.name} />
             <div className={cx('desc')}>
                 <span className={cx('text')}>Welcome back</span>
                 <span className={cx('name')}>{state?.cuser?.value?.name}</span>
@@ -79,7 +80,8 @@ function DropdownAccount() {
                         </Link>
                     )}
                     {(state?.cuser?.value?.Role?.id === 3 ||
-                        state?.cuser?.value?.Role?.id === 4) && (
+                        state?.cuser?.value?.Role?.id === 4 ||
+                        state?.cuser?.value?.Role?.id === 1) && (
                         <Link
                             to="/user/profile"
                             className={cx('avatar-dropdown-item', 'avatar-link')}

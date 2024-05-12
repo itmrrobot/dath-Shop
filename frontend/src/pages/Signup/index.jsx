@@ -298,7 +298,9 @@ function Register() {
                             />
                         </Button>
                     </div> */}
-                    <Link to={googleOAuth}>
+                    <Link
+                        to={'https://backend-datn-production.up.railway.app/auth/google/callback'}
+                    >
                         <Button rounded>
                             <img src={images.google} alt="yt" />
                         </Button>

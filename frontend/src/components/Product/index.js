@@ -111,6 +111,7 @@ function Product() {
     }, [id]);
 
     const handleAddToCart = async () => {
+        const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
         if (state?.cuser?.value === '') {
             setIsModalOpen(true);
         } else {
@@ -144,6 +145,8 @@ function Product() {
                             img: `${image[0]}`,
                         };
                         // console.log(data);
+                        dispatch(actions.setLoading(true));
+                        await delay(2000); // Chờ 2 giây
                         await axios.post(url + '/cart/create', data);
                         toast.success(`Add product to cart success`, {
                             position: 'top-right',
@@ -159,6 +162,8 @@ function Product() {
                         state?.render?.setRender((prev) => !prev);
                     } catch (e) {
                         console.log(e);
+                    } finally {
+                        dispatch(actions.setLoading(false)); // Kết thúc hiển thị trạng thái loading
                     }
                 }
             } else {
@@ -173,6 +178,8 @@ function Product() {
                         img: `${image[0]}`,
                     };
                     // console.log(data);
+                    dispatch(actions.setLoading(true));
+                    await delay(2000); // Chờ 2 giây
                     await axios.post(url + '/cart/create', data);
                     toast.success(`Add product to cart success`, {
                         position: 'top-right',
@@ -188,6 +195,8 @@ function Product() {
                     state?.render?.setRender((prev) => !prev);
                 } catch (e) {
                     console.log(e);
+                } finally {
+                    dispatch(actions.setLoading(false)); // Kết thúc hiển thị trạng thái loading
                 }
             }
         }
