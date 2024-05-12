@@ -5,7 +5,7 @@ import LoadingOverlay from 'react-loading-overlay-ts';
 import RingLoader from 'react-spinners/RingLoader';
 
 // import classNames from 'classnames/bind';
-import '../pageloading.css';
+import './loading.css';
 
 // const cx = classNames.bind(styles)
 
