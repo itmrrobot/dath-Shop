@@ -3,12 +3,7 @@ import Context from './Context';
 import reducer, { initialState } from './reducer';
 import LoadingOverlay from 'react-loading-overlay-ts';
 import RingLoader from 'react-spinners/RingLoader';
-
-// import classNames from 'classnames/bind';
 import './loading.css';
-
-// const cx = classNames.bind(styles)
-
 function Provider({ children }) {
     const [isLoading, dispatch] = useReducer(reducer, initialState);
     // console.log(isLoading);
@@ -16,13 +11,20 @@ function Provider({ children }) {
         <LoadingOverlay
             // styles={{
             //     _loading_overlay_content: {
-            //         // width: '400px',
-            //         // height: '400px',
+            //         width: '400px',
+            //         height: '400px',
             //         position: 'fixed',
+
             //         // overflow: active ? 'hidden' : 'scroll',
             //     },
             // }}
             active={isLoading}
+            // styles={{
+            //     _loading_overlay_content: {
+            //         position: 'fixed',
+
+            //     },
+            // }}
             spinner={
                 <div
                     style={{
