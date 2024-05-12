@@ -112,24 +112,26 @@ function Login() {
                 // console.log(res.message);
             });
     };
-    const getGoogleAuthUrl = () => {
-        const url = `https://accounts.google.com/o/oauth2/v2/auth`;
-        const query = {
-            client_id: `529951967259-ndpvd8bdqpa0sacgdr4mviflrv0p63il.apps.googleusercontent.com`,
-            redirect_uri: `${url}/auth/google/callback`,
-            response_type: 'code',
-            scope: [
-                'https://www.googleapis.com/auth/userinfo.email',
-                // ' ',
-                'https://www.googleapis.com/auth/userinfo.profile',
-            ].join(' '),
-            prompt: 'consent',
-            access_type: 'offline',
-        };
-        const queryString = new URLSearchParams(query).toString();
-        return `${url}?${queryString}`;
-    };
-    const googleOAuth = getGoogleAuthUrl();
+    // const getGoogleAuthUrl = () => {
+    //     // const url = `https://accounts.google.com/o/oauth2/v2/auth`;
+    //     // const url = `https://backend-datn-production.up.railway.app`;
+    //     const query = {
+    //         client_id: `529951967259-ndpvd8bdqpa0sacgdr4mviflrv0p63il.apps.googleusercontent.com`,
+    //         redirect_uri: `${url}/auth/google/callback`,
+    //         response_type: 'code',
+    //         scope: [
+    //             'https://www.googleapis.com/auth/userinfo.email',
+    //             // ' ',
+    //             'https://www.googleapis.com/auth/userinfo.profile',
+    //         ].join(' '),
+    //         prompt: 'consent',
+    //         access_type: 'offline',
+    //     };
+    //     const queryString = new URLSearchParams(query).toString();
+    //     // window.open(`${url}/auth/google/callback`, '_self');
+    //     return `${url}?${queryString}`;
+    // };
+    // const googleOAuth = getGoogleAuthUrl();
     return (
         <div className={cx('wrapper')}>
             <div className={cx('form')}>
@@ -203,7 +205,11 @@ function Login() {
                 <p>or continue with </p>
                 <div className={cx('another-login')}>
                     <div className={cx('another-login-btn')}>
-                        <Link to={googleOAuth}>
+                        <Link
+                            to={
+                                'https://backend-datn-production.up.railway.app/auth/google/callback'
+                            }
+                        >
                             <Button rounded>
                                 <img src={images.google} alt="yt" />
                             </Button>

@@ -15,9 +15,10 @@ function Provider({ children }) {
     return (
         <LoadingOverlay
             // styles={{
-            //     wrapper: {
-            //         width: '400px',
-            //         height: '400px',
+            //     _loading_overlay_content: {
+            //         // width: '400px',
+            //         // height: '400px',
+            //         position: 'fixed',
             //         // overflow: active ? 'hidden' : 'scroll',
             //     },
             // }}
