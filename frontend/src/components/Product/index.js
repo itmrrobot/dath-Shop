@@ -18,6 +18,8 @@ import { expectedDate } from '../../utils';
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { AiOutlineStar } from 'react-icons/ai';
 import SliderImageReponsive from '../SliderImageReponsive';
+import { StoreContext } from '../PageLoading/store';
+import { actions } from '../PageLoading/store';
 import { Modal } from 'antd';
 
 const cx = classNames.bind(styles);
@@ -37,6 +39,8 @@ function Product() {
 
     const tabs = ['Description', 'Reviews'];
     const state = useContext(UseContextUser);
+    const [isLoading, dispatch] = useContext(StoreContext);
+
     const benefits = [
         'Durable leather is easily cleanable so you can keep your look fresh.',
         'Water-repellent finish and internal membrane help keep your feet dry.',
@@ -94,14 +98,15 @@ function Product() {
                 setProduct(respone.data);
                 setSize(respone.data.Inventories);
                 setImage(respone?.data?.img);
+                dispatch(actions.setLoading(false));
             } catch (e) {
                 console.log(e);
             }
         };
-        fetchData();
-        return () => {
-            controller.abort();
-        };
+        dispatch(actions.setLoading(true));
+        setTimeout(async () => {
+            await fetchData();
+        }, 3000);
     }, [id]);
 
     const handleAddToCart = async () => {

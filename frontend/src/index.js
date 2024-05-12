@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import GlobalStyles from './components/GlobalStyles';
-
+import { StoreProvider } from './components/PageLoading/store';
 import { UserProvider } from './hooks/useContextUser';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <GlobalStyles>
-        <UserProvider>
-            <App />
-        </UserProvider>
+        <StoreProvider>
+            <UserProvider>
+                <App />
+            </UserProvider>
+        </StoreProvider>
     </GlobalStyles>,
 );
 
