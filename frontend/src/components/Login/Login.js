@@ -152,7 +152,7 @@ function Login() {
                     {errorDisplay && (
                         <div className="alert alert-danger" role="alert">
                             <h4 className="alert-heading">Error: {`${errorMes}`}</h4>
-                            <p>{`The account name (email) or password (password) is incorrect`}</p>
+                            <p>{`The email or password is incorrect`}</p>
 
                             <p className="mb-0">Please re-enter!!</p>
                         </div>
