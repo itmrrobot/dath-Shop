@@ -218,34 +218,35 @@ function DetailOrder() {
                                     Cancel Order
                                 </button>
                             )}
-                            {order?.status === 2 &&
-                                (order?.payed === 2 ? (
-                                    <button
-                                        className={cx('cancel')}
-                                        onClick={() => {
-                                            axios
-                                                .put(`${url}/order/update/${order?.id}`, {
-                                                    payed: 1,
-                                                    status: 3,
-                                                })
-                                                .then((res) => {
-                                                    console.log(res);
-                                                    // setCheckChange((prev) => !prev);
-                                                    toast.success(
-                                                        'Đã hoàn tất thanh toán đầy đủ. Cảm ơn quý khách!!',
-                                                    );
-                                                    navigator('/user/order');
-                                                })
-                                                .catch((err) => console.log(err));
-                                        }}
-                                    >
-                                        Xác nhận thanh toán
-                                    </button>
-                                ) : (
-                                    <button className={cx('cancel')} onClick={showModal}>
-                                        Cancel Order
-                                    </button>
-                                ))}
+                            {order?.status === 2 && order?.payed === 2 && (
+                                <button
+                                    className={cx('cancel')}
+                                    onClick={() => {
+                                        axios
+                                            .put(`${url}/order/update/${order?.id}`, {
+                                                payed: 1,
+                                                status: 3,
+                                            })
+                                            .then((res) => {
+                                                console.log(res);
+                                                // setCheckChange((prev) => !prev);
+                                                toast.success(
+                                                    'Đã hoàn tất thanh toán đầy đủ. Cảm ơn quý khách!!',
+                                                );
+                                                navigator('/user/order');
+                                            })
+                                            .catch((err) => console.log(err));
+                                    }}
+                                >
+                                    Xác nhận thanh toán
+                                </button>
+                            )}
+                            {order?.status === 2 && order?.payed === 1 && <></>}
+                            {order?.status === 2 && order?.payed === 0 && (
+                                <button className={cx('cancel')} onClick={showModal}>
+                                    Cancel Order
+                                </button>
+                            )}
                             {order?.status === 3 &&
                                 (order?.payed === 2 ? (
                                     <button className={cx('return')} onClick={showModal}>
