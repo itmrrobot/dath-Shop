@@ -18,6 +18,7 @@ function DropdownAccount() {
         localStorage.setItem('user', null);
         localStorage.setItem('accessToken', null);
         localStorage.setItem('refreshToken', null);
+        state?.render?.setRender((prev) => !prev);
         toast.success(`Đăng xuất thành công!`, {
             position: 'top-right',
             autoClose: 5000,
@@ -28,7 +29,7 @@ function DropdownAccount() {
             progress: undefined,
             theme: 'light',
         });
-        navigator('/login');
+        // navigator('/login');
         // setIsLogin(false);
     };
     const handleClickOut = function (event) {
@@ -57,7 +58,13 @@ function DropdownAccount() {
             >
                 <div className={cx('avatar-dropdown-list')}>
                     {state?.cuser?.value?.Role?.id === 1 && (
-                        <Link to="/admin" className={cx('avatar-dropdown-item', 'avatar-link')}>
+                        <Link
+                            to="/admin"
+                            className={cx('avatar-dropdown-item', 'avatar-link')}
+                            onClick={() => {
+                                setIsClickAvatar(false);
+                            }}
+                        >
                             <div className={cx('item-icon')}>
                                 <svg
                                     width="18px"
@@ -76,6 +83,9 @@ function DropdownAccount() {
                         <Link
                             to="/user/profile"
                             className={cx('avatar-dropdown-item', 'avatar-link')}
+                            onClick={() => {
+                                setIsClickAvatar(false);
+                            }}
                         >
                             <div className={cx('item-icon')}>
                                 <svg
@@ -90,7 +100,11 @@ function DropdownAccount() {
                             <span className={cx('info-name')}>Tài khoản</span>
                         </Link>
                     )}
-                    <div className={cx('avatar-dropdown-item')} onClick={handleLogout}>
+                    <Link
+                        className={cx('avatar-dropdown-item')}
+                        onClick={handleLogout}
+                        to={'/login'}
+                    >
                         <svg
                             width="18px"
                             height="18px"
@@ -100,7 +114,7 @@ function DropdownAccount() {
                             <path d="M534.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L434.7 224 224 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l210.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128zM192 96c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-53 0-96 43-96 96l0 256c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z" />
                         </svg>
                         <span className={cx('info-name')}>Đăng xuất</span>
-                    </div>
+                    </Link>
                 </div>
             </div>
         </div>

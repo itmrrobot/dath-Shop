@@ -24,7 +24,7 @@ function LayoutUserInfor({
         localStorage.setItem('user', null);
         localStorage.setItem('accessToken', null);
         localStorage.setItem('refreshToken', null);
-
+        state?.render?.setRender((prev) => !prev);
         toast.success(`Đăng xuất thành công!`, {
             position: 'top-right',
             autoClose: 5000,
@@ -49,10 +49,10 @@ function LayoutUserInfor({
             </ul>
             <div className={cx('title')}>
                 <p>{title}</p>
-                <a className={cx('logout')} onClick={handleLogout} href="/login">
+                <Link className={cx('logout')} onClick={handleLogout} to="/login">
                     <FontAwesomeIcon icon={faArrowRightFromBracket}></FontAwesomeIcon>
                     <p>Log out</p>
-                </a>
+                </Link>
             </div>
             <div className={cx('wrapper-content')}>
                 <div className={cx('side-bar-user')}>
