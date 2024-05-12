@@ -27,6 +27,7 @@ const cx = classNames.bind(styles);
 function Product() {
     const { id } = useParams();
     const param = useParams();
+    console.log(param);
     const navigator = useNavigate();
     const [product, setProduct] = useState({});
     const [checked, setChecked] = useState();
