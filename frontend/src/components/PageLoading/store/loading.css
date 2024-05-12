@@ -7,7 +7,7 @@
     }
 }
 
-._loading_overlay_overlay {
+._loading_overlay_overlay._loading-overlay-transition-enter-done {
     position: fixed;
     /* display: flex;
     text-align: center;
