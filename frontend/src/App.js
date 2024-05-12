@@ -37,9 +37,9 @@ function App() {
     console.log(state?.cuser?.value);
     return (
         <>
+            <ToastContainer />
             {(state?.cuser?.value?.Role?.id === 3 || state?.cuser?.value?.Role?.id === 4) && (
                 <>
-                    <ToastContainer />
                     <>
                         <FloatButton.Group
                             trigger="click"

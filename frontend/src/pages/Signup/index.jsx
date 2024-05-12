@@ -122,10 +122,10 @@ function Register() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('form')}>
-                <a className={cx('return-home')} href="/">
+                <Link className={cx('return-home')} to={'/'}>
                     <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
                     <p>Return to Home</p>
-                </a>
+                </Link>
                 <div className={cx('title')}>
                     <p>Luxury</p>
                     <p>Sign up</p>
@@ -154,6 +154,7 @@ function Register() {
                             {...register('name')}
                             type="text"
                             className="form-control"
+                            placeholder="Your Name"
                             // ref={userRef}
                             // onChange={(e) => setUser(e.target.value)}
                             // value={user}
@@ -168,6 +169,7 @@ function Register() {
                             id="email"
                             name="avatar"
                             type="email"
+                            placeholder="Your Email"
                             className="form-control"
                             {...register('email')}
 
@@ -189,6 +191,7 @@ function Register() {
                             name="password"
                             type="password"
                             className="form-control"
+                            placeholder="Your Password"
                             {...register('password')}
 
                             // ref={userRef}
@@ -208,6 +211,7 @@ function Register() {
                             name="avatar"
                             type="password"
                             className="form-control"
+                            placeholder="Your Re-Password"
                             {...register('passwordCF')}
 
                             // ref={userRef}
@@ -227,6 +231,7 @@ function Register() {
                             name="avatar"
                             type="tel"
                             className="form-control"
+                            placeholder="Your Re-Password"
                             // pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
                             {...register('phoneNumber')}
 
@@ -247,6 +252,7 @@ function Register() {
                             name="address"
                             type="tel"
                             className="form-control"
+                            placeholder="Your Address"
                             // pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
                             {...register('address')}
 

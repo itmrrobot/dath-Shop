@@ -81,7 +81,7 @@ function Login() {
             .post(url + '/auth/login', dataPost)
             .then((response) => {
                 const { access_token, refresh_token } = response.data;
-                toast.success(`Chào mừng ${response.data.res.fullname}`, {
+                toast.success(`Chào mừng ${response.data.res.name}`, {
                     position: 'top-right',
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -133,10 +133,10 @@ function Login() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('form')}>
-                <a className={cx('return-home')} href="/">
+                <Link className={cx('return-home')} to={'/'}>
                     <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
                     <p>Return to Home</p>
-                </a>
+                </Link>
                 <div className={cx('title')}>
                     <p>Luxury</p>
                     <p>Sign in</p>
