@@ -60,6 +60,11 @@ function App() {
             <Router>
                 <div className="App">
                     <Routes>
+                        <Route path="/auth/oauth2/login" element={<LoginGoogle />} />
+                        <Route path="/vnpay/payment/success" element={<PurchaseOrder />} />
+                        <Route path="/vnpay/payment/cancel" element={<PurchaseOrderCancel />} />
+                        <Route path="/paypal/payment/success" element={<PaypalSuccess />} />
+                        <Route path="/cancel" element={<PaypalCancel />} />
                         {/* {state?.cuser?.value?.Role?.id === 3 && (
                             <>
                                 <Route
@@ -175,7 +180,7 @@ function App() {
                             state?.cuser?.value?.Role?.id === 1) && (
                             <>
                                 <>
-                                    <Route path="/auth/oauth2/login" element={<LoginGoogle />} />
+                                    {/* <Route path="/auth/oauth2/login" element={<LoginGoogle />} />
                                     <Route
                                         path="/vnpay/payment/success"
                                         element={<PurchaseOrder />}
@@ -188,7 +193,7 @@ function App() {
                                         path="/paypal/payment/success"
                                         element={<PaypalSuccess />}
                                     />
-                                    <Route path="/cancel" element={<PaypalCancel />} />
+                                    <Route path="/cancel" element={<PaypalCancel />} /> */}
                                     <Route
                                         path="/user/profile"
                                         element={
