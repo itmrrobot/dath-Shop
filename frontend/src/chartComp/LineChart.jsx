@@ -7,14 +7,24 @@ import { url } from '../constants';
 import axios from 'axios';
 import { Box, Button, IconButton, Typography } from '@mui/material';
 import { formatPrice } from '../common';
-
+import { DatePicker } from 'antd';
+import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
+    const [selectedYearRange, setSelectedYearRange] = useState(null);
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [orders, setOrders] = useState([]);
     const [dataa, setDataa] = useState([]);
-    console.log(dataa);
     const [year, setYear] = useState('2024');
+    const colorArr = [
+        tokens('dark').blueAccent[300],
+        tokens('dark').greenAccent[200],
+        tokens('dark').redAccent[200],
+        tokens('dark').primary[400],
+        tokens('dark').greenAccent[500],
+    ];
+    let colorIndex = 0;
     const yearArr = [
         {
             id: '2020',
@@ -90,8 +100,17 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         };
         fetchData();
     }, []);
+    const handleYearRangeChange = (dates) => {
+        handleAddYear(dates);
+        setSelectedYearRange(dates);
+    };
+    const getNextColor = () => {
+        const color = colorArr[colorIndex];
+        colorIndex = (colorIndex + 1) % colorArr.length; // Lặp lại từ màu đầu khi đã chọn hết màu
+        return color;
+    };
     const yearData = useMemo(() => {
-        let dataForYear = (year, color) => {
+        let dataForYear = (year) => {
             console.log(year);
             let orderYear = orders.filter(
                 (order) => new Date(order.updatedAt).getFullYear() === year,
@@ -113,7 +132,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
             ];
             let dataLineChart = {
                 id: JSON.stringify(year),
-                color,
+                color: getNextColor(),
                 data: [],
             };
 
@@ -143,36 +162,19 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
             });
         }
     };
-    const handleAddYear = (year) => {
-        let yearChoose = yearArr.find((y) => y.id === year);
-        let checkYear = dataa.some((data) => {
-            return data.id === yearChoose.id;
-        });
-        if (checkYear === false) {
-            setDataa((prev) => [...prev, yearData(+yearChoose.id, yearChoose.color)]);
+    const handleAddYear = (dates) => {
+        if (dates !== null) {
+            // let yearChoose = yearArr.find((y) => Number(y.id) === year);
+            // let checkYear = dataa.some((data) => {
+            //     console.log(data);
+            //     return data.id === yearChoose.id;
+            // });
+            // if (checkYear === false) {
+            //     setDataa((prev) => [...prev, yearData(year)]);
+            // }
+            setDataa((prev) => [...prev, yearData(dates.$y)]);
         }
     };
-    // const revenueGenerated = useMemo(() => {
-    //     let sum = dataa.reduce((acc, data) => {
-    //         let orderYear = orders.filter(
-    //             (order) => new Date(order.updatedAt).getFullYear() == data.id,
-    //         );
-    //         let sumOfOrderMonth = 0;
-    //         for (let i = 1; i <= 12; i++) {
-    //             let ordersByMonth = orderYear.filter((order) => {
-    //                 // console.log(order);
-    //                 return new Date(order.updatedAt).getMonth() + 1 === i;
-    //             });
-    //             // console.log(ordersByMonth);
-    //             let totalQuantity = ordersByMonth.reduce((total, order) => {
-    //                 // console.log(order);
-    //                 return total + order.total;
-    //             }, 0);
-    //             sumOfOrderMonth = sumOfOrderMonth + totalQuantity;
-    //         }
-    //         return acc + sumOfOrderMonth;
-    //     }, 0);
-    // }, [dataa]);
     const revenueGenerated = useMemo(() => {
         // Khởi tạo một đối tượng để theo dõi tổng số tiền cho từng năm
         let yearlyRevenue = {};
@@ -233,27 +235,18 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
                         })}
                 </Box>
                 <Box>
-                    <select
-                        onChange={(e) => {
-                            // setCity(e.target.value);
-                            setYear(e.target.value);
-                            handleAddYear(e.target.value);
-                        }}
-                        // {...register('select')}
-                    >
-                        {yearArr?.map((yearr, index) => {
-                            return (
-                                <option key={index} selected={yearr.id === year} value={yearr.id}>
-                                    {yearr.id}
-                                </option>
-                            );
-                        })}
-                    </select>
+                    <DatePicker
+                        picker="year"
+                        value={selectedYearRange}
+                        onChange={handleYearRangeChange}
+                    />
                 </Box>
             </Box>
 
             <ResponsiveLine
                 data={dataa}
+                enableArea={true}
+                // enablePointLabel={true}
                 theme={{
                     axis: {
                         domain: {
