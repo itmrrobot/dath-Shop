@@ -19,16 +19,79 @@ import { useEffect, useMemo, useState } from 'react';
 import { url } from '../../constants';
 import axios from 'axios';
 import { formatPrice } from '../../common';
+import CircleChart from '../../chartComp/CircleChart';
+import Widget from '../../components/Widget';
 const cx = classNames.bind(styles);
 const Admin = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [orders, setOrders] = useState([]);
     const [returns, setReturns] = useState([]);
-    const [users, setUsers] = useState(0);
+    const [users, setUsers] = useState([]);
+    console.log(users);
     const [transaction, setTransaction] = useState([]);
     const [rtTransaction, setRtTransaction] = useState([]);
-    console.log(rtTransaction);
+    const revenueGenerated = (year) => {
+        let ordersInSelectedYear = orders?.filter((order) => {
+            const orderDate = new Date(order.updatedAt);
+            return orderDate.getFullYear() === year;
+        });
+
+        // Tính tổng số tiền của các đơn hàng trong năm được chọn
+        let totalRevenueInSelectedYear = ordersInSelectedYear.reduce(
+            (total, order) => total + order.total,
+            0,
+        );
+
+        return totalRevenueInSelectedYear;
+    };
+    const userGenerated = (year) => {
+        let usersInSelectedYear = users?.filter((user) => {
+            let userDate = new Date(user.createdAt);
+            return userDate.getFullYear() === year;
+        });
+
+        // Tính tổng số tiền của các đơn hàng trong năm được chọn
+        let totalRevenueInSelectedYear = usersInSelectedYear.reduce((total) => total + 1, 0);
+
+        return totalRevenueInSelectedYear;
+    };
+    const orderGenerated = (year) => {
+        let ordersInSelectedYear = orders?.filter((order) => {
+            let orderDate = new Date(order.updatedAt);
+            return orderDate.getFullYear() === year;
+        });
+
+        // Tính tổng số tiền của các đơn hàng trong năm được chọn
+        let totalRevenueInSelectedYear = ordersInSelectedYear.reduce((total) => total + 1, 0);
+
+        return totalRevenueInSelectedYear;
+    };
+    const returnGenerated = (year) => {
+        let returnsInSelectedYear = returns?.filter((item) => {
+            let returnDate = new Date(item.updatedAt);
+            return returnDate.getFullYear() === year;
+        });
+
+        // Tính tổng số tiền của các đơn hàng trong năm được chọn
+        let totalRevenueInSelectedYear = returnsInSelectedYear.reduce((total) => total + 1, 0);
+
+        return totalRevenueInSelectedYear;
+    };
+    // console.log(revenueGenerated(2024, 6));
+    const tinhPhanTramTangGiam = (soLuongHienTai, soLuongTruoc) => {
+        if (soLuongTruoc === 0) {
+            if (soLuongHienTai === 0) {
+                return 0; // Trả về 0 nếu cả hai số lượng đều là 0
+            } else {
+                return 100; // Trả về Infinity nếu số lượng trước là 0 và số lượng hiện tại khác 0
+            }
+        }
+
+        let phanTram = ((soLuongHienTai - soLuongTruoc) / soLuongTruoc) * 100;
+        return phanTram;
+    };
+
     const date = (d) => {
         const currentDate = new Date(d);
         const monthNames = [
@@ -81,7 +144,7 @@ const Admin = () => {
 
                 setReturns(returnUser);
                 setOrders(orderUser);
-                setUsers(responseUsers.data.filter((acc) => acc.RoleId === 3));
+                setUsers(responseUsers.data.filter((acc) => acc.RoleId === 3 || acc.RoleId === 4));
                 setTransaction(orderTransaction);
                 setRtTransaction(returnTransaction);
             } catch (error) {
@@ -103,48 +166,49 @@ const Admin = () => {
                 <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
             </Box>
             <div className={cx('overView')}>
-                <div className={cx(['item_sumary'])}>
-                    <div className={cx('item_header')}>
-                        <AccountBalanceOutlinedIcon sx={{ color: 'white', fontSize: '36px' }} />
-                        <p>Revenue</p>
-                    </div>
-                    <div className={cx('sub-title')}>{formatPrice(totalRevenue)}</div>
-                </div>
-
-                <div className={cx(['item_sumary'])}>
-                    <div className={cx('item_header')}>
-                        <PeopleAltOutlinedIcon sx={{ color: 'white', fontSize: '36px' }} />
-                        <p>Clients</p>
-                    </div>
-                    <div className={cx('sub-title')}>{users?.length} Accounts</div>
-                </div>
-
-                <div className={cx(['item_sumary'])}>
-                    <div className={cx('item_header')}>
-                        <AssignmentReturnOutlinedIcon sx={{ color: 'white', fontSize: '36px' }} />
-                        <p>Returns ()</p>
-                    </div>
-                    <div className={cx('sub-title')}>{returns?.length} Returns Success</div>
-                </div>
-
-                <div className={cx(['item_sumary'])}>
-                    <div className={cx('item_header')}>
-                        <LocalMallOutlinedIcon sx={{ color: 'white', fontSize: '36px' }} />
-                        <p>Orders</p>
-                    </div>
-                    <div className={cx('sub-title')}>{orders?.length} Orders Success</div>
-                </div>
+                <Widget
+                    type="subtotal"
+                    isMoney={totalRevenue}
+                    diff={tinhPhanTramTangGiam(
+                        revenueGenerated(new Date().getFullYear()),
+                        revenueGenerated(new Date().getFullYear() - 1),
+                    )}
+                />
+                <Widget
+                    type="user"
+                    total={users?.length}
+                    diff={tinhPhanTramTangGiam(
+                        userGenerated(new Date().getFullYear()),
+                        userGenerated(new Date().getFullYear() - 1),
+                    )}
+                />
+                <Widget
+                    type="returns"
+                    total={returns?.length}
+                    diff={tinhPhanTramTangGiam(
+                        returnGenerated(new Date().getFullYear()),
+                        returnGenerated(new Date().getFullYear() - 1),
+                    )}
+                />
+                <Widget
+                    type="orders"
+                    total={orders?.length}
+                    diff={tinhPhanTramTangGiam(
+                        orderGenerated(new Date().getFullYear()),
+                        orderGenerated(new Date().getFullYear() - 1),
+                    )}
+                />
             </div>
             {/* GRID & CHARTS */}
             <Box
-                // display="grid"
+                display="grid"
                 gridTemplateColumns="repeat(12, 1fr)"
                 gridAutoRows="140px"
                 gap="20px"
                 marginBottom={'90px'}
             >
                 {/* ROW 2 */}
-                <Box gridColumn="span 8" gridRow="span 2" backgroundColor={colors.primary[400]}>
+                <Box gridColumn="span 12" gridRow="span 2" backgroundColor={colors.primary[400]}>
                     <Box height="250px" m="-20px 0 0 0">
                         <LineChart isDashboard={true} />
                     </Box>
@@ -156,6 +220,51 @@ const Admin = () => {
                 gridAutoRows="140px"
                 gap="20px"
             >
+                {/* <Box
+                    gridColumn="span 4"
+                    gridRow="span 2"
+                    backgroundColor={colors.primary[400]}
+                    // overflow="auto"
+                    display={'flex'}
+                    alignItems={'end'}
+                    justifyContent={'center'}
+                    flexDirection={'column'}
+                >
+                    
+                    <Typography
+                        color={'#5f4c49'}
+                        variant="h5"
+                        fontWeight="600"
+                        textAlign={'center'}
+                        width={'100%'}
+                    >
+                        Order status statistics
+                        <Header subtitle="Status Here!" />
+                    </Typography>
+                </Box> */}
+                <Box
+                    gridColumn="span 4"
+                    gridRow="span 2"
+                    backgroundColor={colors.primary[400]}
+                    // overflow="auto"
+                >
+                    <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        borderBottom={`4px solid ${colors.primary[500]}`}
+                        colors={colors.grey[100]}
+                        p="15px"
+                        marginBottom={'30px'}
+                    >
+                        <Typography color={'#5f4c49'} variant="h5" fontWeight="600">
+                            Order status statistics
+                        </Typography>
+                    </Box>
+                    <Box height="300px" m="-20px 0 0 0" width={'auto'}>
+                        <CircleChart />
+                    </Box>
+                </Box>
                 <Box
                     gridColumn="span 4"
                     gridRow="span 2"

@@ -7,8 +7,10 @@
     display: flex;
     margin-bottom: 20px;
     // min-width: 680px;
-    overflow-x: scroll;
-    justify-content: space-between;
+    // overflow-x: scroll;
+    padding: 20px;
+    gap: 20px;
+    // justify-content: space-between;
     .color1 {
         background-color: #d8e8ee;
     }
