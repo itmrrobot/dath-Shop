@@ -26,7 +26,7 @@ router.get('/refund', function (req, res, next) {
     res.render('refund', {title: 'Hoàn tiền giao dịch thanh toán'})
 });
 
-router.get('/paypal/payment/success',vnpayController.handelGetPaymentSuccess);
+router.get('/vnpay/payment/success',vnpayController.handelGetPaymentSuccess);
 
 router.post('/create_payment_url',vnpayController.handelCreateNewPayment);
 
