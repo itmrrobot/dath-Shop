@@ -14,9 +14,17 @@ import { url } from '../../constants';
 import images from '../../assets/img';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Modal } from 'antd';
 const cx = classNames.bind(styles);
 function Register() {
     const [checkDuplicate, setCheckDuplicate] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
     const getGoogleAuthUrl = () => {
         const url = `https://accounts.google.com/o/oauth2/v2/auth`;
         const query = {
@@ -305,14 +313,17 @@ function Register() {
                             <img src={images.google} alt="yt" />
                         </Button>
                     </Link>
-                    <Button rounded>
+                    <Button rounded onClick={() => setIsModalOpen(true)}>
                         <img src={images.github_btn} alt="yt" />
                     </Button>
-                    <Button rounded>
+                    <Button rounded onClick={() => setIsModalOpen(true)}>
                         <img src={images.facebook_btn} alt="yt" />
                     </Button>
                 </div>
             </div>
+            <Modal title="Login" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <p>Comming Soon!</p>
+            </Modal>
         </div>
     );
 }

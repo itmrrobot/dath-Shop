@@ -38,6 +38,24 @@ $white: #fff;
     }
 }
 
+.name_product_path {
+    cursor: pointer;
+    // color: white;
+    // font-size: 12px;
+    line-height: 150%;
+    color: black;
+    width: 200px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    // border: 2px solid white;
+    // border-radius: 8px;
+    // background-color: #d3b875;
+    // padding: 4px;
+}
+
 .product-header {
     // margin-bottom: 56px;
     padding: 40px 0 56px 0;

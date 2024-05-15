@@ -227,7 +227,9 @@ function Product() {
                             <span> &#62; </span>
                             <li>
                                 <Link to={`/product/${product?.id}`}>
-                                    <strong>{product?.name}</strong>
+                                    <strong className={cx('name_product_path')}>
+                                        {product?.name}
+                                    </strong>
                                 </Link>
                             </li>
                         </ul>

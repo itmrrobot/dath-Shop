@@ -366,6 +366,8 @@ function ModalDetailProduct({ show, handleClose, prodID, handleReRender }) {
                                                         // console.log('Change');
                                                         checkIsDirty(e, item, i);
                                                     }}
+                                                    onKeyDown={handleKeyDownSize}
+
                                                     // onKeyDown={handleKeyDownSize}
                                                 />
                                             </div>
