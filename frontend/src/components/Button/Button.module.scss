@@ -55,7 +55,7 @@ $color: #ab8a37;
     &:hover {
         border-color: rgba(22, 24, 35, 0.2);
         // background-color: rgba(255, 255, 255, 1);
-        background-color: darken(#ab8a37, 10%);
+        background-color: lighten(#ab8a37, 20%);
         cursor: pointer;
     }
 }

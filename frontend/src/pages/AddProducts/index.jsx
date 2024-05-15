@@ -58,7 +58,7 @@ function AddProducts() {
         .shape({
             name: yup.string().required('Bạn cần nhập trường này'),
             brand: yup.string().required('Bạn cần lựa chọn Thương hiệu'),
-            category: yup.string().required('Bạn cần lựa chọn Loại giày'),
+            category: yup.string().required('Bạn cần lựa chọn Category'),
             // brand: yup.string().required('Bạn cần lựa chọn thành phố'),
             price: yup.string().required('Trường này là bắt buộc'),
             description: yup.string().required('Trường này là bắt buộc'),

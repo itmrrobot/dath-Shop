@@ -129,38 +129,6 @@ function Home() {
                         })}
                 </div>
             </ContentSection>
-            {/* <ContentSection upper>
-                {brands &&
-                    brands.map((brand) => {
-                        return (
-                            <div className={cx('brand-wrapper')}>
-                                <div className={cx('brand-title')}>
-                                    <div className={cx('product-img')}>
-                                        <div className={cx('product-img-wrapper')}>
-                                            <img src={brand.img} alt="" />
-                                        </div>
-                                    </div>
-                                    <p>{brand.name}</p>
-                                    <Tippy
-                                        delay={[0, 50]}
-                                        content={`See more product of ${brand.name}`}
-                                        placement="bottom"
-                                    >
-                                        <div className={cx('more-prod')}>
-                                            <Link to={`/product?_page=1&_limit=9&brand_id=${brand.name}`}>
-                                                See more!
-                                            </Link>
-                                        </div>
-                                    </Tippy>
-                                </div>
-                                
-                                <SliderHome brand_id={brand.name}></SliderHome>
-                            </div>
-                        );
-                    })}
-
-                
-            </ContentSection> */}
         </div>
     );
 }

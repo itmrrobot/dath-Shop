@@ -12,10 +12,11 @@ import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import Button from '../Button';
+import Button from '../../components/Button';
 import images from '../../assets/img';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { Modal } from 'antd';
 const cx = classNames.bind(styles);
 
 function Login() {
@@ -26,20 +27,25 @@ function Login() {
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     // const {setUser,setIsLogin,user} = AuthState();
-    const cookies = new Cookies(null, { path: '/' });
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const navigation = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
 
     const [errorDisplay, setErrorDisplay] = useState(false);
     const [errorMes, setErrorMes] = useState('');
     useEffect(() => {
         const handleKeyPress = (event) => {
             if (event.keyCode === 13) {
-                window.location.reload();
+                handleSubmit(handleLogin)(event);
             }
         };
 
@@ -214,10 +220,10 @@ function Login() {
                                 <img src={images.google} alt="yt" />
                             </Button>
                         </Link>
-                        <Button rounded>
+                        <Button rounded onClick={() => setIsModalOpen(true)}>
                             <img src={images.github_btn} alt="yt" />
                         </Button>
-                        <Button rounded>
+                        <Button rounded onClick={() => setIsModalOpen(true)}>
                             <img src={images.facebook_btn} alt="yt" />
                         </Button>
                     </div>
@@ -231,6 +237,9 @@ function Login() {
                     </p>
                 </div>
             </div>
+            <Modal title="Login" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <p>Comming Soon!</p>
+            </Modal>
         </div>
     );
 }

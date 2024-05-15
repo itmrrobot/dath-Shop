@@ -15,7 +15,7 @@ import images from '../../assets/img';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import Button from '../Button';
+import Button from '../../components/Button';
 import { toast } from 'react-toastify';
 // import AvatarAuto from '../AvatarAuto';
 const cx = classNames.bind(styles);

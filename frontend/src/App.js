@@ -1,7 +1,7 @@
 import DefaultLayout from './components/Layout/DefaultLayout';
 import { publicAccountRoutes, publicRoutes } from './routes/index';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Profile from './components/Profile';
+// import Profile from './components/Profile';
 import { FloatButton } from 'antd';
 import { CommentOutlined, CustomerServiceOutlined } from '@ant-design/icons';
 import { ToastContainer } from 'react-toastify';
@@ -30,7 +30,7 @@ import PurchaseOrder from './components/PurchaseOrder';
 import PaypalSuccess from './pages/PaypalSuccess';
 import PaypalCancel from './pages/PaypalCancel';
 import PurchaseOrderCancel from './components/PurchaseOrderCancel';
-
+import Profile from './pages/Profile';
 function App() {
     const [chat, setChat] = useState(false);
     const state = useContext(UseContextUser);
