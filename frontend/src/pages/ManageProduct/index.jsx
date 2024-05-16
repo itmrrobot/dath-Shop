@@ -12,22 +12,31 @@ import { Modal } from 'antd';
 import ModalDetailProduct from './ModalDetailProduct';
 import SearchProd from './SearchProd';
 import { url } from '../../constants';
+import ReactPaginate from 'react-paginate';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 function ManageProduct() {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const searchParams = new URLSearchParams(location.search);
+    const categoryId = searchParams.get('categoryId');
+    const brandId = searchParams.get('brandId');
     const [product, setProduct] = useState([]);
     const [itemId, setItemId] = useState();
-    console.log(JSON.stringify(itemId));
-
     const [prodInfor, setProdInfor] = useState({});
     const [currentPage, setCurrentPage] = useState(0);
+    const [brands, setBrands] = useState();
+    const [brandSelected, setBrandSelected] = useState(brandId);
+    const [categories, setCategories] = useState();
+    const [categorySelected, setCategorySelected] = useState(categoryId);
+
     // const productsPerPage = 10; // Số sản phẩm hiển thị trên mỗi trang
     const pageCount = Math.ceil(product.length / 5); // Tổng số trang
     const handlePageChange = ({ selected }) => {
         setCurrentPage(selected);
     };
-    console.log('Render');
     const offset = currentPage * 5;
-    // const currentPageData = product.slice(offset, offset + 5);
+    const currentPageData = product.slice(offset, offset + 5);
     // console.log();
     const [render, setRender] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -70,12 +79,61 @@ function ManageProduct() {
     const showModalDelete = () => {
         setIsModalOpen(true);
     };
+    const handleBrandsChange = (e) => {
+        const selectedValue = e.target.value;
+        setBrandSelected(selectedValue);
+        if (selectedValue) {
+            if (categorySelected) {
+                navigate(
+                    `/admin/manageProduct?brandId=${selectedValue}&categoryId=${categorySelected}`,
+                );
+            } else {
+                navigate(`/admin/manageProduct?brandId=${selectedValue}`);
+            }
+        } else {
+            if (categorySelected) {
+                navigate(`/admin/manageProduct?categoryId=${categorySelected}`);
+            } else {
+                navigate(`/admin/manageProduct`);
+            }
+        }
+    };
+    const handleCategoryChange = (e) => {
+        const selectedValue = e.target.value;
+        setCategorySelected(selectedValue);
+        if (selectedValue) {
+            if (brandSelected) {
+                navigate(
+                    `/admin/manageProduct?brandId=${brandSelected}&categoryId=${selectedValue}`,
+                );
+            } else {
+                navigate(`/admin/manageProduct?categoryId=${selectedValue}`);
+            }
+        } else {
+            if (brandSelected) {
+                navigate(`/admin/manageProduct?brandId=${brandSelected}`);
+            } else {
+                navigate(`/admin/manageProduct`);
+            }
+        }
+    };
     console.log(product);
     useEffect(() => {
-        axios.get(`${url}/products`).then((res) => {
+        const fetchData = async () => {
+            let res = await axios.get(`${url}/products`, {
+                params: {
+                    brandId: brandSelected,
+                    categoryId: categorySelected,
+                },
+            });
+            let responseBrand = await axios.get(`${url}/brand`);
+            let responseCategory = await axios.get(`${url}/category`);
             setProduct(res.data.products);
-        });
-    }, [render]);
+            setBrands(responseBrand.data.brand);
+            setCategories(responseCategory.data.category);
+        };
+        fetchData();
+    }, [render, brandSelected, categorySelected]);
     return (
         <>
             <div className={cx('wrapper')}>
@@ -86,7 +144,41 @@ function ManageProduct() {
                         <span>out of {product?.length} Products</span>
                         {/* TOTAL PRODUCTS: <span> products</span> */}
                     </p>
-                    <SearchProd></SearchProd>
+                    <div className={cx('right-side')}>
+                        <SearchProd></SearchProd>
+                        <select
+                            // onChange={(e) => {
+                            //     // setCity(e.target.value);
+                            //     setCity(e.target.value);
+                            // }}
+                            className={cx('city-dropdown')}
+                            onChange={handleBrandsChange}
+                        >
+                            <option value="">---Brands---</option>
+                            {brands &&
+                                brands.map((brand) => {
+                                    return <option value={brand.id}>{brand.brand_name}</option>;
+                                })}
+                        </select>
+                        <select
+                            // onChange={(e) => {
+                            //     // setCity(e.target.value);
+                            //     setCity(e.target.value);
+                            // }}
+                            className={cx('city-dropdown')}
+                            onChange={handleCategoryChange}
+                        >
+                            <option value="">---Categories---</option>
+                            {categories &&
+                                categories.map((category) => {
+                                    return (
+                                        <option value={category.id}>
+                                            {category.category_name}
+                                        </option>
+                                    );
+                                })}
+                        </select>
+                    </div>
                 </div>
                 <ul className={cx('responsive-table')}>
                     <li className={cx('table-header')}>
@@ -101,7 +193,7 @@ function ManageProduct() {
                         <div className={cx('col', 'col-6')}></div>
                         <div className={cx('col', 'col-7')}></div>
                     </li>
-                    {product?.map((item, index) => {
+                    {currentPageData?.map((item, index) => {
                         let imgs = item.img;
                         console.log(item);
                         return (
@@ -167,7 +259,7 @@ function ManageProduct() {
                 ></ModalDetailProduct>
             </div>
             <div className={cx('pagination')}>
-                {/* <ReactPaginate
+                <ReactPaginate
                     previousLabel={'Previous'}
                     nextLabel={'Next'}
                     breakLabel={'...'}
@@ -186,7 +278,7 @@ function ManageProduct() {
                     breakLinkClassName="page-link"
                     containerClassName="pagination"
                     activeClassName="active"
-                /> */}
+                />
             </div>
         </>
     );
