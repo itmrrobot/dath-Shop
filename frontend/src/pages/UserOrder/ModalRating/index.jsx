@@ -35,6 +35,19 @@ function ModalRating({ show, handleClose, orderId, handleReRender }) {
             try {
                 const response = await axios.get(`${url}/order/${orderId}`);
                 console.log(response);
+                let orderDetailsUpdate = [
+                    ...response.data.OrderDetails.sort(function (sv1, sv2) {
+                        let a = sv1.id;
+                        let b = sv2.id;
+                        return a - b;
+                    }),
+                ];
+                let dataUpdate = {
+                    ...response.data,
+                    OrderDetails: orderDetailsUpdate,
+                };
+                console.log(dataUpdate);
+
                 setOrder(response.data);
             } catch (error) {}
         };

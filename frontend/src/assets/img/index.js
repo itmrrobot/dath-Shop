@@ -37,6 +37,7 @@ const images = {
     logo_login: require('./Logo_Login.png'),
     vnpay: require('./vnpayy.svg').default,
     paypal: require('./paypal.svg').default,
+    iconsend: require('./iconsend.svg').default,
     // thumbnail2: require('./thumbnail_2.png'),
 };
 

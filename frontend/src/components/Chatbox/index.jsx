@@ -66,9 +66,6 @@ function Chatbox() {
                 setConservation((prevConservation) => [...prevConservation, ...answer]);
                 setLoading((prev) => !prev);
             }, 5000);
-
-            // Đặt thời gian trễ trước khi hiển thị câu trả lời từ chatbot
-            // Thời gian trễ 3 giây (3000 milliseconds)
         } catch (error) {
             console.error('Error sending message:', error);
         }
@@ -258,9 +255,9 @@ function Chatbox() {
                 </div>
                 <div className={cx('content__footer')}>
                     <div className={cx('sendNewMessage')}>
-                        <button className={cx('addFiles')}>
+                        {/* <button className={cx('addFiles')}>
                             <i className={cx('fa', 'fa-plus')}></i>
-                        </button>
+                        </button> */}
                         <input
                             type="text"
                             placeholder="Type a message here"
@@ -278,7 +275,8 @@ function Chatbox() {
                                 handleSubmit(onSubmit)(e);
                             }}
                         >
-                            <i className="fa fa-paper-plane"></i>
+                            {/* <i className="fa fa-paper-plane" style={{ color: 'red' }}></i> */}
+                            <img className={cx('iconsend')} src={images.iconsend} alt="" />
                         </button>
                     </div>
                 </div>
