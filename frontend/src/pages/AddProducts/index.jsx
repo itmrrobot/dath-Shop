@@ -96,10 +96,29 @@ function AddProducts() {
         return str.replaceAll('.', '');
     };
     // console.log(price);
-    const sizeValues_shoes = ['36', '37', '38', '39', '40', '41', '42', '43'];
+    const sizeValues_shoes = ['34', '35', '36', '37', '38', '39', '40', '41', '42', '43'];
     const sizeValues_jewelry = ['size1', 'size2', 'size3'];
-    const sizeValues_watch = ['40mm', '50mm', '60mm', '90mm'];
-    const sizeValues_clothes = ['S', 'SL', 'X', 'XL', 'XXL', '3XL'];
+    const sizeValues_watch = [
+        '24mm',
+        '25mm',
+        '26mm',
+        '27mm',
+        '28mm',
+        '36mm',
+        '37mm',
+        '38mm',
+        '39mm',
+        '40mm',
+        '41mm',
+        '42mm',
+        '43mm',
+        '44mm',
+        '45mm',
+        '46mm',
+        '47mm',
+        '48mm',
+    ];
+    const sizeValues_clothes = ['XS ', 'S', 'M ', 'L', , 'XL', 'XXL', '3XL'];
 
     const [inventory, setInventory] = useState();
     const handleChangeSizeInput = () => {};

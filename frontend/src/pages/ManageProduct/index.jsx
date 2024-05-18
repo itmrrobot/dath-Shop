@@ -157,7 +157,11 @@ function ManageProduct() {
                             <option value="">---Brands---</option>
                             {brands &&
                                 brands.map((brand) => {
-                                    return <option value={brand.id}>{brand.brand_name}</option>;
+                                    return (
+                                        <option value={brand.id} selected={brandId == brand.id}>
+                                            {brand.brand_name}
+                                        </option>
+                                    );
                                 })}
                         </select>
                         <select
@@ -172,7 +176,10 @@ function ManageProduct() {
                             {categories &&
                                 categories.map((category) => {
                                     return (
-                                        <option value={category.id}>
+                                        <option
+                                            value={category.id}
+                                            selected={categoryId == category.id}
+                                        >
                                             {category.category_name}
                                         </option>
                                     );

@@ -17,7 +17,6 @@ function UserOrder() {
     const [pagCurr, setPagCurr] = useState(0);
     const state = useContext(UseContextUser);
     const [orders, setOrders] = useState([]);
-    console.log(orders);
     let [deliAmount, setDeliAmount] = useState();
 
     useEffect(() => {
@@ -67,7 +66,6 @@ function UserOrder() {
 export default UserOrder;
 
 function Orders({ orders, userID }) {
-    console.log(orders);
     // console.log(orders?.products);
     const navigator = useNavigate();
     const [render, setRender] = useState(false);
@@ -131,7 +129,6 @@ function Orders({ orders, userID }) {
         <>
             {orders?.length > 0 ? (
                 orders.map((order, i) => {
-                    console.log(order);
                     return (
                         order.status !== 5 && (
                             <div className={cx('order')} key={i}>
@@ -193,7 +190,6 @@ function Orders({ orders, userID }) {
                                                             status: 3,
                                                         })
                                                         .then((res) => {
-                                                            console.log(res);
                                                             // setCheckChange((prev) => !prev);
                                                             toast.success(
                                                                 'Đã hoàn tất thanh toán đầy đủ. Cảm ơn quý khách!!',
@@ -275,7 +271,6 @@ function Orders({ orders, userID }) {
 
 function Order_Item({ product }) {
     const [prod, setProd] = useState();
-    console.log(product);
     useEffect(() => {
         let product_id = product.map((i) => i.id_product);
         const fetchProducts = async () => {

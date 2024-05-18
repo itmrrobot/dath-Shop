@@ -566,8 +566,8 @@ function Review({ reviews }) {
                                 ></SliderImageReponsive> */}
                             </div>
                             <div className={cx('review-infor')}>
-                                <AvatarAuto nameU={review?.User?.fullname} />
-                                <p>{review?.User?.fullname}</p>
+                                <AvatarAuto nameU={review?.User?.name} />
+                                <p>{review?.User?.name}</p>
                             </div>
                             {review.img !== '[]' && (
                                 <SliderImageReponsive

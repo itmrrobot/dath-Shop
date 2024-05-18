@@ -22,22 +22,30 @@ function LoginGoogle() {
             try {
                 const response = await axios.get(`${url}/login/success`);
                 console.log(response);
-                setEmail(response.data.user.email);
+                setEmail(response.data.respone.email);
                 let payload = {
                     Role: {
-                        id: response.data.user.RoleId,
+                        id: response.data.respone.RoleId,
                         name: 'Customer',
                     },
-                    address: response.data.user.address,
-                    avatar: response.data.user.avatar,
-                    email: response.data.user.email,
-                    fullname: response.data.user.name,
-                    id: response.data.user.id,
-                    name: response.data.user.name,
-                    phone: response.data.user.phone,
+                    address: response.data.respone.address,
+                    avatar: response.data.respone.avatar,
+                    email: response.data.respone.email,
+                    fullname: response.data.respone.name,
+                    id: response.data.respone.id,
+                    name: response.data.respone.name,
+                    phone: response.data.respone.phone,
                     isGoogle: 1,
                 };
                 localStorage.setItem('user', JSON.stringify(payload));
+                localStorage.setItem(
+                    'refreshToken',
+                    JSON.stringify(response.data.respone.refreshToken),
+                );
+                localStorage.setItem(
+                    'accessToken',
+                    JSON.stringify(response.data.respone.access_token),
+                );
                 state?.cuser?.setCurrentUser(payload);
                 toast.success(`Đăng nhập thành công`, {
                     position: 'top-right',
