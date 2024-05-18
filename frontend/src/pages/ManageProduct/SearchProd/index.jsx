@@ -17,17 +17,20 @@ import { toast } from 'react-toastify';
 import { url } from '../../../constants';
 
 const cx = classNames.bind(styles);
-function SearchProd() {
+function SearchProd({ render }) {
     const [searchValue, setSearchValue] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const [prodInfor, setProdInfor] = useState({});
     const [itemId, setItemId] = useState();
     const [products, setProducts] = useState([]);
     // console.log(!!searchValue);
+    const [renders, setRenders] = useState(false);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [showResults, setShowResults] = useState(true);
     const [loading, setLoading] = useState(false);
     console.log(loading);
+
     const handleOk = async () => {
         setIsModalOpen(false);
         const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -45,6 +48,9 @@ function SearchProd() {
                 position: 'top-right',
                 autoClose: 3000,
             });
+            render((prev) => !prev);
+            setRenders((prev) => !prev);
+            handleClear();
         } catch (error) {
             // Xử lý lỗi nếu có
             toast.error(`Xoá sản phẩm thất bại => Error: ${error}`, {
@@ -73,7 +79,7 @@ function SearchProd() {
             // Trả về 1 mảng [sản phẩm]
             setProducts(res.data.products);
         });
-    }, []);
+    }, [renders]);
     const filterSearch = useMemo(() => {
         const productFilter = products.filter((product) => {
             if (!debounce.trim()) {
@@ -93,6 +99,7 @@ function SearchProd() {
         setSearchResult(filterSearch);
     }, [filterSearch]);
     const handleClear = () => {
+        console.log('Hello');
         setSearchValue('');
         setSearchResult([]);
         inputRef.current.focus();

@@ -141,3 +141,23 @@
     color: red;
     font-size: 1.2rem;
 }
+
+.notification {
+    width: 100%;
+    // text-align: center;
+    display: flex;
+    // align-items: center;
+    justify-content: center;
+    // height: 100%;
+    border-top: 4px solid grey;
+    border-bottom: 4px solid grey;
+
+    // min-height: 400px;
+    p {
+        color: #5e5d5d;
+        font-size: 30px;
+        margin: 50px 0;
+        text-align: center;
+        text-transform: uppercase;
+    }
+}
