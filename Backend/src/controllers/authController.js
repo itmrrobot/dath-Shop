@@ -27,8 +27,9 @@ const handleLogin = async(req,res) => {
 
 const handleLoginSuccess = async(req,res) => {
     const user = session?.user?.dataValues;
+    const respone = await authService.loginSuccessGoogle(user); 
     if(user){
-        res.status(200).json({message:"user Login",user})
+        res.status(200).json({message:"user Login",respone})
     }else{
         res.status(400).json({message:"Not Authorized"})
     }

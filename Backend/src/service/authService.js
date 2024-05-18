@@ -41,6 +41,17 @@ const login = async(data) => {
     }
 }
 
+const loginSuccessGoogle = async(data) => {
+    const access_token = data && jwt.sign({id:data.id,email:data.email,roleId:data.Role.id},process.env.JWT_SECRET,{expiresIn:'5d'});
+    //const token = res[1] ? jwt.sign({id:res[0].id,email:res[0].email,roleId:res[0].roleId},process.env.JWT_SECRET,{expiresIn:'120s'}):null;
+    const refresh_token = data ? jwt.sign({id:data.id},process.env.JWT_SECRET_REFRESH_TOKEN,{expiresIn:'5d'}):null;
+    if(refresh_token) {
+        await User.update({refreshToken:refresh_token},{where:{id:data.id}});
+    }
+    data.access_token = access_token;
+    return data;
+}
+
 const forgotPassword = async(email) => {
     const user = await User.findOne({where:{email}});
     if(!user) {
@@ -78,5 +89,5 @@ const refreshToken = async(data) => {
 }
 
 module.exports = {
-    register,login,refreshToken,forgotPassword
+    register,login,refreshToken,forgotPassword,loginSuccessGoogle
 }
