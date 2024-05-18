@@ -36,7 +36,7 @@ function SearchProd() {
             // console.log(dataPost);
             // console.log(state?.cuser?.value);
             await delay(2000); // Chờ 2 giây
-            const res = await axios.delete(`${url}/product/${itemId}`);
+            const res = await axios.delete(`${url}/products/delete/${itemId}`);
             console.log(res);
             // setOrder(dataUpdate);
             toast.success('Xoá sản phẩm thành công', {
