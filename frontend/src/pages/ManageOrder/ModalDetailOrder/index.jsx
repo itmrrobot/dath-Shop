@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Modal from 'react-modal';
 import { url } from '../../../constants';
+import Button from '../../../components/Button';
 const cx = classNames.bind(styles);
 function ModalDetailOrder({ show, handleClose, order, handleReRender }) {
     console.log(order);
@@ -456,6 +457,13 @@ function ModalDetailOrder({ show, handleClose, order, handleReRender }) {
                                             {formatPrice(order?.total)}
                                         </p>
                                     </div>
+                                </div>
+                                <div style={{ textAlign: 'end' }}>
+                                    {order?.status === 2 && order?.payed === 1 && (
+                                        <Button primary disabled>
+                                            Have already payment!
+                                        </Button>
+                                    )}
                                 </div>
                             </div>
                         </div>

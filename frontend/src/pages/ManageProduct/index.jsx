@@ -5,7 +5,7 @@ import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 // import ReactPaginate from 'react-paginate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faPenNib } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPenNib, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { priceDiscount, formatPrice } from '../../common';
 import { toast } from 'react-toastify';
 import { Modal } from 'antd';
@@ -117,7 +117,6 @@ function ManageProduct() {
             }
         }
     };
-    console.log(product);
     useEffect(() => {
         const fetchData = async () => {
             let res = await axios.get(`${url}/products`, {
@@ -145,7 +144,7 @@ function ManageProduct() {
                         {/* TOTAL PRODUCTS: <span> products</span> */}
                     </p>
                     <div className={cx('right-side')}>
-                        <SearchProd></SearchProd>
+                        <SearchProd render={handleReRender}></SearchProd>
                         <select
                             // onChange={(e) => {
                             //     // setCity(e.target.value);
@@ -200,59 +199,72 @@ function ManageProduct() {
                         <div className={cx('col', 'col-6')}></div>
                         <div className={cx('col', 'col-7')}></div>
                     </li>
-                    {currentPageData?.map((item, index) => {
-                        let imgs = item.img;
-                        console.log(item);
-                        return (
-                            <li key={index} className={cx('table-row')}>
-                                <div className={cx('col', 'col-1', 'name')} data-label="Picture">
-                                    <div className={cx('product-img')}>
-                                        <div className={cx('product-img-wrapper')}>
-                                            <img src={`${imgs[0]}`} />
+                    {currentPageData.length > 0 ? (
+                        currentPageData?.map((item, index) => {
+                            let imgs = item.img;
+                            console.log(item);
+                            return (
+                                <li key={index} className={cx('table-row')}>
+                                    <div
+                                        className={cx('col', 'col-1', 'name')}
+                                        data-label="Picture"
+                                    >
+                                        <div className={cx('product-img')}>
+                                            <div className={cx('product-img-wrapper')}>
+                                                <img src={`${imgs[0]}`} />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className={cx('col', 'col-2', 'name')} data-label="ID">
-                                    {item.id}
-                                </div>
-                                <div
-                                    className={cx('col', 'col-3', 'name')}
-                                    data-label="Product Name"
-                                >
-                                    {item.name}
-                                </div>
-                                <div className={cx('col', 'col-4', 'name')} data-label="Price">
-                                    {/* {item.price} */}
-                                    {formatPrice(item?.price)}
-                                </div>
-                                <div className={cx('col', 'col-5', 'name')} data-label="Discount">
-                                    {formatPrice(item?.discount_price)}
-                                </div>
-                                <div
-                                    className={cx('col', 'col-6', 'name', 'btn-hover')}
-                                    data-label="Remove"
-                                    onClick={() => {
-                                        showModalDelete();
-                                        setItemId(item?.id);
-                                    }}
-                                >
-                                    <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
-                                    Remove
-                                </div>
-                                <div
-                                    className={cx('col', 'col-7', 'name', 'btn-hover')}
-                                    data-label="Modify"
-                                    onClick={() => {
-                                        handleShow();
-                                        setProdInfor(item);
-                                    }}
-                                >
-                                    <FontAwesomeIcon icon={faPenNib}></FontAwesomeIcon>
-                                    Modify
-                                </div>
-                            </li>
-                        );
-                    })}
+                                    <div className={cx('col', 'col-2', 'name')} data-label="ID">
+                                        {item.id}
+                                    </div>
+                                    <div
+                                        className={cx('col', 'col-3', 'name')}
+                                        data-label="Product Name"
+                                    >
+                                        {item.name}
+                                    </div>
+                                    <div className={cx('col', 'col-4', 'name')} data-label="Price">
+                                        {/* {item.price} */}
+                                        {formatPrice(item?.price)}
+                                    </div>
+                                    <div
+                                        className={cx('col', 'col-5', 'name')}
+                                        data-label="Discount"
+                                    >
+                                        {formatPrice(item?.discount_price)}
+                                    </div>
+                                    <div
+                                        className={cx('col', 'col-6', 'name', 'btn-hover')}
+                                        data-label="Remove"
+                                        onClick={() => {
+                                            showModalDelete();
+                                            setItemId(item?.id);
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
+                                        Remove
+                                    </div>
+                                    <div
+                                        className={cx('col', 'col-7', 'name', 'btn-hover')}
+                                        data-label="Modify"
+                                        onClick={() => {
+                                            handleShow();
+                                            setProdInfor(item);
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={faPenNib}></FontAwesomeIcon>
+                                        Modify
+                                    </div>
+                                </li>
+                            );
+                        })
+                    ) : (
+                        <div className={cx('notification')}>
+                            {/* <h1>Xin chao</h1> */}
+                            <p>Không có sản phẩm nào</p>
+                        </div>
+                    )}
                 </ul>
 
                 <Modal title="Thông báo" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>

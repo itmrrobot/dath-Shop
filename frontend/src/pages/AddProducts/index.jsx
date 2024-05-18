@@ -28,7 +28,7 @@ function AddProducts() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [typeAdd, setTypeAdd] = useState(false);
-    const [typeSize, setTypeSize] = useState('');
+    const [typeSize, setTypeSize] = useState('Shoes');
     const [brands, setBrands] = useState();
     const [categories, setCategories] = useState();
     const [render, setRender] = useState(false);
@@ -120,7 +120,14 @@ function AddProducts() {
     ];
     const sizeValues_clothes = ['XS ', 'S', 'M ', 'L', , 'XL', 'XXL', '3XL'];
 
-    const [inventory, setInventory] = useState();
+    const [inventory, setInventory] = useState(
+        sizeValues_shoes.map((item, index) => {
+            return {
+                size: item,
+                quantity: 0,
+            };
+        }),
+    );
     const handleChangeSizeInput = () => {};
     const handleChange = (e, item) => {
         let tmpList = [...inventory];
