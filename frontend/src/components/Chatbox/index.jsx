@@ -152,24 +152,18 @@ function Chatbox() {
                         </div>
                         <div
                             className={cx('recommend')}
-                            onClick={() =>
-                                handleSuggest('Chất lượng sản phẩm của shop như thế nào?')
-                            }
+                            onClick={() => handleSuggest('Phí ship bao nhiêu?')}
                         >
                             <div className={cx('chat__item__content___recommend')}>
-                                <div className={cx('chat__msg')}>
-                                    Chất lượng sản phẩm của shop như thế nào?
-                                </div>
+                                <div className={cx('chat__msg')}>Phí ship bao nhiêu?</div>
                             </div>
                         </div>
                         <div
                             className={cx('recommend')}
-                            onClick={() => handleSuggest('Sản phẩm này có ôm dáng không?')}
+                            onClick={() => handleSuggest('Khi nào tôi nhận được hàng?')}
                         >
                             <div className={cx('chat__item__content___recommend')}>
-                                <div className={cx('chat__msg')}>
-                                    Sản phẩm này có ôm dáng không?
-                                </div>
+                                <div className={cx('chat__msg')}>Khi nào tôi nhận được hàng?</div>
                             </div>
                         </div>
                         <div
