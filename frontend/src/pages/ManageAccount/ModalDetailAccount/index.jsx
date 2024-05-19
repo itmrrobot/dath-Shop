@@ -11,7 +11,9 @@ import { url } from '../../../constants';
 // import '/ModalDetailAccount.css';
 const cx = classNames.bind(styles);
 function ModalDetailAccount({ show, handleClose, accInfor }) {
-    console.log(accInfor);
+    const [type, setType] = useState('Orders');
+
+    const tabs = ['Orders', 'Returns'];
     const handleCreateAt = (data) => {
         // console.log(data);
         let dateObject = new Date(data);
@@ -80,7 +82,28 @@ function ModalDetailAccount({ show, handleClose, accInfor }) {
                             <span>Register Account Date</span>: {handleCreateAt(accInfor.createdAt)}
                         </p>
                     </div>
-                    <UserOrder userID={accInfor.id} />
+                    <ul className={cx('product-info-menu')}>
+                        {tabs.map((tab, i) => {
+                            return (
+                                <li
+                                    style={
+                                        type === tab
+                                            ? {
+                                                  color: '#AB8A37',
+                                                  //   backgroundColor: '#333',
+                                              }
+                                            : {}
+                                    }
+                                    key={i}
+                                    className={cx('p-info-list')}
+                                    onClick={() => setType(tab)}
+                                >
+                                    {tab}
+                                </li>
+                            );
+                        })}
+                    </ul>
+                    <UserOrder userID={accInfor.id} type={type} />
                 </div>
                 <button onClick={handleClose} className={cx('close_btn')}>
                     &times;
@@ -92,62 +115,232 @@ function ModalDetailAccount({ show, handleClose, accInfor }) {
 
 export default ModalDetailAccount;
 
-function UserOrder(userID) {
-    console.log(userID);
-    const pagName = ['All', 'Confirmating', 'Delivering', 'Completed', 'Canceled'];
-    const [pagCurr, setPagCurr] = useState(0);
-    const state = useContext(UseContextUser);
+function UserOrder({ userID, type }) {
+    const pagNameOrders = ['All', 'Confirmating', 'Delivering', 'Completed', 'Canceled'];
+    const pagNameReturns = [
+        'All',
+        'Confirmating',
+        'Pick up',
+        'Received',
+        'Refund',
+        'Returned',
+        'Cancel',
+    ];
+    const [pagCurrOrders, setPagCurrOrders] = useState(0);
+    const [pagCurrReturns, setPagCurrReturns] = useState(0);
     const [orders, setOrders] = useState([]);
+    const [response, setResponse] = useState([]);
+
     // console.log();
     let [deliAmount, setDeliAmount] = useState();
     useEffect(() => {
         // Get ra được tất cả những dữ liệu đơn hàng
-        axios.get(`${url}` + `/orders/${userID.userID}`).then((res) => {
-            console.log(res);
-            // Sau đó đảo lộn response từ dưới đầu lên trên
-            let orderUser = [...res.data].reverse();
-            // Kiểm tra trang hiện tại là ở đâu
-            // Nếu là ở trang 1 - Tất cả
-            // => Lọc ra toàn bộ những phần tử con mà có status đơn hàng là 1
-            if (pagCurr === 1) {
-                orderUser = orderUser.filter((i) => i.status === 1);
-            } else if (pagCurr === 2) {
-                orderUser = orderUser.filter((i) => i.status === 2);
-            } else if (pagCurr === 3) {
-                orderUser = orderUser.filter((i) => i.status === 3);
-            } else if (pagCurr === 4) {
-                orderUser = orderUser.filter((i) => i.status === 4);
+        const fetchDataOrders = async () => {
+            try {
+                let res = await axios.get(`${url}` + `/orders/${userID}`);
+                console.log(res);
+                // Sau đó đảo lộn response từ dưới đầu lên trên
+                let orderUser = [...res.data].reverse();
+                // Kiểm tra trang hiện tại là ở đâu
+                // Nếu là ở trang 1 - Tất cả
+                // => Lọc ra toàn bộ những phần tử con mà có status đơn hàng là 1
+                if (pagCurrOrders === 1) {
+                    orderUser = orderUser.filter((i) => i.status === 1);
+                } else if (pagCurrOrders === 2) {
+                    orderUser = orderUser.filter((i) => i.status === 2);
+                } else if (pagCurrOrders === 3) {
+                    orderUser = orderUser.filter((i) => i.status === 3);
+                } else if (pagCurrOrders === 4) {
+                    orderUser = orderUser.filter((i) => i.status === 4);
+                }
+                setOrders(orderUser);
+                setDeliAmount(res.data.filter((i) => i.status === 2).length);
+            } catch (error) {
+                console.log(error);
             }
-            setOrders(orderUser);
-            setDeliAmount(res.data.filter((i) => i.status === 2).length);
-        });
-    }, [pagCurr]);
+        };
+        const fetchDataReturns = async () => {
+            try {
+                let res = await axios.get(`${url}/list/returns/${userID}`);
+                let returnOrder = [...res.data].reverse();
+                if (pagCurrReturns === 1) {
+                    // orderUser = res.data.filter(i => i.id_client === user._id)
+                    returnOrder = returnOrder.filter((i) => i.status === 1);
+                } else if (pagCurrReturns === 2) {
+                    // orderUser = res.data.filter(i => i.id_client === user._id)
+                    returnOrder = returnOrder.filter((i) => i.status === 2);
+                } else if (pagCurrReturns === 3) {
+                    // orderUser = res.data.filter(i => i.id_client === user._id)
+                    returnOrder = returnOrder.filter((i) => i.status === 3);
+                } else if (pagCurrReturns === 4) {
+                    // orderUser = res.data.filter(i => i.id_client === user._id)
+                    returnOrder = returnOrder.filter((i) => i.status === 4);
+                } else if (pagCurrReturns === 5) {
+                    returnOrder = returnOrder.filter((i) => i.status === 5);
+                } else if (pagCurrReturns === 6) {
+                    returnOrder = returnOrder.filter((i) => i.status === 6);
+                }
+                // setOrders(orderUser);
+                setResponse(returnOrder);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchDataOrders();
+        fetchDataReturns();
+    }, [pagCurrOrders, pagCurrReturns]);
     return (
         <div className={cx('wrapper-order')}>
             <ul className={cx('navigate')}>
-                {pagName.map((item, index) => (
-                    <li
-                        key={item}
-                        className={cx({ li_active: index === pagCurr })}
-                        onClick={() => {
-                            setPagCurr(index);
-                        }}
-                    >
-                        {item}
-                    </li>
-                ))}
+                {type === 'Orders'
+                    ? pagNameOrders.map((item, index) => (
+                          <li
+                              key={item}
+                              className={cx({ li_active: index === pagCurrOrders })}
+                              onClick={() => {
+                                  setPagCurrOrders(index);
+                              }}
+                          >
+                              {item}
+                          </li>
+                      ))
+                    : pagNameReturns.map((item, index) => (
+                          <li
+                              key={item}
+                              className={cx({ li_active: index === pagCurrReturns })}
+                              onClick={() => {
+                                  setPagCurrReturns(index);
+                              }}
+                          >
+                              {item}
+                          </li>
+                      ))}
             </ul>
             <div className={cx('table')}>
-                {orders.length === 0 ? (
+                {orders.length === 0 && response.length === 0 ? (
                     <div className={cx('notification')}>
                         {/* <h1>Xin chao</h1> */}
                         <p>Không có đơn hàng nào</p>
                     </div>
-                ) : (
+                ) : type === 'Orders' ? (
                     <Orders orders={orders} userID={userID} />
+                ) : (
+                    <Return response={response} userID={userID} />
                 )}
             </div>
         </div>
+    );
+}
+function Return({ response, userID }) {
+    const navigator = useNavigate();
+    const handleChangePage = (id) => {
+        navigator(`/user/return/detail/${id}`);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    const expectedDate = (day) => {
+        // const splitD = d.split('/');
+        // const D = 1706322872160;
+        const currentDate = new Date(day);
+        const monthNames = [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec',
+        ];
+        let date = currentDate.getDate();
+        let month = currentDate.getMonth();
+        const monthAbbreviation = monthNames[month];
+
+        let year = currentDate.getFullYear();
+        return `${date} ${monthAbbreviation}, ${year}`;
+    };
+    // console.log(expectedDate());
+    return (
+        <>
+            {response?.length > 0 ? (
+                response?.map((res, i) => {
+                    // console.log(order);
+                    console.log(res);
+                    return (
+                        <div className={cx('order')} key={i}>
+                            <div className={cx('header-bill')}>
+                                <ul className={cx('title-bill')}>
+                                    <li>
+                                        <div className={cx('status')}>
+                                            <p className={cx('row-title')}>Status</p>
+                                            {res.status === 1 && <p>Return Confirmation</p>}
+                                            {res.status === 2 && <p>Picking up</p>}
+                                            {res.status === 3 && <p>Returning</p>}
+                                            {res.status === 4 && <p>Refund</p>}
+                                            {res.status === 5 && <p>Returned</p>}
+                                            {res.status === 6 && <p>Cancel</p>}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div className={cx('order-id')}>
+                                            <p className={cx('row-title')}>Return ID</p>
+                                            <p>RT_#2024{res.id}</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div className={cx('total')}>
+                                            <p className={cx('row-title')}>Total</p>
+                                            {res?.Orders?.map((order) => {
+                                                return <p>{formatPrice(order.total)}</p>;
+                                            })}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div className={cx('detail')}>
+                                            <button onClick={() => handleChangePage(res?.id)}>
+                                                See Detail
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className={cx('body-bill')}>
+                                <div className={cx('message-status')}>
+                                    {res.status === 1 && (
+                                        <p>Please Waiting Confirmation For Your Return</p>
+                                    )}
+                                    {res.status === 2 && (
+                                        <p>Drop off the items by {expectedDate(res.date_pickup)}</p>
+                                    )}
+                                    {res.status === 3 && (
+                                        <p>
+                                            Item was returning to us
+                                            {/* {expectedDate(res.createdAt, res?.shipment)} */}
+                                        </p>
+                                    )}
+                                    {res.status === 4 && (
+                                        <p>Refund sent within a week after we get the items</p>
+                                    )}
+                                    {res.status === 5 && <p>Completed</p>}
+                                    {res.status === 6 && <p>Cancelation</p>}
+                                </div>
+                                {res.Orders.map((order) => {
+                                    return <Order_Item product={order?.OrderDetails}></Order_Item>;
+                                })}
+                            </div>
+                        </div>
+                    );
+                })
+            ) : (
+                <div className={cx('notification')}>
+                    {/* <h1>Xin chao</h1> */}
+                    <p>Không có đơn hàng nào</p>
+                </div>
+            )}
+        </>
     );
 }
 
