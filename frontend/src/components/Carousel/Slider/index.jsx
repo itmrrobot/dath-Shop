@@ -120,7 +120,7 @@ function Slider({ param, brand_id, images, nameProduct }) {
                                 <div key={index}>
                                     <SwiperSlide>
                                         <Link
-                                            to={`https://shop-datn.netlify.app/product/${slide.id}`}
+                                            to={`https://luxurycloset-nhom6.netlify.app/product/${slide.id}`}
                                         >
                                             <div className={cx('item-slider')}>
                                                 <img
