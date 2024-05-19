@@ -23,7 +23,7 @@ const createPayment = (req, res) => {
     },
     redirect_urls: {
       return_url: "https://backend-datn-production.up.railway.app/paypal/payment/success",
-      cancel_url: "https://shop-datn.netlify.app/cancel",
+      cancel_url: "https://luxurycloset-nhom6.netlify.app/cancel",
     },
     transactions: [
       {
@@ -78,7 +78,7 @@ const getPaymentSuccess = async (payerId, paymentId, res) => {
           await inventoryService.updateInventory("", {
             listInventory: inventorys,
           });
-        res.redirect("https://shop-datn.netlify.app/paypal/payment/success");
+        res.redirect("https://luxurycloset-nhom6.netlify.app/paypal/payment/success");
       }
     }
   );

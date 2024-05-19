@@ -4,7 +4,6 @@ const natural = require("natural");
 const tokenizer = new natural.WordTokenizer();
 
 const getRecommendListProduct = async (data) => {
-  console.log(data);
   if(data==="") return null;
   const products = await Product.findAll({});
   const categorys = await Category.findAll({});

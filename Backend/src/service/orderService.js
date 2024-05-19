@@ -66,7 +66,7 @@ const getAllOrders = async () => {
       },
     },
   });
-  return orders;
+  return orders.sort((a, b) => a.id - b.id);
 };
 
 const createNewOrder = async (data) => {

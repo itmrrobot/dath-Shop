@@ -57,7 +57,7 @@ passport.use(
     new OAuth2Strategy({
         clientID:process.env.GOOGLE_CLIENT_ID,
         clientSecret:process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL:"/auth/google/callback",
+        callbackURL:"https://backend-datn-production.up.railway.app/auth/google/callback",
         scope:["profile","email"]
     },
     async(accessToken,refreshToken,profile,done)=>{

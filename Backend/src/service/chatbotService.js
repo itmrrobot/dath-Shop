@@ -95,7 +95,7 @@ function trainNetwork() {
 
   // Skip the first element since it contains headers
   for (var i = 1; i < csvData.length; i++) {
-    var pair = csvData[i].split(":");
+    var pair = csvData[i].split("|");
     var question = pair[0].trim();
     var answer = pair[1].trim();
     data[question] = answer;
@@ -119,8 +119,8 @@ function trainNetwork() {
   var trainingSet = [];
   var wordsDictionary = arrayToDictonary(texts);
   var categoriesDictionary = arrayToDictonary(categories, "", true);
-  // console.log("wordsDictionary",wordsDictionary)
-  // console.log("categoriesDictionary",categoriesDictionary)
+  console.log("wordsDictionary",wordsDictionary)
+  console.log("categoriesDictionary",categoriesDictionary)
   for (var text in data) {
     var category = data[text];
     // console.log("text",text," word dic ",wordsDictionary,"textToVector(text, wordsDictionary)",textToVector(text, wordsDictionary))
@@ -160,15 +160,15 @@ function trainNetwork() {
 
   var result = trainer.train(trainingSet, {
     rate: 0.1,
-    iterations: 1000000000,
+    iterations: 13000,
     error: 0.005,
     shuffle: true,
-    // log: 10,
+    log: 10,
     cost: synaptic.Trainer.cost.CROSS_ENTROPY,
     schedule: {
       every: 100,
       do: function (data) {
-        //console.log(data);
+        console.log(data);
 
         if (data.iterations % 10 === 0) {
           // console.log('Testing the "it was very good" text. Category:');
@@ -225,7 +225,7 @@ const responeQuestions = async(input) => {
 
   // Skip the first element since it contains headers
   for (var i = 1; i < csvData.length; i++) {
-    var pair = csvData[i].split(":");
+    var pair = csvData[i].split("|");
     var question = pair[0].trim();
     var answer = pair.slice(1).join(":").trim(); // Handle ':' in the answer
     data[question] = answer;
@@ -253,13 +253,20 @@ const responeQuestions = async(input) => {
   var wordsDictionary = arrayToDictonary(texts);
   // If the closest match has a similarity score above a certain threshold, return its answer
   if (closestMatch > 0.8) {
-    return categories[
-      arrayMaxIndex(network.activate(textToVector(input, wordsDictionary)))
-    ];
-    //return data[closestQuestion];
+    // return categories[
+    //   arrayMaxIndex(network.activate(textToVector(input, wordsDictionary)))
+    // ];
+    return data[closestQuestion];
+  } else {
+    data[input] = "Xin lỗi! Tôi không hiểu";
+    fs.appendFileSync(
+      path.join(__dirname, "../../dataset/data.csv"),
+      `\n${input}| Xin lỗi! Tôi không hiểu.`,
+      "utf-8"
+    );
   }
   
-  // If no close match is found, return "Tôi không hiểu"
+  // If no close match is found, return "I don't understand"
   return "Xin lỗi! Tôi không hiểu";
 };
 

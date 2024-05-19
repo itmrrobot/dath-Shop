@@ -42,7 +42,7 @@ const login = async(data) => {
 }
 
 const loginSuccessGoogle = async(data) => {
-    const access_token = data && jwt.sign({id:data.id,email:data.email,roleId:data.Role.id},process.env.JWT_SECRET,{expiresIn:'5d'});
+    const access_token = data && jwt.sign({id:data.id,email:data.email,roleId:3},process.env.JWT_SECRET,{expiresIn:'5d'});
     //const token = res[1] ? jwt.sign({id:res[0].id,email:res[0].email,roleId:res[0].roleId},process.env.JWT_SECRET,{expiresIn:'120s'}):null;
     const refresh_token = data ? jwt.sign({id:data.id},process.env.JWT_SECRET_REFRESH_TOKEN,{expiresIn:'5d'}):null;
     if(refresh_token) {

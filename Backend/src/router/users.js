@@ -23,11 +23,11 @@ router
     "/auth/google/callback",
     passport.authenticate("google", {
       //successRedirect:"http://localhost:3000",
-      failureRedirect: "https://shop-datn.netlify.app/login",
+      failureRedirect: "https://luxurycloset-nhom6.netlify.app/login",
     }),
     function (req, res) {
       session.user = req.user;
-     res.redirect("https://shop-datn.netlify.app/auth/oauth2/login");
+     res.redirect("https://luxurycloset-nhom6.netlify.app/auth/oauth2/login");
     //  console.log(res);
     }
   )

@@ -46,13 +46,13 @@ const getVnpayIPN = async (req, res) => {
             await inventoryService.updateInventory("", {
               listInventory: inventorys,
             });
-            res.redirect("https://shop-datn.netlify.app/vnpay/payment/success");
+            res.redirect("https://luxurycloset-nhom6.netlify.app/vnpay/payment/success");
           } else {
             //that bai
             //paymentStatus = '2'
             // Ở đây cập nhật trạng thái giao dịch thanh toán thất bại vào CSDL của bạn
 
-            res.redirect("https://shop-datn.netlify.app/vnpay/payment/cancel");
+            res.redirect("https://luxurycloset-nhom6.netlify.app/vnpay/payment/cancel");
           }
         } else {
           res
@@ -140,7 +140,7 @@ const getPaymentSuccess = async (res) => {
   await inventoryService.updateInventory("", {
     listInventory: inventorys,
   });
-  res.redirect("https://shop-datn.netlify.app/vnpay/payment/success");
+  res.redirect("https://luxurycloset-nhom6.netlify.app/vnpay/payment/success");
 };
 
 function sortObject(obj) {
