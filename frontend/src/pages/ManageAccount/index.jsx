@@ -26,6 +26,7 @@ const Team = () => {
         // .then(res => console.log(res))
         setRr_lock((pre) => !pre);
     };
+
     const pageCount = Math.ceil(user.length / 5); // Tổng số trang
     const handlePageChange = ({ selected }) => {
         setCurrentPage(selected);

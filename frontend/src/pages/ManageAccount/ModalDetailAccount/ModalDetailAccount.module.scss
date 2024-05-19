@@ -223,3 +223,12 @@
         text-transform: uppercase;
     }
 }
+
+.product-info-menu {
+    .p-info-list {
+        padding: 16px;
+        display: inline-block;
+        cursor: pointer;
+        font-weight: 600;
+    }
+}
