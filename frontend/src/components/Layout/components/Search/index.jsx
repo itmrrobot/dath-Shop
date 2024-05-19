@@ -167,6 +167,7 @@ function Search() {
                         e.target.value = e.target.value.trimStart();
                         setSearchValue(e.target.value);
                     }}
+                    autocomplete={'off'}
                     placeholder="Search for an Item..."
                     onFocus={() => setShowResults(true)}
                 />

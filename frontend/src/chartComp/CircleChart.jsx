@@ -36,7 +36,6 @@ function CircleChart() {
         },
     ];
     const [selectedMonthRange, setSelectedMonthRange] = useState(null);
-    console.log(selectedMonthRange);
     const [orders, setOrders] = useState([]);
     const [returns, setReturns] = useState([]);
     const [data, setData] = useState([]);

@@ -185,6 +185,7 @@ function ChangePasswordUser() {
                             id="cpassword"
                             name="cpassword"
                             type={displayCurrentPass === true ? 'text' : 'password'}
+                            autocomplete={'off'}
                             className="form-control"
                             {...register('cpassword')}
                             // ref={inputEl}
@@ -217,6 +218,7 @@ function ChangePasswordUser() {
                             id="newpassword"
                             name="newpassword"
                             type={displayPass === true ? 'text' : 'password'}
+                            autocomplete={'off'}
                             className="form-control"
                             {...register('newpassword')}
 
@@ -246,8 +248,8 @@ function ChangePasswordUser() {
                             name="repassword"
                             type={displayRePass === true ? 'text' : 'password'}
                             className="form-control"
+                            autocomplete={'off'}
                             {...register('repassword')}
-
                             // ref={userRef}
                             // onChange={(e) => setUser(e.target.value)}
                             // value={user}
