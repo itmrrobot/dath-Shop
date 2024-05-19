@@ -133,15 +133,15 @@ function UserOrder(userID) {
                             setPagCurr(index);
                         }}
                     >
-                        {item} {index === 2 && <span>({deliAmount})</span>}
+                        {item}
                     </li>
                 ))}
             </ul>
             <div className={cx('table')}>
                 {orders.length === 0 ? (
-                    <div className={cx('order-empty')}>
-                        <img src={images.emptyCart} />
-                        <p>Tài khoản này chưa có sản phẩm nào!!!</p>
+                    <div className={cx('notification')}>
+                        {/* <h1>Xin chao</h1> */}
+                        <p>Không có đơn hàng nào</p>
                     </div>
                 ) : (
                     <Orders orders={orders} userID={userID} />
