@@ -263,7 +263,7 @@ function Product() {
                                     <div className={cx('star-reviews')}>
                                         <div className={cx('star')}>
                                             <img src={images.star} alt="" />
-                                            <span>{averageRating}</span>
+                                            <span>{averageRating.toFixed(1)}</span>
                                         </div>
                                         <div className={cx('previews')}>
                                             <img src={images.reviews} alt="" />

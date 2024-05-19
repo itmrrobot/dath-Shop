@@ -150,11 +150,13 @@
         p {
             margin: 0;
             color: #626161;
-
+            font-size: 1.6rem;
             span {
-                color: #333;
+                color: var(--primary);
                 display: inline-block;
                 text-transform: capitalize;
+                font-weight: 700;
+                font-size: 1.8rem;
             }
 
             & + p {
@@ -199,5 +201,25 @@
         font-size: 3rem;
         font-weight: 700;
         color: darken(#c6b064, 10%);
+    }
+}
+
+.notification {
+    width: 100%;
+    // text-align: center;
+    display: flex;
+    // align-items: center;
+    justify-content: center;
+    // height: 100%;
+    border-top: 4px solid grey;
+    border-bottom: 4px solid grey;
+
+    // min-height: 400px;
+    p {
+        color: #5e5d5d;
+        font-size: 30px;
+        margin: 50px 0;
+        text-align: center;
+        text-transform: uppercase;
     }
 }

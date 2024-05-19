@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faUnlock, faUserTie, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import ModalDetailAccount from './ModalDetailAccount';
 import { url } from '../../constants';
+import ReactPaginate from 'react-paginate';
 
 const cx = classNames.bind(styles);
 const Team = () => {
@@ -15,6 +16,7 @@ const Team = () => {
     const [rr_lock, setRr_lock] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [accInfor, setAccInfor] = useState({});
+    const [currentPage, setCurrentPage] = useState(0);
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
     const handleLockAcc = (id, value) => {
@@ -24,6 +26,12 @@ const Team = () => {
         // .then(res => console.log(res))
         setRr_lock((pre) => !pre);
     };
+    const pageCount = Math.ceil(user.length / 5); // Tổng số trang
+    const handlePageChange = ({ selected }) => {
+        setCurrentPage(selected);
+    };
+    const offset = currentPage * 5;
+    const currentPageData = user.slice(offset, offset + 5);
     useEffect(() => {
         const accessToken = JSON.parse(localStorage.getItem('accessToken'));
         console.log(accessToken);
@@ -54,7 +62,7 @@ const Team = () => {
                     <div className={cx('col', 'col-7')}>Detail</div>
                     <div className={cx('col', 'col-8')}>Access Level</div>
                 </li>
-                {user.map((item, index) => {
+                {currentPageData.map((item, index) => {
                     return (
                         <li key={index} className={cx('table-row')}>
                             <div className={cx('col', 'col-1', 'name')} data-label="Id">
@@ -128,6 +136,28 @@ const Team = () => {
                 handleClose={handleClose}
                 accInfor={accInfor}
             ></ModalDetailAccount>
+            <div className={cx('pagination')}>
+                <ReactPaginate
+                    previousLabel={'Previous'}
+                    nextLabel={'Next'}
+                    breakLabel={'...'}
+                    pageCount={pageCount}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={handlePageChange}
+                    renderOnZeroPageCount={null}
+                    pageClassName={cx('page-item')}
+                    pageLinkClassName="page-link"
+                    previousClassName="page-item"
+                    previousLinkClassName="page-link"
+                    nextClassName="page-item"
+                    nextLinkClassName="page-link"
+                    breakClassName="page-item"
+                    breakLinkClassName="page-link"
+                    containerClassName="pagination"
+                    activeClassName="active"
+                />
+            </div>
         </>
     );
 };
