@@ -387,7 +387,7 @@ function Cart() {
                                 <div
                                     className={cx('return_to_store')}
                                     onClick={() => {
-                                        navigate('/products?page=1&limit9');
+                                        navigate('/products?page=1&limit=9');
                                         window.scrollTo({ top: 0, behavior: 'smooth' });
                                     }}
                                 >
