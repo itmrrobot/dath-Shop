@@ -56,10 +56,13 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
                         Authorization: `Bearer ${accessToken}`,
                     },
                 });
+                // Lọc ra những order có status là 3 (Completed)
                 let orderUser = [...responseOrders.data].filter((i) => i.status === 3);
+                // Lọc ra những order theo năm hiện tại
                 let orderYear = [...responseOrders.data]
                     .filter((i) => i.status === 3)
                     ?.filter((order) => {
+                        // Trả về các orders có cùng năm
                         return new Date(order.updatedAt).getFullYear() == new Date().getFullYear();
                     });
                 let monthNames = [
@@ -77,22 +80,28 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
                     'Nov',
                     'Dec',
                 ];
+                // Cấu hình constructor cho dataLineChart
                 let dataLineChart = {
                     id: JSON.stringify(new Date().getFullYear()),
                     color: tokens('dark').greenAccent[500],
                     data: [],
                 };
-
+                // Lặp qua 12 tháng để push data vào trong dataLineChart constructor
                 for (let i = 1; i <= 12; i++) {
+                    // Lọc ra những order trong năm hiện tại có số tháng bằng với i
                     let ordersByMonth = orderYear?.filter((order) => {
                         // console.log(order);
                         return new Date(order.updatedAt).getMonth() + 1 === i;
                     });
                     // console.log();
+                    // Sau đó lấy ra những order của năm đó và tính tổng các hoá đơn trong tháng đó
                     let totalQuantity = ordersByMonth.reduce((total) => total + 1, 0);
+                    // Đồng thời push vào những object chứa các mảng thể hiện tháng đó theo yêu cầu của thư viện UI Nivo
                     dataLineChart.data.push({ x: monthNames[i], y: totalQuantity });
                 }
+                // Set order để sử dụng cho lần sau
                 setOrders(orderUser);
+                // Sử dụng Spread
                 setDataa((prev) => [...prev, dataLineChart]);
             } catch (error) {
                 console.log(error);
@@ -111,7 +120,9 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
     };
     const yearData = useMemo(() => {
         let dataForYear = (year) => {
+            // Year đầu vào
             console.log(year);
+            // Lọc ra những orders có năm bằng với năm được nhận được trong hàm
             let orderYear = orders.filter(
                 (order) => new Date(order.updatedAt).getFullYear() === year,
             );
@@ -130,15 +141,17 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
                 'Nov',
                 'Dec',
             ];
+            // Khởi tạo 1 constructor dataLineChart theo 1 cái mới
             let dataLineChart = {
                 id: JSON.stringify(year),
                 color: getNextColor(),
                 data: [],
             };
-
+            // Lọc qua 12 tháng
             for (let i = 1; i <= 12; i++) {
                 let ordersByMonth = orderYear.filter((order) => {
                     // console.log(order);
+                    // Cộng 1 vì Date getMonth sẽ là 0 -> Phải cộng thêm 1
                     return new Date(order.updatedAt).getMonth() + 1 === i;
                 });
                 // console.log();

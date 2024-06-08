@@ -57,6 +57,7 @@ const Admin = () => {
         return totalRevenueInSelectedYear;
     };
     const orderGenerated = (year) => {
+        console.log(year);
         let ordersInSelectedYear = orders?.filter((order) => {
             let orderDate = new Date(order.updatedAt);
             return orderDate.getFullYear() === year;
